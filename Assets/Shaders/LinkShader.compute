@@ -1,0 +1,72 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CalculatePoints
+#pragma kernel SmoothCurve
+
+#define linkPoints 64
+
+RWStructuredBuffer<float3> nodes;
+RWStructuredBuffer<float3> points;
+RWStructuredBuffer<int> sourceNodes;
+RWStructuredBuffer<int> targetNodes;
+RWStructuredBuffer<float3> pointControllerPositions;
+RWStructuredBuffer<int> draggedPoints;
+
+float nodeRadius;
+float k;
+
+
+[numthreads(linkPoints, 1, 1)]
+void CalculatePoints(uint3 threadId : SV_DispatchThreadID, uint3 groupId : SV_GroupID, uint3 groupThreadId : SV_GroupThreadID)
+{
+	if (groupThreadId.x == 0)
+	{
+		points[threadId.x] = nodes[sourceNodes[groupId.x]].xyz;
+	}
+	else if (groupThreadId.x == linkPoints - 1)
+	{
+		points[threadId.x] = nodes[targetNodes[groupId.x]].xyz;
+	}
+	else 
+	{
+		float3 step = (nodes[targetNodes[groupId.x]].xyz - nodes[sourceNodes[groupId.x]].xyz) / (linkPoints - 1);
+		points[threadId.x] = nodes[sourceNodes[groupId.x]].xyz + groupThreadId.x * step;
+
+		for (uint i = 0; i < nodes.Length; i++)
+		{
+			if (i != sourceNodes[groupId.x] && i != targetNodes[groupId.x]) {
+
+				float dist = distance(nodes[i], points[threadId.x]);
+
+				if (dist <= nodeRadius) 
+				{
+					if (nodes[i].y <= points[threadId.x].y)
+						points[threadId.x].y +=  nodeRadius - dist;
+					else
+						points[threadId.x].y -= nodeRadius - dist;
+				}
+			}
+		}
+
+		for (uint i = 0; i < draggedPoints.Length; i++)
+		{
+			if (threadId.x == draggedPoints[i])
+				points[threadId.x] = pointControllerPositions[threadId.x].xyz;
+		}
+	}
+}
+
+[numthreads(linkPoints, 1, 1)]
+void SmoothCurve(uint3 threadId : SV_DispatchThreadID, uint3 groupId : SV_GroupID, uint3 groupThreadId : SV_GroupThreadID)
+{
+	if (groupThreadId.x == 0 || groupThreadId.x == (linkPoints - 1))
+	{
+		return;
+	}
+
+	/*float kCorrect = k / distance(points[(groupId.x + 1) * linkPoints - 1].xyz, points[groupId.x * linkPoints].xyz);
+	points[threadId.x].xyz += kCorrect * (points[threadId.x - 1] + points[threadId.x + 1] - 2 * points[threadId.x]);*/
+
+	float3 tangent1 = lerp(points[threadId.x - 1].xyz, points[threadId.x].xyz, groupThreadId.x / linkPoints);
+	float3 tangent2 = lerp(points[threadId.x].xyz, points[threadId.x + 1].xyz, groupThreadId.x / linkPoints);
+	points[threadId.x].xyz = lerp(tangent1, tangent2, groupThreadId.x / linkPoints);
+}
