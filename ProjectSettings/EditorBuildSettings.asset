@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Samples/Mixed Reality Toolkit Foundation/2.7.0/Scene System Resources/DefaultManagerScene.unity
+    guid: ae7bb08d297fb69408695d8de0962524
+  - enabled: 1
+    path: Assets/Low Poly Ultimate Environment Packs/Scenes/SceneManager.unity
+    guid: 8ef24f1f7aae5a64cb4a24c23e155fe3
+  - enabled: 1
+    path: Assets/Low Poly Ultimate Environment Packs/Scenes/Control_Room.unity
+    guid: e81301ec289654cb9b486b8abd0db779
+  - enabled: 1
     path: Assets/Scenes/room1.unity
     guid: 5fc02577d7ba7bf4e90eab19e39fc14b
   - enabled: 1
@@ -15,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Low Poly Ultimate Environment Packs/Scenes/02_Desert.unity
     guid: 7cc541e2679cb4f219abb3f69c7ba776
   - enabled: 1
-    path: Assets/Low Poly Ultimate Environment Packs/Scenes/03_Desert_Petrol_Pump.unity
+    path: Assets/Low Poly Ultimate Environment Packs/Scenes/03_Petrol_Pump.unity
     guid: 011902819d72b494188ce8f786f60395
   - enabled: 1
     path: Assets/Low Poly Ultimate Environment Packs/Scenes/04_Island.unity
@@ -26,6 +35,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Low Poly Ultimate Environment Packs/Scenes/06_Christmas.unity
     guid: d762206cdabe16c489cf63d9123d2d84
+  - enabled: 1
+    path: 
+    guid: 9a49f594b4e437441a73f1a81929b469
+  - enabled: 1
+    path: Assets/Samples/Mixed Reality Toolkit Foundation/2.7.0/Scene System Resources/DefaultLightingScene.unity
+    guid: 7e54e36c44f826c438c95da79f8de638
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 3f212190bf092cb4db657beb053f1edf, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: deb759439d4387a4694b04af0699deab, type: 2}
