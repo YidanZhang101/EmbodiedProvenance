@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class ControlRoomManager : MonoBehaviour
 {
     private int grabCount = 0;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class ControlRoomManager : MonoBehaviour
             GameObject clone = Instantiate(gameObject, transform.position, transform.rotation, gameObject.transform.parent.parent);
             clone.transform.localScale = gameObject.transform.localScale;
             grabCount++;
+            
         }
     }
 
@@ -38,5 +40,7 @@ public class ControlRoomManager : MonoBehaviour
     {
         SceneManager.LoadScene("DefaultManagerScene", LoadSceneMode.Single);
         SceneManager.LoadScene("Control_Room", LoadSceneMode.Additive);
+        //GameObject Control_Table = GameObject.Find("Control_Table");
+        //Control_Table.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
     }
 }

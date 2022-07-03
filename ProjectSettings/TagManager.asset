@@ -7,6 +7,27 @@ TagManager:
   - Node
   - Bullet
   - Edge
+  - Layer
+  - extractedLayer
+  - leftController
+  - clipping
+  - recording
+  - Building
+  - AT
+  - CC
+  - 92
+  - Sport
+  - NH
+  - Monthly
+  - Weekly
+  - Daily
+  - Hourly
+  - pedestal
+  - Monthly_L
+  - Weekly_L
+  - Daily_L
+  - Hourly_L
+  - moveablePlane
   layers:
   - Default
   - TransparentFX
