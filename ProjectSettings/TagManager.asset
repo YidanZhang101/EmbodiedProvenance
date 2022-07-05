@@ -28,6 +28,12 @@ TagManager:
   - Daily_L
   - Hourly_L
   - moveablePlane
+  - year
+  - month
+  - week
+  - day
+  - hour
+  - tabletop
   layers:
   - Default
   - TransparentFX

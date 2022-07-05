@@ -135,9 +135,9 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 731805337214084599}
-          m_TargetAssemblyTypeName: StretchLayer, Assembly-CSharp
-          m_MethodName: stretchBuilding_above
+        - m_Target: {fileID: 9029608407903523936}
+          m_TargetAssemblyTypeName: Block, Assembly-CSharp
+          m_MethodName: StretchBlock
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3262761895637840497}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d423922e90c4664f85f90d17ad5733d, type: 3}
   m_Name: 
@@ -381,9 +381,10 @@ GameObject:
   - component: {fileID: 15447487434111426}
   - component: {fileID: 7647623474891772741}
   - component: {fileID: 2546307403317645334}
+  - component: {fileID: 9029608407903523936}
   m_Layer: 0
   m_Name: Block_LTB
-  m_TagString: Untagged
+  m_TagString: year
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -402,7 +403,6 @@ Transform:
   - {fileID: 2370112157202367193}
   - {fileID: 6384373465004684990}
   - {fileID: 8489946468870130621}
-  - {fileID: 5702719093563356720}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -516,9 +516,9 @@ MonoBehaviour:
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7647623474891772741}
-        m_TargetAssemblyTypeName: BuildingInteractor, Assembly-CSharp
-        m_MethodName: DuplicateLayer
+      - m_Target: {fileID: 9029608407903523936}
+        m_TargetAssemblyTypeName: Block, Assembly-CSharp
+        m_MethodName: DuplicateBlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -531,8 +531,8 @@ MonoBehaviour:
   onManipulationEnded:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7647623474891772741}
-        m_TargetAssemblyTypeName: BuildingInteractor, Assembly-CSharp
+      - m_Target: {fileID: 9029608407903523936}
+        m_TargetAssemblyTypeName: Block, Assembly-CSharp
         m_MethodName: AddPedestal
         m_Mode: 1
         m_Arguments:
@@ -598,7 +598,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6568144124791974954}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55a38c18f03026a428cb33f2c063e152, type: 3}
   m_Name: 
@@ -621,36 +621,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorRamp: {fileID: 2800000, guid: 52520525c63cc914ea05880f998e4cf0, type: 3}
---- !u!1 &8157362354570890721
-GameObject:
+--- !u!114 &9029608407903523936
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5702719093563356720}
-  m_Layer: 0
-  m_Name: Monthly
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &5702719093563356720
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8157362354570890721}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -95, y: -0, z: 280}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1455567625486469866}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 6568144124791974954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402ee6e4e40c40f4c979d1377ea12d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  theBlock: {fileID: 6568144124791974954}
+  gapBetweenBlocks: 0.04
 --- !u!1001 &6379872486926807764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1007,6 +991,18 @@ PrefabInstance:
     - target: {fileID: 269068161092866674, guid: 5c586135e78bf2542bbb91bc81b4d0df, type: 3}
       propertyPath: m_fontSize
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 269068161092866674, guid: 5c586135e78bf2542bbb91bc81b4d0df, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 269068161092866674, guid: 5c586135e78bf2542bbb91bc81b4d0df, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 269068161092866674, guid: 5c586135e78bf2542bbb91bc81b4d0df, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 269068161092866674, guid: 5c586135e78bf2542bbb91bc81b4d0df, type: 3}
       propertyPath: m_fontSizeBase
