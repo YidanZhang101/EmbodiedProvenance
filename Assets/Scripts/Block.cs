@@ -16,6 +16,7 @@ public class Block : MonoBehaviour
     bool pedestalAdded = false;
     //Vector3 centerPos;
     GameObject block;
+    ActionRecover actionRecover = ActionRecover.getinstance;
 
     private static Block instance;
     public static Block getInstance
@@ -46,17 +47,17 @@ public class Block : MonoBehaviour
         
     }
 
-    public void IntantiateBlock(GameObject newBlock)
-    {
-        if (theBlock.transform.parent != null)
-        {
-            newBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent.parent);
-        }
-        else
-        {
-            newBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent);
-        }
-    }
+    //public void IntantiateBlock(GameObject newBlock)
+    //{
+    //    if (theBlock.transform.parent != null)
+    //    {
+    //        newBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent.parent);
+    //    }
+    //    else
+    //    {
+    //        newBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent);
+    //    }
+    //}
 
     public void DuplicateBlock()
     {
@@ -66,6 +67,10 @@ public class Block : MonoBehaviour
             //IntantiateBlock(block);
             block.transform.localScale = gameObject.transform.localScale;
             grabCount++;
+            //actionRecover.test();
+            
+            //actionRecover.LogActionData(block.name, Enum.GetName(typeof(ActionRecover.LogTargetType), ActionRecover.LogTargetType.Block),
+            //    Enum.GetName(typeof(ActionRecover.ActionType), ActionRecover.ActionType.Create), Enum.GetName(typeof(ActionRecover.LogStatus), ActionRecover.LogStatus.Start), block.transform.position);
         }
     }
 
@@ -182,6 +187,11 @@ public class Block : MonoBehaviour
             //line.transform.parent = gameObject.transform.parent;
             line.transform.GetChild(0).position = block.transform.GetChild(0).position;
             line.transform.GetChild(1).position = gameObject.transform.GetChild(0).position;
+
+            //ActionRecover.getinstance.LogActionData(clonePedestal.name, Enum.GetName(typeof(ActionRecover.LogTargetType), ActionRecover.LogTargetType.Pedestal),
+            //    Enum.GetName(typeof(ActionRecover.ActionType), ActionRecover.ActionType.Create), Enum.GetName(typeof(ActionRecover.LogStatus), ActionRecover.LogStatus.Start), clonePedestal.transform.position);
+            //ActionRecover.getinstance.LogActionData(line.name, Enum.GetName(typeof(ActionRecover.LogTargetType), ActionRecover.LogTargetType.Line),
+            //    Enum.GetName(typeof(ActionRecover.ActionType), ActionRecover.ActionType.Create), Enum.GetName(typeof(ActionRecover.LogStatus), ActionRecover.LogStatus.Start), line.transform.position);
         }
     }
 }

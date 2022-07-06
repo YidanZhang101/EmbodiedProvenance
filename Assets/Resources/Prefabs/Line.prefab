@@ -175,7 +175,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   endPoint:
-    position: {x: 0, y: 0.21504645, z: 0}
+    position: {x: 0, y: 0.235, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &4552117868024216989
 MonoBehaviour:
@@ -325,7 +325,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0.21504645, z: 0}
+  - {x: 0, y: 0.235, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -529,7 +529,7 @@ Transform:
   m_GameObject: {fileID: 4521118413028217431}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.001}
-  m_LocalScale: {x: 0.15336993, y: 0.03495355, z: 1}
+  m_LocalScale: {x: 0.075, y: 0.015, z: 1}
   m_Children: []
   m_Father: {fileID: 4518512722401423911}
   m_RootOrder: 1
