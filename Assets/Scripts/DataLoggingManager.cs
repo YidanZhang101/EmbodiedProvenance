@@ -18,10 +18,8 @@ public class DataLoggingManager : MonoBehaviour
     public float AutomaticLogDelay = 0.25f;
     public string TestMessage;
 
-    //[Header("Logged Objects")]
-    //public IEnumerable<PhotonAvatar> Players;
-    //public IEnumerable<DesktopAvatar> DesktopPlayers;
-    //public IEnumerable<NetworkHand> Hands;
+    [Header("Logged Objects")]
+    public IEnumerable<NetworkHand> Hands;
     //public IEnumerable<Clipboard> Clipboards;
     //public IEnumerable<Card> Cards;
     //public IEnumerable<CardLine> Lines;
@@ -32,12 +30,15 @@ public class DataLoggingManager : MonoBehaviour
     public bool IsLogging = false;
 
     private StreamWriter objectsStreamWriter;
+    private StreamWriter handsStreamWriter;
+    private StreamWriter playerStreamWriter;
 
     private float logStartTime;
     private float timer = 0f;
     private const string format = "F3";
     private string scene = "";
     private string sceneNo = "";
+    List<string> existingObjects = new List<string>();
 
     //private Player centralMachinePlayer;
 
@@ -79,8 +80,17 @@ public class DataLoggingManager : MonoBehaviour
         sceneNo = "1";
         //Tabletops (include everything inside)
         string path = string.Format("{0}{1}_Scene{2}_Objects.txt", FilePath, scene, sceneNo);
-        objectsStreamWriter = new StreamWriter(path, true);
-        objectsStreamWriter.WriteLine("Timestamp\tObjectName\tPosition\tRotation\tScale");//tParentName\
+        objectsStreamWriter = new StreamWriter(path, false);
+        objectsStreamWriter.WriteLine("Timestamp\tObjectName\tTagName\tPosition\tRotation\tScale");//tParentName\
+
+        path = string.Format("{0}{1}_Scene{2}_Player.txt", FilePath, scene, sceneNo);
+        playerStreamWriter = new StreamWriter(path, false);
+        playerStreamWriter.WriteLine("Timestamp\tType\tPosition\tRotation");
+
+        // Hands
+        path = string.Format("{0}{1}_Scene{2}_Hands.txt", FilePath, scene, sceneNo);
+        handsStreamWriter = new StreamWriter(path, false);
+        handsStreamWriter.WriteLine("Timestamp\tHandedness\tIsVisible\tj1\tj2\tj3\tj4\tj5\tj6\tj7\tj8\tj9\tj10\tj\tj12\tj13\tj14\tj15\tj16\tj17");
 
         IsLogging = true;
         logStartTime = Time.unscaledTime;
@@ -105,51 +115,134 @@ public class DataLoggingManager : MonoBehaviour
     private void LogData()
     {
         float timestamp = Time.unscaledTime - logStartTime;
-        Transform parentObject = GameObject.Find("Tabletop").transform;
-        foreach (Transform child in FindAllChildren(parentObject))
-        {
-            objectsStreamWriter.WriteLine(string.Join("\t",
-                    timestamp,
-                    child.gameObject.name,
-                    //child.parent.name,
-                    child.position.ToString(format),
-                    child.rotation.ToString(format),
-                    child.localScale.ToString(format)
-                    ));
-        }
+
+        //log objects
+        AddToFile(timestamp,"tabletop"); // add Tabletop
+        AddToFile(timestamp, "extractedLayer"); // add Layer
+        AddToFile(timestamp, "pedestal"); // add Pedestal
+        AddToFile(timestamp, "line"); // add Line
+        // add Block & TimeLabel
+        AddToFile(timestamp, "year");
+        AddToFile(timestamp, "month");
+        AddToFile(timestamp, "week");
+        AddToFile(timestamp, "day");
+        AddToFile(timestamp, "hour");
+
         objectsStreamWriter.Flush();
-    }
 
-    public static List<Transform> FindAllChildren(Transform transform)
-    {
-        var transforms = new List<Transform>();
-        foreach (Transform t in transform.GetComponentsInChildren<Transform>())
+        //log player
+        GameObject player = GameObject.Find("Real Player");
+        playerStreamWriter.WriteLine(string.Join("\t",
+                timestamp,
+                "player",
+                player.transform.position.ToString(format),
+                player.transform.rotation.ToString(format)
+            ));
+
+        GameObject left_hand = GameObject.Find("Joint Tracker: Left Palm");
+        if (left_hand != null)
         {
-            transforms.Add(t);
+            playerStreamWriter.WriteLine(string.Join("\t",
+                timestamp,
+                "left hand",
+                left_hand.transform.position.ToString(format),
+                left_hand.transform.rotation.ToString(format)
+            ));
         }
-        return transforms;
-        //var transforms = new List<Transform>();
-        //var queue = new Queue<Transform>();
+        GameObject right_hand = GameObject.Find("Joint Tracker: Right Palm");
+        if (right_hand != null)
+        {
+            playerStreamWriter.WriteLine(string.Join("\t",
+                timestamp,
+                "right hand",
+                right_hand.transform.position.ToString(format),
+                right_hand.transform.rotation.ToString(format)
+            ));
+        }
 
-        //queue.Enqueue(transform);
+        playerStreamWriter.Flush();
 
-        //while (queue.Count > 0)
+        //log hands
+        //Hands = FindObjectsOfType<NetworkHand>();
+        //if (Hands != null)
         //{
-        //    var t = queue.Dequeue();
-        //    if (transform.childCount > 0)
+        //    foreach (var hand in Hands)
         //    {
-        //        foreach (Transform child in t.GetComponentsInChildren<Transform>())
-        //        {
-        //            queue.Enqueue(child);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        transforms.Add(t);
+        //        handsStreamWriter.WriteLine(string.Join("\t",
+        //            timestamp,
+        //            hand.handedness.ToString(),
+        //            hand.isHandTracked.ToString(),
+        //            hand.joints[TrackedHandJoint.Wrist].position.ToString(format),
+        //            hand.joints[TrackedHandJoint.Wrist].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.ThumbMetacarpalJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.ThumbProximalJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.ThumbDistalJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.IndexKnuckle].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.IndexMiddleJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.IndexDistalJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.MiddleKnuckle].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.MiddleMiddleJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.MiddleDistalJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.RingKnuckle].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.RingMiddleJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.RingDistalJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.PinkyKnuckle].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.PinkyMiddleJoint].rotation.ToString(format),
+        //            hand.joints[TrackedHandJoint.PinkyDistalJoint].rotation.ToString(format)
+        //        ));
         //    }
         //}
-        //return transforms;
+        //handsStreamWriter.Flush();
     }
+
+    public void AddToFile(float timestamp, string targetTag)
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
+        bool objectExist = false;
+        if (targets != null)
+        {
+            foreach (GameObject target in targets)
+            {
+                string objectName = target.name;               
+                string objectPosition = target.transform.position.ToString(format);
+                string objectRotation = target.transform.rotation.ToString(format);
+                string objectScale = target.transform.localScale.ToString(format);
+                if (existingObjects != null)
+                {
+                    foreach (string name in existingObjects)
+                    {
+                        if (name.Equals(objectName))
+                        {
+                            objectExist = true;
+                        }
+                    }
+                }
+
+                if (!objectExist)
+                {
+                    existingObjects.Add(objectName);
+                    objectsStreamWriter.WriteLine(string.Join("\t",
+                    timestamp,
+                    objectName,
+                    targetTag,
+                    objectPosition,
+                    objectRotation,
+                    objectScale
+                    ));
+                }
+            }
+        }
+    }
+
+    //public static List<Transform> FindAllChildren(Transform transform)
+    //{
+    //    var transforms = new List<Transform>();
+    //    foreach (Transform t in transform.GetComponentsInChildren<Transform>())
+    //    {
+    //        transforms.Add(t);
+    //    }
+    //    return transforms;
+    //}
 
     public void StopLogging()
     {
@@ -157,6 +250,8 @@ public class DataLoggingManager : MonoBehaviour
         timer = 0;
 
         objectsStreamWriter.Close();
+        handsStreamWriter.Close();
+        playerStreamWriter.Close();
 
         TestMessage = "Logging stopped for 06_Christmas";
     }

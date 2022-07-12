@@ -128,6 +128,7 @@ public class Block : MonoBehaviour
             GameObject thisBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent);
             //GameObject thisBlock = new GameObject();
             //IntantiateBlock(thisBlock);
+            thisBlock.name = theBlock.name + "_" + tagName + "_" + timeCount.ToString();
             thisBlock.tag = tagName;
             UpdateText(timeCount, thisBlock);
             thisBlock.transform.localScale = theBlock.transform.localScale;

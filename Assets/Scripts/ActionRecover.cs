@@ -56,6 +56,8 @@ public class ActionRecover : MonoBehaviour
     public bool IsLogging = false;
 
     public StreamWriter actionStreamWriter;
+    public Dictionary<float, List<string[]>> logRecords = new Dictionary<float, List<string[]>>();
+    public List<string[]> targetList = new List<string[]>();
 
     private float logStartTime;
     private float timer = 0f;
@@ -133,5 +135,38 @@ public class ActionRecover : MonoBehaviour
     {
         if (IsLogging)
             StopLogging();
+    }
+
+    public void AddToDictionary()
+    {
+        float timestamp = Time.unscaledTime - logStartTime;
+        AddToList("tabletop"); // add Tabletop
+        AddToList("pedestal"); // add Pedestal
+        AddToList("line"); // add Line
+        // add Block & TimeLabel
+        AddToList("year");
+        AddToList("month");
+        AddToList("week");
+        AddToList("day");
+        AddToList("hour");
+
+        logRecords.Add(timestamp, targetList);
+    }
+
+    public void AddToList(string targetTag)
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
+        if (targets != null)
+        {
+            foreach (GameObject target in targets)
+            {
+                string objectName = target.name;
+                string objectPosition = target.transform.position.ToString(format);
+                string objectRotation = target.transform.rotation.ToString(format);
+                string objectScale = target.transform.localScale.ToString(format);
+                string[] theTarget = {objectName, objectPosition, objectRotation, objectScale};
+                targetList.Add(theTarget);
+            }
+        }
     }
 }

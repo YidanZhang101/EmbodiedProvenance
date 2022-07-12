@@ -349,7 +349,6 @@ GameObject:
   - component: {fileID: 3658342100957281050}
   - component: {fileID: 3658342100957281051}
   - component: {fileID: 3658342100957281043}
-  - component: {fileID: 8822550720127940816}
   - component: {fileID: 3099806500415815049}
   m_Layer: 0
   m_Name: Layer
@@ -548,24 +547,6 @@ MonoBehaviour:
   scaleMinimum: 0.5
   scaleMaximum: 1.5
   relativeToInitialState: 1
---- !u!114 &8822550720127940816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3658342100957281048}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be20c281010f0b7449a26e821188e4ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeLabel: {fileID: 0}
-  gap_x: 0.848
-  gap_y: 0.18
-  gap_z: 0.196
-  add_x: 1.5
-  layerInitialPos: {x: 0, y: 0, z: 0}
 --- !u!114 &3099806500415815049
 MonoBehaviour:
   m_ObjectHideFlags: 0
