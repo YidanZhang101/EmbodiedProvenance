@@ -38,7 +38,8 @@ public class DataLoggingManager : MonoBehaviour
     private const string format = "F3";
     private string scene = "";
     private string sceneNo = "";
-    List<string> existingObjects = new List<string>();
+
+    public static List<string> existingObjects = new List<string>();
 
     //private Player centralMachinePlayer;
 

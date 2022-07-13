@@ -116,7 +116,7 @@ public class DataReplayManager : MonoBehaviour
     {
         isLiveReplayRunning = true;
 
-        float[] timestamps = objectDic.Keys.Distinct().OrderBy(x => x).ToArray();
+        float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
         //float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
         float totalTime = timestamps.Max();
 
@@ -205,24 +205,24 @@ public class DataReplayManager : MonoBehaviour
                 }
             }
 
-            foreach (string[] values in objectDic[CurrentTimestamp])
-            {
-                string objectName = values[1];
-                Debug.Log(objectName);
-                //if (!objectName.Contains("TimeLabel"))
-                //{
-                //    Transform objectTransform = GameObject.Find(objectName).transform;
-                //    objectTransform.position = new Vector3(objectTransform.position.x, objectTransform.position.y, 1);
-                //}
-                //else
-                //{
-                //    RectTransform objectTransform = GameObject.Find(objectName).GetComponent<RectTransform>();
-                //    objectTransform.position = new Vector3(objectTransform.position.x, objectTransform.position.y, 1);
-                //}
+            //foreach (string[] values in objectDic[CurrentTimestamp])
+            //{
+            //    string objectName = values[1];
+            //    Debug.Log(objectName);
+            //    //if (!objectName.Contains("TimeLabel"))
+            //    //{
+            //    //    Transform objectTransform = GameObject.Find(objectName).transform;
+            //    //    objectTransform.position = new Vector3(objectTransform.position.x, objectTransform.position.y, 1);
+            //    //}
+            //    //else
+            //    //{
+            //    //    RectTransform objectTransform = GameObject.Find(objectName).GetComponent<RectTransform>();
+            //    //    objectTransform.position = new Vector3(objectTransform.position.x, objectTransform.position.y, 1);
+            //    //}
                 
-                //GameObject.Find(objectName).SetActive(false);
+            //    //GameObject.Find(objectName).SetActive(false);
 
-            }
+            //}
 
             // Set objects
             //foreach (string[] values in objectDic[CurrentTimestamp])

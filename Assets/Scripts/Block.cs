@@ -165,7 +165,9 @@ public class Block : MonoBehaviour
 
     public void DestroyBlock()
     {
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+        gameObject.GetComponent<Renderer>().enabled = false;
+        gameObject.transform.GetChild(2).gameObject.GetComponent<Renderer>().enabled = false;
     }
 
     public void SetColour()
