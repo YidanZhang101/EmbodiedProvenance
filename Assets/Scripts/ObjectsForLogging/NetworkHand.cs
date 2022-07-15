@@ -270,6 +270,8 @@ public class NetworkHand : MonoBehaviourPunCallbacks, IPunObservable, IMixedReal
         var handMaterialInstance = new Material(handMaterial);
         handRenderer.sharedMaterial = handMaterialInstance;
         handRendererInitialized = true;
+
+        Debug.Log(joints[TrackedHandJoint.Wrist]);
     }
 
     private Transform RetrieveChild(TrackedHandJoint parentJoint)

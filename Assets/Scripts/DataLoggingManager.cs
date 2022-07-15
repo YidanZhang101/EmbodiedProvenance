@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Photon.Pun;
 using Photon.Realtime;
@@ -19,7 +21,7 @@ public class DataLoggingManager : MonoBehaviour
     public string TestMessage;
 
     [Header("Logged Objects")]
-    public IEnumerable<NetworkHand> Hands;
+    public IEnumerable<HandModel> Hands;
     //public IEnumerable<Clipboard> Clipboards;
     //public IEnumerable<Card> Cards;
     //public IEnumerable<CardLine> Lines;
@@ -45,6 +47,11 @@ public class DataLoggingManager : MonoBehaviour
 
     public bool HasRejoiner = false;
 
+    float timestamp = 0;
+    bool isHandTracked = false;
+    bool isLeftTracked = false;
+    bool isRightTracked = false;
+
     private static DataLoggingManager _instance;
     public static DataLoggingManager Instance { get { return _instance; } }
 
@@ -58,6 +65,9 @@ public class DataLoggingManager : MonoBehaviour
 
     private void Start()
     {
+
+        Hands = FindObjectsOfType<HandModel>();
+
         //if (!FilePath.EndsWith("/"))
         //    FilePath += "/";
         Invoke("StartLogging", AutomaticLogDelay);
@@ -65,12 +75,182 @@ public class DataLoggingManager : MonoBehaviour
 
     }
 
-    //private void SceneLoaded(Scene scene, LoadSceneMode mode)
+    //private void OnEnable()
     //{
-    //    if (scene.name == "06_Christmas")// && NetworkManager.Instance.IsCentralMachine)
+    //    CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+    //    CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+
+    //}
+
+    //private void OnDisable()
+    //{
+    //    try
     //    {
-    //        Invoke("StartLogging", AutomaticLogDelay);
+    //        CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+    //        CoreServices.InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
     //    }
+    //    catch { }
+    //}
+
+    //void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
+    //{
+    //    if (eventData.Controller.ControllerHandedness.ToString() == "Left")
+    //    {
+    //        isLeftTracked = true;
+    //    }
+    //    if (eventData.Controller.ControllerHandedness.ToString() == "Right")
+    //    {
+    //        isRightTracked = true;
+    //    }
+
+    //}
+
+    ///// <inheritdoc/>
+    //void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
+    //{
+    //    try
+    //    {
+    //        if (eventData.Controller.ControllerHandedness.ToString() == "Left")
+    //        {
+    //            isLeftTracked = false;
+    //        }
+    //        if (eventData.Controller.ControllerHandedness.ToString() == "Right")
+    //        {
+    //            isRightTracked = false;
+    //        }
+    //    }
+    //    catch { }
+    //}
+
+    //private string wristPos = "";
+    //private string wristRot = "";
+    //private string thumbMetacarpalJoint = "";
+    //private string thumbProximalJoint = "";
+    //private string thumbDistalJoint = "";
+    //private string indexKnuckle = "";
+    //private string indexMiddleJoint = "";
+    //private string indexDistalJoint = "";
+    //private string middleKnuckle = "";
+    //private string middleMiddleJoint = "";
+    //private string middleDistalJoint = "";
+    //private string ringKnuckle = "";
+    //private string ringMiddleJoint = "";
+    //private string ringDistalJoint = "";
+    //private string pinkyKnuckle = "";
+    //private string pinkyMiddleJoint = "";
+    //private string pinkyDistalJoint = "";
+
+    //private string r_wristPos = "";
+    //private string r_wristRot = "";
+    //private string r_thumbMetacarpalJoint = "";
+    //private string r_thumbProximalJoint = "";
+    //private string r_thumbDistalJoint = "";
+    //private string r_indexKnuckle = "";
+    //private string r_indexMiddleJoint = "";
+    //private string r_indexDistalJoint = "";
+    //private string r_middleKnuckle = "";
+    //private string r_middleMiddleJoint = "";
+    //private string r_middleDistalJoint = "";
+    //private string r_ringKnuckle = "";
+    //private string r_ringMiddleJoint = "";
+    //private string r_ringDistalJoint = "";
+    //private string r_pinkyKnuckle = "";
+    //private string r_pinkyMiddleJoint = "";
+    //private string r_pinkyDistalJoint = "";
+
+    //public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
+    //{
+    //    Handedness handedness = eventData.Handedness;
+
+        
+
+    //    if (handedness.ToString() == "Left")
+    //    {
+    //        //Debug.Log("Left");
+    //        //Debug.Log(wristPos);
+
+    //        wristPos = eventData.InputData[TrackedHandJoint.Wrist].Position.ToString(format);
+    //        wristRot = eventData.InputData[TrackedHandJoint.Wrist].Rotation.ToString(format);
+    //        thumbMetacarpalJoint = eventData.InputData[TrackedHandJoint.ThumbMetacarpalJoint].Rotation.ToString(format);
+    //        thumbProximalJoint = eventData.InputData[TrackedHandJoint.ThumbProximalJoint].Rotation.ToString(format);
+    //        thumbDistalJoint = eventData.InputData[TrackedHandJoint.ThumbDistalJoint].Rotation.ToString(format);
+    //        indexKnuckle = eventData.InputData[TrackedHandJoint.IndexKnuckle].Rotation.ToString(format);
+    //        indexMiddleJoint = eventData.InputData[TrackedHandJoint.IndexMiddleJoint].Rotation.ToString(format);
+    //        indexDistalJoint = eventData.InputData[TrackedHandJoint.IndexDistalJoint].Rotation.ToString(format);
+    //        middleKnuckle = eventData.InputData[TrackedHandJoint.MiddleKnuckle].Rotation.ToString(format);
+    //        middleMiddleJoint = eventData.InputData[TrackedHandJoint.MiddleMiddleJoint].Rotation.ToString(format);
+    //        middleDistalJoint = eventData.InputData[TrackedHandJoint.MiddleDistalJoint].Rotation.ToString(format);
+    //        ringKnuckle = eventData.InputData[TrackedHandJoint.RingKnuckle].Rotation.ToString(format);
+    //        ringMiddleJoint = eventData.InputData[TrackedHandJoint.RingMiddleJoint].Rotation.ToString(format);
+    //        ringDistalJoint = eventData.InputData[TrackedHandJoint.RingDistalJoint].Rotation.ToString(format);
+    //        pinkyKnuckle = eventData.InputData[TrackedHandJoint.PinkyKnuckle].Rotation.ToString(format);
+    //        pinkyMiddleJoint = eventData.InputData[TrackedHandJoint.PinkyMiddleJoint].Rotation.ToString(format);
+    //        pinkyDistalJoint = eventData.InputData[TrackedHandJoint.PinkyDistalJoint].Rotation.ToString(format);
+    //    }
+    //    else
+    //    {
+    //        //Debug.Log("Right");
+    //        //Debug.Log(r_wristPos);
+    //        //Debug.Log("--------");
+    //        r_wristPos = eventData.InputData[TrackedHandJoint.Wrist].Position.ToString(format);
+    //        r_wristRot = eventData.InputData[TrackedHandJoint.Wrist].Rotation.ToString(format);
+    //        r_thumbMetacarpalJoint = eventData.InputData[TrackedHandJoint.ThumbMetacarpalJoint].Rotation.ToString(format);
+    //        r_thumbProximalJoint = eventData.InputData[TrackedHandJoint.ThumbProximalJoint].Rotation.ToString(format);
+    //        r_thumbDistalJoint = eventData.InputData[TrackedHandJoint.ThumbDistalJoint].Rotation.ToString(format);
+    //        r_indexKnuckle = eventData.InputData[TrackedHandJoint.IndexKnuckle].Rotation.ToString(format);
+    //        r_indexMiddleJoint = eventData.InputData[TrackedHandJoint.IndexMiddleJoint].Rotation.ToString(format);
+    //        r_indexDistalJoint = eventData.InputData[TrackedHandJoint.IndexDistalJoint].Rotation.ToString(format);
+    //        r_middleKnuckle = eventData.InputData[TrackedHandJoint.MiddleKnuckle].Rotation.ToString(format);
+    //        r_middleMiddleJoint = eventData.InputData[TrackedHandJoint.MiddleMiddleJoint].Rotation.ToString(format);
+    //        r_middleDistalJoint = eventData.InputData[TrackedHandJoint.MiddleDistalJoint].Rotation.ToString(format);
+    //        r_ringKnuckle = eventData.InputData[TrackedHandJoint.RingKnuckle].Rotation.ToString(format);
+    //        r_ringMiddleJoint = eventData.InputData[TrackedHandJoint.RingMiddleJoint].Rotation.ToString(format);
+    //        r_ringDistalJoint = eventData.InputData[TrackedHandJoint.RingDistalJoint].Rotation.ToString(format);
+    //        r_pinkyKnuckle = eventData.InputData[TrackedHandJoint.PinkyKnuckle].Rotation.ToString(format);
+    //        r_pinkyMiddleJoint = eventData.InputData[TrackedHandJoint.PinkyMiddleJoint].Rotation.ToString(format);
+    //        r_pinkyDistalJoint = eventData.InputData[TrackedHandJoint.PinkyDistalJoint].Rotation.ToString(format);
+    //    }
+
+        //float currentTime = Time.unscaledTime - logStartTime;
+
+        //Debug.Log(currentTime);
+
+        //Debug.Log(timestamp);
+
+        //if (currentTime == timestamp)
+        //{
+            //string handTrackedBool = "";
+            //if (handedness.ToString() == "Left")
+            //    handTrackedBool = isLeftTracked.ToString();
+            //else
+            //    handTrackedBool = isRightTracked.ToString();
+
+            ////Debug.Log(handTrackedBool);
+
+            //handsStreamWriter.WriteLine(string.Join("\t",
+            //        timestamp,
+            //        handedness.ToString(),
+            //        handTrackedBool,
+            //        eventData.InputData[TrackedHandJoint.Wrist].Position.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.Wrist].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.ThumbMetacarpalJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.ThumbProximalJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.ThumbDistalJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.IndexKnuckle].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.IndexMiddleJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.IndexDistalJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.MiddleKnuckle].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.MiddleMiddleJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.MiddleDistalJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.RingKnuckle].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.RingMiddleJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.RingDistalJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.PinkyKnuckle].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.PinkyMiddleJoint].Rotation.ToString(format),
+            //        eventData.InputData[TrackedHandJoint.PinkyDistalJoint].Rotation.ToString(format)
+            //        ));
+        //}
+        //handsStreamWriter.Flush();
     //}
 
     public void StartLogging()
@@ -115,7 +295,7 @@ public class DataLoggingManager : MonoBehaviour
 
     private void LogData()
     {
-        float timestamp = Time.unscaledTime - logStartTime;
+        timestamp = Time.unscaledTime - logStartTime;
 
         //log objects
         AddToFile(timestamp,"tabletop"); // add Tabletop
@@ -140,26 +320,26 @@ public class DataLoggingManager : MonoBehaviour
                 player.transform.rotation.ToString(format)
             ));
 
-        GameObject left_hand = GameObject.Find("Joint Tracker: Left Palm");
-        if (left_hand != null)
-        {
-            playerStreamWriter.WriteLine(string.Join("\t",
-                timestamp,
-                "left hand",
-                left_hand.transform.position.ToString(format),
-                left_hand.transform.rotation.ToString(format)
-            ));
-        }
-        GameObject right_hand = GameObject.Find("Joint Tracker: Right Palm");
-        if (right_hand != null)
-        {
-            playerStreamWriter.WriteLine(string.Join("\t",
-                timestamp,
-                "right hand",
-                right_hand.transform.position.ToString(format),
-                right_hand.transform.rotation.ToString(format)
-            ));
-        }
+        //GameObject left_hand = GameObject.Find("Joint Tracker: Left Palm");
+        //if (left_hand != null)
+        //{
+        //    playerStreamWriter.WriteLine(string.Join("\t",
+        //        timestamp,
+        //        "left hand",
+        //        left_hand.transform.position.ToString(format),
+        //        left_hand.transform.rotation.ToString(format)
+        //    ));
+        //}
+        //GameObject right_hand = GameObject.Find("Joint Tracker: Right Palm");
+        //if (right_hand != null)
+        //{
+        //    playerStreamWriter.WriteLine(string.Join("\t",
+        //        timestamp,
+        //        "right hand",
+        //        right_hand.transform.position.ToString(format),
+        //        right_hand.transform.rotation.ToString(format)
+        //    ));
+        //}
 
         playerStreamWriter.Flush();
 
@@ -169,31 +349,79 @@ public class DataLoggingManager : MonoBehaviour
         //{
         //    foreach (var hand in Hands)
         //    {
-        //        handsStreamWriter.WriteLine(string.Join("\t",
+        //handsStreamWriter.WriteLine(string.Join("\t",
+        //    timestamp,
+        //    "Left",
+        //    isLeftTracked.ToString(),
+        //    wristPos,
+        //    wristRot,
+        //    thumbMetacarpalJoint,
+        //    thumbProximalJoint,
+        //    thumbDistalJoint,
+        //    indexKnuckle,
+        //    indexMiddleJoint,
+        //    indexDistalJoint,
+        //    middleKnuckle,
+        //    middleMiddleJoint,
+        //    middleDistalJoint,
+        //    ringKnuckle,
+        //    ringMiddleJoint,
+        //    ringDistalJoint,
+        //    pinkyKnuckle,
+        //    pinkyMiddleJoint,
+        //    pinkyDistalJoint
+        //));
+
+        //handsStreamWriter.WriteLine(string.Join("\t",
         //            timestamp,
-        //            hand.handedness.ToString(),
-        //            hand.isHandTracked.ToString(),
-        //            hand.joints[TrackedHandJoint.Wrist].position.ToString(format),
-        //            hand.joints[TrackedHandJoint.Wrist].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.ThumbMetacarpalJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.ThumbProximalJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.ThumbDistalJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.IndexKnuckle].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.IndexMiddleJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.IndexDistalJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.MiddleKnuckle].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.MiddleMiddleJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.MiddleDistalJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.RingKnuckle].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.RingMiddleJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.RingDistalJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.PinkyKnuckle].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.PinkyMiddleJoint].rotation.ToString(format),
-        //            hand.joints[TrackedHandJoint.PinkyDistalJoint].rotation.ToString(format)
+        //            "Right",
+        //            isRightTracked.ToString(),
+        //            wristPos,
+        //            r_wristRot,
+        //            r_thumbMetacarpalJoint,
+        //            r_thumbProximalJoint,
+        //            r_thumbDistalJoint,
+        //            r_indexKnuckle,
+        //            r_indexMiddleJoint,
+        //            r_indexDistalJoint,
+        //            r_middleKnuckle,
+        //            r_middleMiddleJoint,
+        //            r_middleDistalJoint,
+        //            r_ringKnuckle,
+        //            r_ringMiddleJoint,
+        //            r_ringDistalJoint,
+        //            r_pinkyKnuckle,
+        //            r_pinkyMiddleJoint,
+        //            r_pinkyDistalJoint
         //        ));
-        //    }
-        //}
-        //handsStreamWriter.Flush();
+        ////    }
+        ////}
+        foreach (var hand in Hands)
+        {
+            handsStreamWriter.WriteLine(string.Join("\t",
+                timestamp,
+                hand.handedness.ToString(),
+                hand.isHandTracked.ToString(),
+                hand.joints[TrackedHandJoint.Wrist].position.ToString(format),
+                hand.joints[TrackedHandJoint.Wrist].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.ThumbMetacarpalJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.ThumbProximalJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.ThumbDistalJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.IndexKnuckle].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.IndexMiddleJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.IndexDistalJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.MiddleKnuckle].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.MiddleMiddleJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.MiddleDistalJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.RingKnuckle].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.RingMiddleJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.RingDistalJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.PinkyKnuckle].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.PinkyMiddleJoint].rotation.ToString(format),
+                hand.joints[TrackedHandJoint.PinkyDistalJoint].rotation.ToString(format)
+            ));
+        }
+        handsStreamWriter.Flush();
     }
 
     public void AddToFile(float timestamp, string targetTag)

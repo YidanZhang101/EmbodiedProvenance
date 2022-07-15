@@ -12,10 +12,12 @@ public class DataReplayManager : MonoBehaviour
     [Header("Data Files")]
     public TextAsset SessionInfoData;
     public TextAsset PlayerData;
+    public TextAsset HandData;
     public TextAsset ObjectData;
 
     [Header("Static Replay Objects")]
-    public GameObject[] Player;
+    public GameObject Player;
+    public GameObject[] Hands;
 
     [Range(0, 1)] public float TimeScrubber;
     [Range(0, 10)] public float SpeedMultiplier = 1;
@@ -38,6 +40,7 @@ public class DataReplayManager : MonoBehaviour
 
     Dictionary<float, List<string[]>> playerDic = new Dictionary<float, List<string[]>>();
     Dictionary<float, List<string[]>> objectDic = new Dictionary<float, List<string[]>>();
+    Dictionary<float, List<string[]>> handData = new Dictionary<float, List<string[]>>();
 
     public float selectedTime;
     float logStartTime;
@@ -181,28 +184,28 @@ public class DataReplayManager : MonoBehaviour
             TimeScrubber = CurrentTimestamp / totalTime;
             prevTimeScrubber = TimeScrubber;
 
-            // Set player and hands
+            // Set player
             foreach (string[] values in playerDic[CurrentTimestamp])
             {
                 string type = values[1];
                 if(type == "player")
                 {
-                    Transform headTransform = GameObject.Find("Player").transform;
+                    Transform headTransform = Player.transform;
                     headTransform.position = StringToVector3(values[2]);
                     headTransform.rotation = StringToQuaternion(values[3]);
                 }
-                if (type == "left hand")
-                {
-                    Transform handTransform = GameObject.Find("LeftHand").transform;
-                    handTransform.position = StringToVector3(values[2]);
-                    handTransform.rotation = StringToQuaternion(values[3]);
-                }
-                if (type == "right hand")
-                {
-                    Transform handTransform = GameObject.Find("RightHand").transform;
-                    handTransform.position = StringToVector3(values[2]);
-                    handTransform.rotation = StringToQuaternion(values[3]);
-                }
+                //if (type == "left hand")
+                //{
+                //    Transform handTransform = GameObject.Find("LeftHand").transform;
+                //    handTransform.position = StringToVector3(values[2]);
+                //    handTransform.rotation = StringToQuaternion(values[3]);
+                //}
+                //if (type == "right hand")
+                //{
+                //    Transform handTransform = GameObject.Find("RightHand").transform;
+                //    handTransform.position = StringToVector3(values[2]);
+                //    handTransform.rotation = StringToQuaternion(values[3]);
+                //}
             }
 
             //foreach (string[] values in objectDic[CurrentTimestamp])
@@ -219,10 +222,43 @@ public class DataReplayManager : MonoBehaviour
             //    //    RectTransform objectTransform = GameObject.Find(objectName).GetComponent<RectTransform>();
             //    //    objectTransform.position = new Vector3(objectTransform.position.x, objectTransform.position.y, 1);
             //    //}
-                
+
             //    //GameObject.Find(objectName).SetActive(false);
 
             //}
+
+            //Set hands
+            foreach (string[] values in handData[CurrentTimestamp])
+            {
+                GameObject handGo;
+                if (values[1] == "Left")
+                    handGo = Hands[0];
+                else
+                    handGo = Hands[1];
+
+                HandModel hand = handGo.GetComponent<HandModel>();
+                
+
+                hand.handRenderer.enabled = bool.Parse(values[2]);
+                // Set joint positions
+                hand.joints[TrackedHandJoint.Wrist].position = StringToVector3(values[3]);
+                hand.joints[TrackedHandJoint.Wrist].rotation = StringToQuaternion(values[4]);
+                hand.joints[TrackedHandJoint.ThumbMetacarpalJoint].rotation = StringToQuaternion(values[5]);
+                hand.joints[TrackedHandJoint.ThumbProximalJoint].rotation = StringToQuaternion(values[6]);
+                hand.joints[TrackedHandJoint.ThumbDistalJoint].rotation = StringToQuaternion(values[7]);
+                hand.joints[TrackedHandJoint.IndexKnuckle].rotation = StringToQuaternion(values[8]);
+                hand.joints[TrackedHandJoint.IndexMiddleJoint].rotation = StringToQuaternion(values[9]);
+                hand.joints[TrackedHandJoint.IndexDistalJoint].rotation = StringToQuaternion(values[10]);
+                hand.joints[TrackedHandJoint.MiddleKnuckle].rotation = StringToQuaternion(values[11]);
+                hand.joints[TrackedHandJoint.MiddleMiddleJoint].rotation = StringToQuaternion(values[12]);
+                hand.joints[TrackedHandJoint.MiddleDistalJoint].rotation = StringToQuaternion(values[13]);
+                hand.joints[TrackedHandJoint.RingKnuckle].rotation = StringToQuaternion(values[14]);
+                hand.joints[TrackedHandJoint.RingMiddleJoint].rotation = StringToQuaternion(values[15]);
+                hand.joints[TrackedHandJoint.RingDistalJoint].rotation = StringToQuaternion(values[16]);
+                hand.joints[TrackedHandJoint.PinkyKnuckle].rotation = StringToQuaternion(values[17]);
+                hand.joints[TrackedHandJoint.PinkyMiddleJoint].rotation = StringToQuaternion(values[18]);
+                hand.joints[TrackedHandJoint.PinkyDistalJoint].rotation = StringToQuaternion(values[19]);
+            }
 
             // Set objects
             //foreach (string[] values in objectDic[CurrentTimestamp])
@@ -298,6 +334,23 @@ public class DataReplayManager : MonoBehaviour
             {
                 timestampLines = new List<string[]>();
                 playerDic[timestamp] = timestampLines;
+            }
+
+            timestampLines.Add(lines);
+        }
+
+        // Hand data
+        string[] handDataLines = HandData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 1; i < handDataLines.Length; i++)
+        {
+            string[] lines = handDataLines[i].Split('\t');
+            float timestamp = float.Parse(lines[0]);
+
+            List<string[]> timestampLines;
+            if (!handData.TryGetValue(timestamp, out timestampLines))
+            {
+                timestampLines = new List<string[]>();
+                handData[timestamp] = timestampLines;
             }
 
             timestampLines.Add(lines);
