@@ -9,12 +9,12 @@ public class Layer : MonoBehaviour
     //public GameObject tabletop;
 
     [Header("Position Gap")]
-    public float gap_x = 0.848f;
+    public float gap_x = 0.654f;
     public float gap_y = 0.18f;
-    public float gap_z = 0.196f;
+    public float gap_z = 0.163f;
 
     [Header("New Table Position Gap")]
-    public float add_x = 1.5f;
+    public float add_x = 1.19f;
 
     int grabCount = 0;
     public Vector3 layerInitialPos;

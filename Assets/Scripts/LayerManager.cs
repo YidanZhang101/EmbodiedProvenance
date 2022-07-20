@@ -37,7 +37,7 @@ public class LayerManager : MonoBehaviour
         {
             newTable = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
             newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * tableCounter, newTable.transform.position.y, newTable.transform.position.z);            
-            transform.position = new Vector3(base_layer.transform.position.x + Layer.getInstance.add_x * tableCounter, base_layer.transform.position.y, base_layer.transform.position.z);
+            transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * tableCounter, base_layer.transform.position.y, base_layer.transform.position.z);
             transform.rotation = new Quaternion();
             timeDescription = timeLabel.GetComponent<TextMeshPro>().text;
             newTable.transform.GetChild(0).GetComponent<TextMeshPro>().text = timeDescription;

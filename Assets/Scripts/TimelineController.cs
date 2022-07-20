@@ -23,7 +23,7 @@ public class TimelineController : MonoBehaviour
         rotation = timeline_controller.transform.rotation.y;
         if (timelineStart)
         {
-            Debug.Log(rotation);
+            //Debug.Log(rotation);
             if (rotation < 0)
             {
                 timeline_position = timeline_position - gap_per_move;
@@ -39,5 +39,10 @@ public class TimelineController : MonoBehaviour
     public void TimelineStart()
     {
         timelineStart = true;
+    }
+
+    public void TimeLineStop()
+    {
+        timelineStart = false;
     }
 }

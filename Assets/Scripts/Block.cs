@@ -16,7 +16,6 @@ public class Block : MonoBehaviour
     bool pedestalAdded = false;
     //Vector3 centerPos;
     GameObject block;
-    ActionRecover actionRecover = ActionRecover.getinstance;
 
     private static Block instance;
     public static Block getInstance
@@ -67,10 +66,6 @@ public class Block : MonoBehaviour
             //IntantiateBlock(block);
             block.transform.localScale = gameObject.transform.localScale;
             grabCount++;
-            //actionRecover.test();
-            
-            //actionRecover.LogActionData(block.name, Enum.GetName(typeof(ActionRecover.LogTargetType), ActionRecover.LogTargetType.Block),
-            //    Enum.GetName(typeof(ActionRecover.ActionType), ActionRecover.ActionType.Create), Enum.GetName(typeof(ActionRecover.LogStatus), ActionRecover.LogStatus.Start), block.transform.position);
         }
     }
 
@@ -122,6 +117,8 @@ public class Block : MonoBehaviour
 
     private void CreateBlocks(int maxTimeCount, string tagName)
     {
+        List<string[]> blocksForStretch = new List<string[]>();
+
         int timeCount = 0;
         while (timeCount < maxTimeCount)
         {
@@ -133,9 +130,19 @@ public class Block : MonoBehaviour
             UpdateText(timeCount, thisBlock);
             thisBlock.transform.localScale = theBlock.transform.localScale;
             thisBlock.transform.position = new Vector3(theBlock.transform.position.x, theBlock.transform.position.y + gapBetweenBlocks * timeCount, theBlock.transform.position.z);
-            timeCount++;          
+            timeCount++;
+            //undo/redo
+            string[] addedBlock = { thisBlock.name, "true" };
+            blocksForStretch.Add(addedBlock);
         }
         DestroyBlock();
+        //undo/redo
+        string[] hiddenBlock = { gameObject.name, "false" };
+        blocksForStretch.Add(hiddenBlock);
+        int key = ActionRecoverManager.actionID++;
+        ActionRecoverManager.actionDic.Add(key, blocksForStretch);
+        foreach (KeyValuePair<int, List<string[]>> pair in ActionRecoverManager.actionDic)
+            Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
     }
     public void StretchBlock()
     {
@@ -191,10 +198,27 @@ public class Block : MonoBehaviour
             line.transform.GetChild(0).position = block.transform.GetChild(0).position;
             line.transform.GetChild(1).position = gameObject.transform.GetChild(0).position;
 
-            //ActionRecover.getinstance.LogActionData(clonePedestal.name, Enum.GetName(typeof(ActionRecover.LogTargetType), ActionRecover.LogTargetType.Pedestal),
-            //    Enum.GetName(typeof(ActionRecover.ActionType), ActionRecover.ActionType.Create), Enum.GetName(typeof(ActionRecover.LogStatus), ActionRecover.LogStatus.Start), clonePedestal.transform.position);
-            //ActionRecover.getinstance.LogActionData(line.name, Enum.GetName(typeof(ActionRecover.LogTargetType), ActionRecover.LogTargetType.Line),
-            //    Enum.GetName(typeof(ActionRecover.ActionType), ActionRecover.ActionType.Create), Enum.GetName(typeof(ActionRecover.LogStatus), ActionRecover.LogStatus.Start), line.transform.position);
+            Vector3 initialPos = block.transform.position;
+            block.transform.position = theBlock.transform.position;
+            theBlock.transform.position = initialPos;
+
+            Quaternion intialRot = block.transform.rotation;
+            block.transform.rotation = theBlock.transform.rotation;
+            theBlock.transform.rotation = intialRot;
+
+            //Add to dictionary for Undo/Redo
+            int key = ActionRecoverManager.actionID++;
+            string[] newblockForAction = { block.name, "true" };
+            string[] blockForAction = { theBlock.name, "false" };
+            string[] pedestalForAction = { clonePedestal.name, "true" };
+            string[] lineForAction = { line.name, "true" };
+
+            List<string[]> listForAction = new List<string[]>();
+            listForAction.Add(newblockForAction);
+            listForAction.Add(blockForAction);
+            listForAction.Add(pedestalForAction);
+            listForAction.Add(lineForAction);
+            ActionRecoverManager.actionDic.Add(key, listForAction);
         }
     }
 }

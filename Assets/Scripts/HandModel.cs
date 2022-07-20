@@ -163,7 +163,7 @@ public class HandModel : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedR
         return Quaternion.Inverse(Quaternion.LookRotation(ModelFingerPointing, -ModelPalmFacing));
     }
 
-    public int roleID;
+    //public int roleID;
     public Handedness handedness;
     public Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
     public bool isHandTracked = false;
@@ -265,7 +265,7 @@ public class HandModel : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedR
         handRenderer.sharedMaterial = handMaterialInstance;
         handRendererInitialized = true;
 
-        Debug.Log(joints[TrackedHandJoint.Wrist]);
+        //Debug.Log(joints[TrackedHandJoint.Wrist]);
     }
 
     private Transform RetrieveChild(TrackedHandJoint parentJoint)
