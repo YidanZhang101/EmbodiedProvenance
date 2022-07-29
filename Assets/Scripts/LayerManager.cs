@@ -8,6 +8,10 @@ public class LayerManager : MonoBehaviour
 {
     public GameObject timeLabel;
 
+    public static Dictionary<int, List<string[]>> objectsDicForCopy = new Dictionary<int, List<string[]>>();
+    public int key = 1;
+    List<string[]> listForCopy = new List<string[]>();
+
     GameObject newTable;
     int grabCount = 0;
     string timeDescription;
@@ -35,12 +39,31 @@ public class LayerManager : MonoBehaviour
         int tableCounter = GameObject.FindGameObjectsWithTag("tabletop").Length;
         if (grabCount == 1)
         {
+            //add real table
             newTable = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
             newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * tableCounter, newTable.transform.position.y, newTable.transform.position.z);            
             transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * tableCounter, base_layer.transform.position.y, base_layer.transform.position.z);
             transform.rotation = new Quaternion();
             timeDescription = timeLabel.GetComponent<TextMeshPro>().text;
             newTable.transform.GetChild(0).GetComponent<TextMeshPro>().text = timeDescription;
+
+            //add table in Timeline
+            GameObject yearlyTable = GameObject.Find("Yearly_Table");
+            GameObject timelineTable = (GameObject)Instantiate(Resources.Load("Prefabs/Timeline_Table"));
+            timelineTable.name = "Timeline_Table_" + tableCounter;
+            timelineTable.transform.parent = yearlyTable.transform.parent;
+            timelineTable.transform.position = new Vector3(yearlyTable.transform.position.x + 0.17f * tableCounter, yearlyTable.transform.position.y, yearlyTable.transform.position.z);
+            timelineTable.transform.rotation = yearlyTable.transform.rotation;
+            timelineTable.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = timeDescription;
+
+            //add to dictionary for copy&paste
+            string[] tableArray = {newTable.name, newTable.transform.position.ToString(), newTable.transform.rotation.ToString(), newTable.transform.localScale.ToString(), timeDescription};
+            string[] layerArray = {gameObject.name, gameObject.transform.position.ToString(), gameObject.transform.rotation.ToString(), gameObject.transform.localScale.ToString(), timeDescription };
+            listForCopy.Add(tableArray);
+            listForCopy.Add(layerArray);
+            key = GameObject.FindGameObjectsWithTag("tabletop").Length - 1;
+            objectsDicForCopy.Add(key, listForCopy);
+
             //layerFinalPos = new Vector3(gameObject.transform.position.x, 1.58f);
             //layerFinalRot = gameObject.transform.rotation;
             //gameObject.transform.position = layerFinalPos;
@@ -71,8 +94,14 @@ public class LayerManager : MonoBehaviour
         {
             GameObject thisBlock = transform.GetChild(i).gameObject;
             thisBlock.GetComponent<Block>().ShowBlocks();
+            //add to dictionary for copy&paste
+            string[] blockArray = { thisBlock.name, thisBlock.transform.position.ToString(), thisBlock.transform.rotation.ToString(),
+                thisBlock.transform.localScale.ToString(), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+            listForCopy.Add(blockArray);
         }
         ShowTimeLabels();
+        objectsDicForCopy[key - 1] = listForCopy;
+        //Debug.Log("dic info after stretch: " + objectsDicForCopy[1][2][0]);
     }
 
     private void CreateLabels(int maxTimeCount, string tagName)
@@ -87,6 +116,11 @@ public class LayerManager : MonoBehaviour
             //thisLabel.transform.localScale = thisLabel.transform.localScale;
             thisLabel.transform.position = new Vector3(thisLabel.transform.position.x, thisLabel.transform.position.y + Block.getInstance.gapBetweenBlocks * timeCount, thisLabel.transform.position.z);
             timeCount++;
+
+            //add label to dictionary for copy&paste
+            string[] labelArray = { thisLabel.name, thisLabel.transform.position.ToString(), thisLabel.transform.rotation.ToString(),
+                thisLabel.transform.localScale.ToString(), thisLabel.GetComponent<TextMeshPro>().text};
+            listForCopy.Add(labelArray);
         }
         Destroy(timeLabel);
     }

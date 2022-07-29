@@ -35,6 +35,11 @@ TagManager:
   - hour
   - tabletop
   - line
+  - SnapZone
+  - timeline_table
+  - plateItem
+  - timeline_pedestal
+  - 06_Christmas
   layers:
   - Default
   - TransparentFX

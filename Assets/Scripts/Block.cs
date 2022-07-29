@@ -12,6 +12,11 @@ public class Block : MonoBehaviour
 {
     public GameObject theBlock;
     public float gapBetweenBlocks = 0.04f;
+
+    public static Dictionary<int, List<string[]>> pedestalsDicForCopy = new Dictionary<int, List<string[]>>();
+    public int dicKey = 0;
+    List<string[]> pedestalForCopy = new List<string[]>();
+
     int grabCount = 0;
     bool pedestalAdded = false;
     //Vector3 centerPos;
@@ -134,7 +139,14 @@ public class Block : MonoBehaviour
             //undo/redo
             string[] addedBlock = { thisBlock.name, "true" };
             blocksForStretch.Add(addedBlock);
+
+            //add to dictionary for copy&paste
+            string[] blockArray = { thisBlock.name, thisBlock.transform.position.ToString(), thisBlock.transform.rotation.ToString(),
+                thisBlock.transform.localScale.ToString(), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+            pedestalForCopy.Add(blockArray);
         }
+        pedestalsDicForCopy[dicKey - 1] = pedestalForCopy;
+
         DestroyBlock();
         //undo/redo
         string[] hiddenBlock = { gameObject.name, "false" };
@@ -186,18 +198,23 @@ public class Block : MonoBehaviour
     {
         if (!pedestalAdded)
         {
+            GameObject objectContainerInNewScene = GameObject.Find("AllElements");
+
             GameObject clonePedestal = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal"));
             //clonePedestal.GetComponent<RemovePedestalContent>().timeForPedestal = gameObject.transform.GetChild(2).GetComponent<TextMeshPro>().text;
             //clonePedestal.tag = "pedestal";
             //clonePedestal.transform.parent = gameObject.transform.parent;
             clonePedestal.transform.position = theBlock.transform.GetChild(0).position;
+            clonePedestal.transform.parent = objectContainerInNewScene.transform;
             pedestalAdded = true;
             GameObject line = (GameObject)Instantiate(Resources.Load("Prefabs/Line"));
             //line.AddComponent<MatchPedestalContent>().timeForPedestal = gameObject.transform.GetChild(2).GetComponent<TextMeshPro>().text;
             //line.transform.parent = gameObject.transform.parent;
             line.transform.GetChild(0).position = block.transform.GetChild(0).position;
             line.transform.GetChild(1).position = gameObject.transform.GetChild(0).position;
+            line.transform.parent = objectContainerInNewScene.transform;
 
+            //switch the original block and the cloned block
             Vector3 initialPos = block.transform.position;
             block.transform.position = theBlock.transform.position;
             theBlock.transform.position = initialPos;
@@ -205,6 +222,25 @@ public class Block : MonoBehaviour
             Quaternion intialRot = block.transform.rotation;
             block.transform.rotation = theBlock.transform.rotation;
             theBlock.transform.rotation = intialRot;
+
+            //add pedestal in Timeline
+            int pedestalCount = GameObject.FindGameObjectsWithTag("pedestal").Length -1;
+            GameObject yearlyTable = GameObject.Find("Yearly_Table");
+            string blockName = theBlock.name.Split()[0];
+            GameObject timelinePedestal = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal_" + blockName));
+            timelinePedestal.name = "Pedestal_" + blockName + "_" + pedestalCount;
+            timelinePedestal.transform.parent = yearlyTable.transform.parent;
+            timelinePedestal.transform.position = new Vector3(yearlyTable.transform.position.x + 0.22f + 0.05f * pedestalCount, yearlyTable.transform.position.y - 0.0587f, yearlyTable.transform.position.z - 0.045f);
+            timelinePedestal.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = block.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>().text;
+
+            //add pedestal for copy&paste
+            string[] pedestalArray = { clonePedestal.name, clonePedestal.transform.position.ToString(), clonePedestal.transform.rotation.ToString(), clonePedestal.transform.localScale.ToString()};
+            string[] blockArray = { block.name, block.transform.position.ToString(), block.transform.rotation.ToString(),
+                block.transform.localScale.ToString(), block.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+            pedestalForCopy.Add(blockArray);
+            pedestalForCopy.Add(pedestalArray);
+            dicKey = pedestalCount;
+            pedestalsDicForCopy.Add(dicKey, pedestalForCopy);
 
             //Add to dictionary for Undo/Redo
             int key = ActionRecoverManager.actionID++;
