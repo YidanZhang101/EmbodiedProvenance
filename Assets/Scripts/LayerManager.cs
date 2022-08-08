@@ -41,6 +41,9 @@ public class LayerManager : MonoBehaviour
         {
             //add real table
             newTable = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
+            int tableCount = GameObject.FindGameObjectsWithTag("tabletop").Length - 1;
+            newTable.name = "Tabletop_" + tableCount.ToString();
+            newTable.transform.parent = base_layer.transform.parent;
             newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * tableCounter, newTable.transform.position.y, newTable.transform.position.z);            
             transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * tableCounter, base_layer.transform.position.y, base_layer.transform.position.z);
             transform.rotation = new Quaternion();
@@ -63,6 +66,14 @@ public class LayerManager : MonoBehaviour
             listForCopy.Add(layerArray);
             key = GameObject.FindGameObjectsWithTag("tabletop").Length - 1;
             objectsDicForCopy.Add(key, listForCopy);
+
+            //Add to dictionary for Undo/Redo
+            int ActionKey = ActionRecoverManager.actionID++;
+            string[] newTableForAction = { newTable.name, "true" };
+
+            List<string[]> listForAction = new List<string[]>();
+            listForAction.Add(newTableForAction);
+            ActionRecoverManager.actionDic.Add(ActionKey, listForAction);
 
             //layerFinalPos = new Vector3(gameObject.transform.position.x, 1.58f);
             //layerFinalRot = gameObject.transform.rotation;
@@ -101,7 +112,12 @@ public class LayerManager : MonoBehaviour
         }
         ShowTimeLabels();
         objectsDicForCopy[key - 1] = listForCopy;
-        //Debug.Log("dic info after stretch: " + objectsDicForCopy[1][2][0]);
+        //undo/redo
+        string[] theLayer = { gameObject.name, "true" };
+        List<string[]> layerForStretch = new List<string[]>();
+        layerForStretch.Add(theLayer);
+        int layerKey = ActionRecoverManager.actionID++;
+        ActionRecoverManager.actionDic.Add(layerKey, layerForStretch);
     }
 
     private void CreateLabels(int maxTimeCount, string tagName)
@@ -111,7 +127,9 @@ public class LayerManager : MonoBehaviour
         while (timeCount < maxTimeCount)
         {
             GameObject thisLabel = Instantiate(timeLabel, timeLabel.transform.position, timeLabel.transform.rotation, timeLabel.transform.parent);
+            int labelCount = FindObjectsOfType<Layer>().Length;
             thisLabel.tag = tagName;
+            thisLabel.name = "TimeLabel_" + labelCount.ToString() + "_" + tagName + "_" + timeCount.ToString();
             UpdateText(timeCount, thisLabel);
             //thisLabel.transform.localScale = thisLabel.transform.localScale;
             thisLabel.transform.position = new Vector3(thisLabel.transform.position.x, thisLabel.transform.position.y + Block.getInstance.gapBetweenBlocks * timeCount, thisLabel.transform.position.z);
@@ -122,7 +140,8 @@ public class LayerManager : MonoBehaviour
                 thisLabel.transform.localScale.ToString(), thisLabel.GetComponent<TextMeshPro>().text};
             listForCopy.Add(labelArray);
         }
-        Destroy(timeLabel);
+        //Destroy(timeLabel);
+        timeLabel.GetComponent<Renderer>().enabled = false;
     }
 
     public void ShowTimeLabels()

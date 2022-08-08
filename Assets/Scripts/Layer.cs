@@ -46,6 +46,9 @@ public class Layer : MonoBehaviour
     public void DuplicateLayer()
     {
         GameObject layer = (GameObject)Instantiate(Resources.Load("Prefabs/Layer"));
+        layer.transform.parent = timeLabel.transform.parent;
+        int layerCount = FindObjectsOfType<LayerManager>().Length -1;
+        layer.name = "Layer_" + layerCount.ToString();
         //string label = layer.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text;
         layer.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text = timeLabel.GetComponent<TextMeshPro>().text;
         for (int i = 0; i < 5; i++)

@@ -85,9 +85,6 @@ public class DataReplayManager : MonoBehaviour
 
     public void StartLiveReplay()
     {
-        GameObject allElements = GameObject.Find("AllElements");
-        if (allElements != null)
-            allElements.SetActive(false);
         if (!isLiveReplayRunning)
         {
             isLiveReplayPaused = false;
@@ -99,43 +96,13 @@ public class DataReplayManager : MonoBehaviour
         }
     }
 
-    //public void Play()
-    //{
-    //    float currentTime = Time.unscaledTime - logStartTime;
-    //    Debug.Log(currentTime);
-    //    for (int i = 1; i < playerDataLines.Length; i++)
-    //    {
-    //        string[] lines = playerDataLines[i].Split('\t');
-    //        float timestamp = float.Parse(lines[0]);            
-
-    //        if (timestamp >= selectedTime && timestamp <= currentTime)
-    //        {
-    //            string type = lines[1];
-    //            if (type == "player")
-    //            {
-    //                Transform headTransform = GameObject.Find("Player").transform;
-    //                headTransform.position = StringToVector3(lines[2]);
-    //                headTransform.rotation = StringToQuaternion(lines[3]);
-    //            }
-    //            if (type == "left hand")
-    //            {
-    //                Transform handTransform = GameObject.Find("LeftHand").transform;
-    //                handTransform.position = StringToVector3(lines[2]);
-    //                handTransform.rotation = StringToQuaternion(lines[3]);
-    //            }
-    //            if (type == "right hand")
-    //            {
-    //                Transform handTransform = GameObject.Find("RightHand").transform;
-    //                handTransform.position = StringToVector3(lines[2]);
-    //                handTransform.rotation = StringToQuaternion(lines[3]);
-    //            }
-    //        }
-    //    }
-    //}
-
     public IEnumerator Replay()
     {
         isLiveReplayRunning = true;
+
+        Transform allElements = GameObject.Find("AllElements").transform;
+        if (allElements != null)
+            allElements.gameObject.SetActive(false);
 
         float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
         //float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
@@ -213,25 +180,6 @@ public class DataReplayManager : MonoBehaviour
                     headTransform.rotation = StringToQuaternion(values[3]);
                 }
             }
-
-            //foreach (string[] values in objectDic[CurrentTimestamp])
-            //{
-            //    string objectName = values[1];
-            //    Debug.Log(objectName);
-            //    //if (!objectName.Contains("TimeLabel"))
-            //    //{
-            //    //    Transform objectTransform = GameObject.Find(objectName).transform;
-            //    //    objectTransform.position = new Vector3(objectTransform.position.x, objectTransform.position.y, 1);
-            //    //}
-            //    //else
-            //    //{
-            //    //    RectTransform objectTransform = GameObject.Find(objectName).GetComponent<RectTransform>();
-            //    //    objectTransform.position = new Vector3(objectTransform.position.x, objectTransform.position.y, 1);
-            //    //}
-
-            //    //GameObject.Find(objectName).SetActive(false);
-
-            //}
 
             //Set hands
             foreach (string[] values in handData[CurrentTimestamp])
@@ -425,6 +373,8 @@ public class DataReplayManager : MonoBehaviour
         isLiveReplayRunning = false;
         isLiveReplayPaused = false;
         stopwatch.Reset();
+
+        allElements.gameObject.SetActive(true);
     }
 
     //public void SetTransparency()

@@ -1,6 +1,8 @@
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class ActionRecoverManager : MonoBehaviour
@@ -15,12 +17,14 @@ public class ActionRecoverManager : MonoBehaviour
     Vector3 linePosition;
     Dictionary<int,List<string[]>> DicForRedo = new Dictionary<int, List<string[]>>();
     int redoID = 0;
-    
+    //GameObject[] timeline_pedestals;
 
     void Start()
     {
         actionDic = new Dictionary<int, List<string[]>> ();
         actionID = 0;
+
+        //timeline_pedestals = GameObject.FindGameObjectsWithTag("timeline_pedestal");
     }
 
     // Update is called once per frame
@@ -87,31 +91,101 @@ public class ActionRecoverManager : MonoBehaviour
             }
             if (name.StartsWith("Pedestal"))
             {
-                GameObject[] allPedestal = GameObject.FindGameObjectsWithTag("pedestal");
-                if(allPedestal.Length >= pedestalOrLineCount)
-                {
-                    GameObject theLastPedestal = allPedestal[allPedestal.Length - pedestalOrLineCount];
-                    theLastPedestal.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = afterAction;
-                }
+                theObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                int pedestalNo = int.Parse(name.Split('_')[1]);
+                GameObject[] timeline_pedestals = GameObject.FindGameObjectsWithTag("timeline_pedestal");
+                Transform pedestalOnTimeline = timeline_pedestals[pedestalNo].transform;
+                pedestalOnTimeline.GetChild(0).GetChild(1).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                pedestalOnTimeline.GetChild(1).GetChild(0).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                pedestalOnTimeline.GetChild(2).GetChild(0).gameObject.GetComponent<Renderer>().enabled = afterAction;
             }
             if (name.StartsWith("Line"))
             {
-                GameObject[] allLine = GameObject.FindGameObjectsWithTag("line");
-                if (allLine.Length >= pedestalOrLineCount)
+                if (!afterAction)
                 {
-                    GameObject theLastLine = allLine[allLine.Length - pedestalOrLineCount];
-                    if (!afterAction)
+                    linePosition = theObject.transform.position;
+                    theObject.transform.position = new Vector3(theObject.transform.position.x - 20, theObject.transform.position.y, theObject.transform.position.z);
+                }
+                else
+                {
+                    theObject.transform.position = linePosition;
+                }
+            }
+            if (name.StartsWith("Layer"))
+            {
+                Renderer[] _renderer = theObject.transform.GetComponentsInChildren<Renderer>();
+                foreach (Renderer childRenderer in _renderer)
+                {
+                    if (childRenderer.gameObject.GetComponent<Interactable>() == null)
+                        childRenderer.enabled = afterAction;
+                }
+                theObject.transform.GetChild(7).gameObject.GetComponent<Renderer>().enabled = beforeAction;
+                theObject.transform.GetChild(6).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().enabled = beforeAction;
+                if (!afterAction)
+                {
+                    for(int i=0; i < 5; i++)
                     {
-                        linePosition = theLastLine.transform.position;
-                        theLastLine.transform.position = new Vector3(theObject.transform.position.x - 20, theObject.transform.position.y, theObject.transform.position.z);
+                        theObject.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = beforeAction;
+                        theObject.transform.GetChild(i).GetChild(2).gameObject.GetComponent<Renderer>().enabled = beforeAction;
                     }
-                    else
+                    theObject.transform.GetChild(5).gameObject.GetComponent<Renderer>().enabled = beforeAction;                   
+                }
+            }
+            if (name.StartsWith("Tabletop"))
+            {
+                string tableNo = name.Split('_')[1];
+                GameObject layerOnTable = GameObject.Find("Layer_" + tableNo);
+                Renderer[] layer_renderer = layerOnTable.transform.GetComponentsInChildren<Renderer>();
+
+                string tableName = theObject.name;
+                Vector3 position = theObject.transform.position;
+                Transform parent = theObject.transform.parent;
+                string tableInfo = theObject.transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                if (!afterAction)
+                {
+                    Renderer[] _renderer = theObject.transform.GetComponentsInChildren<Renderer>();
+                    foreach (Renderer childRenderer in _renderer)
                     {
-                        theLastLine.transform.position = linePosition;
+                        childRenderer.enabled = afterAction;
+                    }
+
+                    foreach (Renderer childRenderer in layer_renderer)
+                    {
+                        childRenderer.enabled = afterAction;
                     }
                 }
-                
-                
+                else
+                {
+                    GameObject newTable = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
+                    newTable.name = tableName;
+                    newTable.transform.parent = parent;
+                    newTable.transform.position = position;
+                    newTable.transform.GetChild(0).GetComponent<TextMeshPro>().text = tableInfo;
+                    theObject.Destroy();
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        layerOnTable.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                        layerOnTable.transform.GetChild(i).GetChild(2).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                    }
+                    layerOnTable.transform.GetChild(5).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                    layerOnTable.transform.GetChild(6).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                    layerOnTable.transform.GetChild(7).gameObject.GetComponent<Renderer>().enabled = afterAction;
+
+                    //foreach (Renderer childRenderer in layer_renderer)
+                    //{
+                    //    if(childRenderer.gameObject.GetComponent<Interactable>() == null)
+                    //        childRenderer.enabled = afterAction;
+                    //}
+                }
+
+                GameObject[] timeline_tables = GameObject.FindGameObjectsWithTag("timeline_table");
+                Transform tableOnTimeline = timeline_tables[int.Parse(tableNo)].transform;
+                Renderer[] timelineTable_renderer = tableOnTimeline.GetComponentsInChildren<Renderer>();
+                foreach (Renderer childRenderer in timelineTable_renderer)
+                {
+                    childRenderer.enabled = afterAction;
+                }
             }
 
         }

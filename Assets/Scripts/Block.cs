@@ -13,6 +13,8 @@ public class Block : MonoBehaviour
     public GameObject theBlock;
     public float gapBetweenBlocks = 0.04f;
 
+    public static int duplicatedBlockCount = 0;
+
     public static Dictionary<int, List<string[]>> pedestalsDicForCopy = new Dictionary<int, List<string[]>>();
     public int dicKey = 0;
     List<string[]> pedestalForCopy = new List<string[]>();
@@ -37,12 +39,7 @@ public class Block : MonoBehaviour
 
     void Start()
     {
-        //centerPos = theBlock.transform.GetChild(0).position;
-        //if (theBlock.transform.parent != null) //.gameObject.tag == "extractedLayer")
-        //{
-        //    Transform lineTooltip = theBlock.transform.GetChild(2);
-        //    lineTooltip.gameObject.GetComponent<TextMeshPro>().text = theBlock.transform.parent.GetChild(7).gameObject.GetComponent<TextMeshPro>().text;
-        //}
+
     }
 
     // Update is called once per frame
@@ -51,26 +48,15 @@ public class Block : MonoBehaviour
         
     }
 
-    //public void IntantiateBlock(GameObject newBlock)
-    //{
-    //    if (theBlock.transform.parent != null)
-    //    {
-    //        newBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent.parent);
-    //    }
-    //    else
-    //    {
-    //        newBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent);
-    //    }
-    //}
-
     public void DuplicateBlock()
     {
-        if (grabCount == 0)
+        if (!theBlock.name.Contains("Copy"))
         {
             block = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent);
-            //IntantiateBlock(block);
+            duplicatedBlockCount++;
+            block.name = theBlock.name + " Copy_" + duplicatedBlockCount.ToString();
             block.transform.localScale = gameObject.transform.localScale;
-            grabCount++;
+            //grabCount++;
         }
     }
 
@@ -130,7 +116,7 @@ public class Block : MonoBehaviour
             GameObject thisBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent);
             //GameObject thisBlock = new GameObject();
             //IntantiateBlock(thisBlock);
-            thisBlock.name = theBlock.name + "_" + tagName + "_" + timeCount.ToString();
+            thisBlock.name = theBlock.name.Split()[0] + " Clone_" + duplicatedBlockCount.ToString() + "_" + tagName + "_" + timeCount.ToString();
             thisBlock.tag = tagName;
             UpdateText(timeCount, thisBlock);
             thisBlock.transform.localScale = theBlock.transform.localScale;
@@ -149,12 +135,15 @@ public class Block : MonoBehaviour
 
         DestroyBlock();
         //undo/redo
-        string[] hiddenBlock = { gameObject.name, "false" };
-        blocksForStretch.Add(hiddenBlock);
-        int key = ActionRecoverManager.actionID++;
-        ActionRecoverManager.actionDic.Add(key, blocksForStretch);
-        foreach (KeyValuePair<int, List<string[]>> pair in ActionRecoverManager.actionDic)
-            Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
+        if (!gameObject.transform.parent.gameObject.name.Contains("Layer"))
+        {
+            string[] hiddenBlock = { gameObject.name, "false" };
+            blocksForStretch.Add(hiddenBlock);
+            int key = ActionRecoverManager.actionID++;
+            ActionRecoverManager.actionDic.Add(key, blocksForStretch);
+            foreach (KeyValuePair<int, List<string[]>> pair in ActionRecoverManager.actionDic)
+                Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
+        }        
     }
     public void StretchBlock()
     {
@@ -196,7 +185,7 @@ public class Block : MonoBehaviour
 
     public void AddPedestal()
     {
-        if (!pedestalAdded)
+        if (!theBlock.name.Contains("Copy"))
         {
             GameObject objectContainerInNewScene = GameObject.Find("AllElements");
 
@@ -204,12 +193,16 @@ public class Block : MonoBehaviour
             //clonePedestal.GetComponent<RemovePedestalContent>().timeForPedestal = gameObject.transform.GetChild(2).GetComponent<TextMeshPro>().text;
             //clonePedestal.tag = "pedestal";
             //clonePedestal.transform.parent = gameObject.transform.parent;
+            int pedestalCount = GameObject.FindGameObjectsWithTag("pedestal").Length - 1;
+            clonePedestal.name = "Pedestal_" + pedestalCount.ToString();
             clonePedestal.transform.position = theBlock.transform.GetChild(0).position;
             clonePedestal.transform.parent = objectContainerInNewScene.transform;
             pedestalAdded = true;
             GameObject line = (GameObject)Instantiate(Resources.Load("Prefabs/Line"));
             //line.AddComponent<MatchPedestalContent>().timeForPedestal = gameObject.transform.GetChild(2).GetComponent<TextMeshPro>().text;
             //line.transform.parent = gameObject.transform.parent;
+            int lineCount = GameObject.FindGameObjectsWithTag("line").Length -1;
+            line.name = "Line_" + lineCount.ToString();
             line.transform.GetChild(0).position = block.transform.GetChild(0).position;
             line.transform.GetChild(1).position = gameObject.transform.GetChild(0).position;
             line.transform.parent = objectContainerInNewScene.transform;
@@ -224,7 +217,7 @@ public class Block : MonoBehaviour
             theBlock.transform.rotation = intialRot;
 
             //add pedestal in Timeline
-            int pedestalCount = GameObject.FindGameObjectsWithTag("pedestal").Length -1;
+            //int pedestalCount = GameObject.FindGameObjectsWithTag("pedestal").Length -1;
             GameObject yearlyTable = GameObject.Find("Yearly_Table");
             string blockName = theBlock.name.Split()[0];
             GameObject timelinePedestal = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal_" + blockName));
@@ -245,13 +238,11 @@ public class Block : MonoBehaviour
             //Add to dictionary for Undo/Redo
             int key = ActionRecoverManager.actionID++;
             string[] newblockForAction = { block.name, "true" };
-            string[] blockForAction = { theBlock.name, "false" };
             string[] pedestalForAction = { clonePedestal.name, "true" };
             string[] lineForAction = { line.name, "true" };
 
             List<string[]> listForAction = new List<string[]>();
             listForAction.Add(newblockForAction);
-            listForAction.Add(blockForAction);
             listForAction.Add(pedestalForAction);
             listForAction.Add(lineForAction);
             ActionRecoverManager.actionDic.Add(key, listForAction);
