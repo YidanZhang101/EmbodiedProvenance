@@ -130,6 +130,16 @@ public class ActionRecoverManager : MonoBehaviour
                     }
                     theObject.transform.GetChild(5).gameObject.GetComponent<Renderer>().enabled = beforeAction;                   
                 }
+                else
+                {
+                    LayerManager[] embededLayers = theObject.transform.GetComponentsInChildren<LayerManager>();
+                    for(int i = 1; i < embededLayers.Length; i++)
+                    {
+                        Renderer[] embededLayer_renderer = embededLayers[i].transform.GetComponentsInChildren<Renderer>();
+                        foreach (Renderer childRenderer in embededLayer_renderer)
+                            childRenderer.enabled = beforeAction;
+                    }
+                }
             }
             if (name.StartsWith("Tabletop"))
             {

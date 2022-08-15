@@ -29,18 +29,20 @@ public class DataLoggingManager : MonoBehaviour
     public GameObject[] layers;
 
     [HideInInspector]
-    public bool IsLogging = false;
+    public static bool IsLogging = false;
 
-    private StreamWriter objectsStreamWriter;
-    private StreamWriter handsStreamWriter;
-    private StreamWriter playerStreamWriter;
+    public static StreamWriter objectsStreamWriter;
+    public static StreamWriter handsStreamWriter;
+    public static StreamWriter playerStreamWriter;
 
-    private StreamWriter blockWriter;
-    private StreamWriter labelWriter;
-    private StreamWriter layerWriter;
+    public static StreamWriter blockWriter;
+    public static StreamWriter labelWriter;
+    public static StreamWriter layerWriter;
+
+    //public static Dictionary<float, List<string[]>> objectsDic = new Dictionary<float, List<string[]>>();
 
     private float logStartTime;
-    private float timer = 0f;
+    public static float timer = 0f;
     private const string format = "F3";
     private string scene = "";
     private string sceneNo = "";
@@ -210,7 +212,8 @@ public class DataLoggingManager : MonoBehaviour
         handsStreamWriter.Flush();
 
         //log objects
-        foreach(GameObject target in targetObjects)
+        List<string[]> timestampLines = new List<string[]>();
+        foreach (GameObject target in targetObjects)
         {
             try
             {
@@ -222,12 +225,15 @@ public class DataLoggingManager : MonoBehaviour
             target.transform.rotation.ToString(format),
             target.transform.localScale.ToString(format)
             ));
+                //string[] objectInfo = { target.name, target.tag, target.transform.position.ToString(format), target.transform.rotation.ToString(format), target.transform.localScale.ToString(format) };
+                //timestampLines.Add(objectInfo);
             }
             catch (System.NullReferenceException e)
             {
                 Debug.LogError(e.ToString());
             }
         }
+        //objectsDic[timestamp] = timestampLines;
         objectsStreamWriter.Flush();
 
         //log blocks and labels
@@ -304,56 +310,7 @@ public class DataLoggingManager : MonoBehaviour
         }
     }
 
-    //public void AddToFile(float timestamp, GameObject[] targets, string targetTag)
-    //{
-    //    //GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
-    //    bool objectExist = false;
-    //    if (targets != null)
-    //    {
-    //        foreach (GameObject target in targets)
-    //        {
-    //            string objectName = target.name;               
-    //            string objectPosition = target.transform.position.ToString(format);
-    //            string objectRotation = target.transform.rotation.ToString(format);
-    //            string objectScale = target.transform.localScale.ToString(format);
-    //            if (existingObjects != null)
-    //            {
-    //                foreach (string name in existingObjects)
-    //                {
-    //                    if (name.Equals(objectName))
-    //                    {
-    //                        objectExist = true;
-    //                    }
-    //                }
-    //            }
-
-    //            if (!objectExist)
-    //            {
-    //                existingObjects.Add(objectName);
-    //                objectsStreamWriter.WriteLine(string.Join("\t",
-    //                timestamp,
-    //                objectName,
-    //                targetTag,
-    //                objectPosition,
-    //                objectRotation,
-    //                objectScale
-    //                ));
-    //            }
-    //        }
-    //    }
-    //}
-
-    //public static List<Transform> FindAllChildren(Transform transform)
-    //{
-    //    var transforms = new List<Transform>();
-    //    foreach (Transform t in transform.GetComponentsInChildren<Transform>())
-    //    {
-    //        transforms.Add(t);
-    //    }
-    //    return transforms;
-    //}
-
-    public void StopLogging()
+    public static void StopLogging()
     {
         IsLogging = false;
         timer = 0;
@@ -366,7 +323,7 @@ public class DataLoggingManager : MonoBehaviour
         labelWriter.Close();
         layerWriter.Close();
 
-        TestMessage = "Logging stopped for 06_Christmas";
+        Debug.Log("Logging stopped for 06_Christmas");
     }
 
     public void OnApplicationQuit()

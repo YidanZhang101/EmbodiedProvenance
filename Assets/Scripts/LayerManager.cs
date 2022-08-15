@@ -1,3 +1,4 @@
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public class LayerManager : MonoBehaviour
     int grabCount = 0;
     string timeDescription;
     string textAdded;
+    string tableForDescName;
 
     void Start()
     {
@@ -44,8 +46,17 @@ public class LayerManager : MonoBehaviour
             int tableCount = GameObject.FindGameObjectsWithTag("tabletop").Length - 1;
             newTable.name = "Tabletop_" + tableCount.ToString();
             newTable.transform.parent = base_layer.transform.parent;
-            newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * tableCounter, newTable.transform.position.y, newTable.transform.position.z);            
-            transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * tableCounter, base_layer.transform.position.y, base_layer.transform.position.z);
+            tableForDescName = newTable.name;
+            if (tableCount <= 13)
+            {
+                newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * tableCounter, newTable.transform.position.y, newTable.transform.position.z);
+                transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * tableCounter, base_layer.transform.position.y, base_layer.transform.position.z);
+            }
+            else if(tableCount > 13 && tableCount < 28)
+            {
+                newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * (27 - tableCount), newTable.transform.position.y, newTable.transform.position.z - 2.5f);
+                transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * (27 - tableCount), base_layer.transform.position.y, base_layer.transform.position.z - 2.5f);
+            }
             transform.rotation = new Quaternion();
             timeDescription = timeLabel.GetComponent<TextMeshPro>().text;
             newTable.transform.GetChild(0).GetComponent<TextMeshPro>().text = timeDescription;
@@ -58,6 +69,7 @@ public class LayerManager : MonoBehaviour
             timelineTable.transform.position = new Vector3(yearlyTable.transform.position.x + 0.17f * tableCounter, yearlyTable.transform.position.y, yearlyTable.transform.position.z);
             timelineTable.transform.rotation = yearlyTable.transform.rotation;
             timelineTable.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = timeDescription;
+            AddForClippingBox(timelineTable);
 
             //add to dictionary for copy&paste
             string[] tableArray = {newTable.name, newTable.transform.position.ToString(), newTable.transform.rotation.ToString(), newTable.transform.localScale.ToString(), timeDescription};
@@ -81,6 +93,14 @@ public class LayerManager : MonoBehaviour
             //Vector3 tableBase = new Vector3(gameObject.transform.position.x, 1.48f, gameObject.transform.position.z);
             //GameObject clonedTable = (GameObject)Instantiate(Resources.Load("Prefabs/TableCenter"), tableBase, gameObject.transform.rotation, gameObject.transform.parent);//layerBase.transform.parent.GetChild(0).gameObject;
         }
+    }
+
+    public static void AddForClippingBox(GameObject target)
+    {
+        GameObject clippingBox = GameObject.Find("ClippingBox");
+        Renderer[] _renderer = target.transform.GetComponentsInChildren<Renderer>();
+        foreach (Renderer childRenderer in _renderer)
+            clippingBox.GetComponent<ClippingBox>().AddRenderer(childRenderer);
     }
 
     //public void TableDescription(GameObject table)
@@ -165,7 +185,7 @@ public class LayerManager : MonoBehaviour
             CreateLabels(24, "hour");
         }
         timeDescription += textAdded;
-        newTable.transform.GetChild(0).GetComponent<TextMeshPro>().text = timeDescription;
+        GameObject.Find(tableForDescName).transform.GetChild(0).GetComponent<TextMeshPro>().text = timeDescription;
     }
 
     private void UpdateText(int timeCount, GameObject timeLabel)

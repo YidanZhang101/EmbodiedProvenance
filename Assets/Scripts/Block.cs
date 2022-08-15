@@ -141,8 +141,8 @@ public class Block : MonoBehaviour
             blocksForStretch.Add(hiddenBlock);
             int key = ActionRecoverManager.actionID++;
             ActionRecoverManager.actionDic.Add(key, blocksForStretch);
-            foreach (KeyValuePair<int, List<string[]>> pair in ActionRecoverManager.actionDic)
-                Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
+            //foreach (KeyValuePair<int, List<string[]>> pair in ActionRecoverManager.actionDic)
+            //    Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
         }        
     }
     public void StretchBlock()
@@ -225,6 +225,7 @@ public class Block : MonoBehaviour
             timelinePedestal.transform.parent = yearlyTable.transform.parent;
             timelinePedestal.transform.position = new Vector3(yearlyTable.transform.position.x + 0.22f + 0.05f * pedestalCount, yearlyTable.transform.position.y - 0.0587f, yearlyTable.transform.position.z - 0.045f);
             timelinePedestal.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = block.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>().text;
+            LayerManager.AddForClippingBox(timelinePedestal);
 
             //add pedestal for copy&paste
             string[] pedestalArray = { clonePedestal.name, clonePedestal.transform.position.ToString(), clonePedestal.transform.rotation.ToString(), clonePedestal.transform.localScale.ToString()};

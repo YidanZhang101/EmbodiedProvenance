@@ -47,6 +47,7 @@ public class Layer : MonoBehaviour
     {
         GameObject layer = (GameObject)Instantiate(Resources.Load("Prefabs/Layer"));
         layer.transform.parent = timeLabel.transform.parent;
+        layer.transform.GetChild(7).gameObject.tag = timeLabel.tag;
         int layerCount = FindObjectsOfType<LayerManager>().Length -1;
         layer.name = "Layer_" + layerCount.ToString();
         //string label = layer.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text;

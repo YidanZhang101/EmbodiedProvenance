@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Photon.Pun;
 using Photon.Realtime;
@@ -10,6 +12,8 @@ using UnityEngine;
 
 public class DataReplayManager : MonoBehaviour
 {
+    //public string FilePath;
+
     [Header("Data Files")]
     public TextAsset SessionInfoData;
     public TextAsset PlayerData;
@@ -56,7 +60,7 @@ public class DataReplayManager : MonoBehaviour
 
     public float selectedTime;
     float logStartTime;
-    string[] playerDataLines;
+    //string[] playerDataLines;
     GameObject theObject;
     GameObject theBlock;
     GameObject theLabel;
@@ -73,8 +77,8 @@ public class DataReplayManager : MonoBehaviour
     void Start()
     {
         logStartTime = Time.unscaledTime;
-        playerDataLines = PlayerData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-        AddDataToDic();
+        //playerDataLines = PlayerData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        //AddDataToDic();
         //SetTransparency();
     }
 
@@ -85,6 +89,8 @@ public class DataReplayManager : MonoBehaviour
 
     public void StartLiveReplay()
     {
+        DataLoggingManager.StopLogging();
+        AddDataToDic();
         if (!isLiveReplayRunning)
         {
             isLiveReplayPaused = false;
@@ -101,8 +107,14 @@ public class DataReplayManager : MonoBehaviour
         isLiveReplayRunning = true;
 
         Transform allElements = GameObject.Find("AllElements").transform;
-        if (allElements != null)
-            allElements.gameObject.SetActive(false);
+        //if (allElements != null)
+        //    allElements.gameObject.SetActive(false);
+        Renderer[] _renderer = allElements.GetComponentsInChildren<Renderer>();
+        foreach (Renderer childRenderer in _renderer)
+        {
+            if (childRenderer.gameObject.GetComponent<Interactable>() == null)
+                childRenderer.enabled = false;
+        }
 
         float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
         //float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
@@ -374,7 +386,12 @@ public class DataReplayManager : MonoBehaviour
         isLiveReplayPaused = false;
         stopwatch.Reset();
 
-        allElements.gameObject.SetActive(true);
+        //allElements.gameObject.SetActive(true);
+        foreach (Renderer childRenderer in _renderer) //isue with tabletops
+        {
+            if (childRenderer.gameObject.GetComponent<Interactable>() == null)
+                childRenderer.enabled = true;
+        }
     }
 
     //public void SetTransparency()
@@ -505,6 +522,8 @@ public class DataReplayManager : MonoBehaviour
 
         // Objects data
         string[] objectDataLines = ObjectData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        //string objectFileName = FilePath + ObjectData.name + ".txt";
+        //string[] objectDataLines = File.ReadAllLines(objectFileName);
         for (int i = 1; i < objectDataLines.Length; i++)
         {
             string[] lines = objectDataLines[i].Split('\t');
