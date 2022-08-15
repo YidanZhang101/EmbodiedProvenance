@@ -89,7 +89,7 @@ public class DataReplayManager : MonoBehaviour
 
     public void StartLiveReplay()
     {
-        DataLoggingManager.StopLogging();
+        //DataLoggingManager.StopLogging();
         AddDataToDic();
         if (!isLiveReplayRunning)
         {
@@ -107,8 +107,6 @@ public class DataReplayManager : MonoBehaviour
         isLiveReplayRunning = true;
 
         Transform allElements = GameObject.Find("AllElements").transform;
-        //if (allElements != null)
-        //    allElements.gameObject.SetActive(false);
         Renderer[] _renderer = allElements.GetComponentsInChildren<Renderer>();
         foreach (Renderer childRenderer in _renderer)
         {
@@ -234,23 +232,40 @@ public class DataReplayManager : MonoBehaviour
             {
                 Debug.Log(CurrentTimestamp);
                 foreach (string[] values in objectDic[CurrentTimestamp])
-                {                   
+                {                    
+                    //ReplayObjects("Tabletop", values);
+                    ReplayObjects("Pedestal", values);
+                    //string targetName = values[1];
+                    //if (targetName.StartsWith("Tabletop"))
+                    //{
+                    //    //Debug.Log("Object to be Instantiated");
+                    //    GameObject tableFound = GameObject.Find(targetName);
+                    //    Transform parent = tableFound.transform.parent;
+                    //    Destroy(tableFound);
+                    //    GameObject newTable = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
+                    //    newTable.name = targetName;
+                    //    newTable.transform.parent = parent;
+                    //    newTable.tag = values[2];
+                    //    newTable.transform.position = StringToVector3(values[3]);
+                    //    newTable.transform.rotation = StringToQuaternion(values[4]);
+                    //    newTable.transform.localScale = StringToVector3(values[5]);
+                    //}
                     string objectName = values[1];
                     if (!targetObjects.Contains(objectName))
                     {
                         SetObjectWithTag("Tabletop", values);
-                        SetObjectWithTag("Pedestal", values);
-                        SetObjectWithTag("Line", values);
+                        //SetObjectWithTag("Pedestal", values);
+                        //SetObjectWithTag("Line", values);
 
                         //Debug.Log("Create " + theObject.name);
                         targetObjects.Add(theObject.name);
-                        
+
                     }
-                    visitedObjects.Add(theObject);
-                    //Debug.Log("visitedObjects: " + theObject.name);
-                    theObject.transform.position = StringToVector3(values[3]);
-                    theObject.transform.rotation = StringToQuaternion(values[4]);
-                    theObject.transform.localScale = StringToVector3(values[5]);
+                    //visitedObjects.Add(theObject);
+                    ////Debug.Log("visitedObjects: " + theObject.name);
+                    //theObject.transform.position = StringToVector3(values[3]);
+                    //theObject.transform.rotation = StringToQuaternion(values[4]);
+                    //theObject.transform.localScale = StringToVector3(values[5]);
                 }
             }
             //Destroy all unused objects
@@ -273,21 +288,32 @@ public class DataReplayManager : MonoBehaviour
                 foreach (string[] values in blockDic[CurrentTimestamp])
                 {
                     string objectName = values[1];
-                    if (!targetBlocks.Contains(objectName))
+                    if (objectName.StartsWith("Block"))
                     {
-                        SetBlockWithTag("Block_LTB", values);
-                        SetBlockWithTag("Block_Monash_Sport", values);
-                        SetBlockWithTag("Block_Theatre", values);
-                        SetBlockWithTag("Block_Campus_Centre", values);
-                        SetBlockWithTag("Block_New_Horizons", values);
-                        SetObjectWithTag("TimeLabel", values);
+                        GameObject block = GameObject.Find(objectName);
+                        block.GetComponent<Renderer>().enabled = true;
+                        block.transform.GetChild(2).gameObject.GetComponent<Renderer>().enabled = true;
 
-                        targetBlocks.Add(theBlock.name);
-                        Debug.Log("Create " + theBlock.name);
+                        block.transform.position = StringToVector3(values[3]);
+                        block.transform.rotation = StringToQuaternion(values[4]);
+                        block.transform.localScale = StringToVector3(values[5]);
                     }
-                    //if (!visitedBlocks.Contains(theBlock))
-                    visitedBlocks.Add(theBlock.name);
-                    Debug.Log("visitedBlocks: " + theBlock.name);
+                    //if (!targetBlocks.Contains(objectName))
+                    //{
+                    //    SetBlockWithTag("Block_LTB", values);
+                    //    SetBlockWithTag("Block_Monash_Sport", values);
+                    //    SetBlockWithTag("Block_Theatre", values);
+                    //    SetBlockWithTag("Block_Campus_Centre", values);
+                    //    SetBlockWithTag("Block_New_Horizons", values);
+                    //    SetObjectWithTag("TimeLabel", values);
+
+                    //    targetBlocks.Add(theBlock.name);
+                    //    Debug.Log("Create " + theBlock.name);
+                    //}
+                    ////if (!visitedBlocks.Contains(theBlock))
+                    //visitedBlocks.Add(theBlock.name);
+                    //Debug.Log("visitedBlocks: " + theBlock.name);
+
                     //if (theBlock.name.Contains("Clone"))
                     //{
                     //    int endExcluded = theBlock.name.Length - 7;
@@ -322,14 +348,20 @@ public class DataReplayManager : MonoBehaviour
                 foreach (string[] values in labelDic[CurrentTimestamp])
                 {
                     string objectName = values[1];
-                    if (!targetLabels.Contains(objectName))
-                    {
-                        SetLabelWithTag("TimeLabel", values);
+                    GameObject label = GameObject.Find(objectName);
+                    label.GetComponent<Renderer>().enabled = true;
+                    label.transform.position = StringToVector3(values[3]);
+                    label.transform.rotation = StringToQuaternion(values[4]);
+                    label.transform.localScale = StringToVector3(values[5]);
+                    //if (!targetLabels.Contains(objectName))
+                    //{
+                    //    SetLabelWithTag("TimeLabel", values);
 
-                        targetLabels.Add(theLabel.name);
-                        //Debug.Log("Create " + theLabel.name);
-                    }
-                    visitedLabels.Add(theLabel);
+                    //    targetLabels.Add(theLabel.name);
+                    //    //Debug.Log("Create " + theLabel.name);
+                    //}
+                    //visitedLabels.Add(theLabel);
+
                     //Debug.Log("visitedLabels: " + theLabel.name);
                     //theLabel.transform.position = StringToVector3(values[3]);
                     //theLabel.transform.rotation = StringToQuaternion(values[4]);
@@ -354,32 +386,33 @@ public class DataReplayManager : MonoBehaviour
             {
                 foreach (string[] values in layerDic[CurrentTimestamp])
                 {
-                    string objectName = values[1];
-                    if (!targetLayers.Contains(objectName))
-                    {
-                        SetLayerWithTag("Layer", values);
+                    SetLayerWithTag("Layer", values);
+                    //string objectName = values[1];
+                    //if (!targetLayers.Contains(objectName))
+                    //{
+                    //    SetLayerWithTag("Layer", values);
 
-                        targetLayers.Add(theLayer.name);
-                        //Debug.Log("Create " + theLabel.name);
-                    }
-                    visitedLayers.Add(theLayer);
-                    //Debug.Log("visitedLabels: " + theLabel.name);
-                    theLayer.transform.position = StringToVector3(values[3]);
-                    theLayer.transform.rotation = StringToQuaternion(values[4]);
-                    theLayer.transform.localScale = StringToVector3(values[5]);
+                    //    targetLayers.Add(theLayer.name);
+                    //    //Debug.Log("Create " + theLabel.name);
+                    //}
+                    //visitedLayers.Add(theLayer);
+                    ////Debug.Log("visitedLabels: " + theLabel.name);
+                    //theLayer.transform.position = StringToVector3(values[3]);
+                    //theLayer.transform.rotation = StringToQuaternion(values[4]);
+                    //theLayer.transform.localScale = StringToVector3(values[5]);
                 }
             }
-            //Destroy all unused labels
-            string[] layersToRemove = targetLayers.Where(x => !visitedLayers.Contains(GameObject.Find(x))).ToArray();
-            //foreach (string item in labelsToRemove)
+            ////Destroy all unused labels
+            //string[] layersToRemove = targetLayers.Where(x => !visitedLayers.Contains(GameObject.Find(x))).ToArray();
+            ////foreach (string item in labelsToRemove)
+            ////{
+            ////    Debug.Log("labelsToRemove: " + item);
+            ////}
+            //foreach (string item in layersToRemove)
             //{
-            //    Debug.Log("labelsToRemove: " + item);
+            //    Destroy(GameObject.Find(item));
+            //    targetLayers.Remove(item);
             //}
-            foreach (string item in layersToRemove)
-            {
-                Destroy(GameObject.Find(item));
-                targetLayers.Remove(item);
-            }
 
         }
         isLiveReplayRunning = false;
@@ -421,14 +454,32 @@ public class DataReplayManager : MonoBehaviour
         isLiveReplayPaused = true;
     }
 
+    public void ReplayObjects(string startName, string[] values)
+    {
+        string objectName = values[1];
+        if (objectName.StartsWith(startName))
+        {
+            GameObject table = GameObject.Find(objectName);
+            Renderer[] table_renderer = table.transform.GetComponentsInChildren<Renderer>();
+            foreach (Renderer childRenderer in table_renderer)
+                childRenderer.enabled = true;
+
+            table.transform.position = StringToVector3(values[3]);
+            table.transform.rotation = StringToQuaternion(values[4]);
+            table.transform.localScale = StringToVector3(values[5]);
+        }
+    }
+
     public void SetObjectWithTag(string prefabName, string[] values)
     {
         string targetName = values[1];
         if (targetName.StartsWith(prefabName))
         {
-            //Debug.Log("Object to be Instantiated");
+            GameObject tableFound = GameObject.Find(targetName);
+            Destroy(tableFound);
             theObject = (GameObject)Instantiate(Resources.Load("Prefabs/" + prefabName));
             theObject.name = targetName;
+            theObject.transform.parent = GameObject.Find("AllElements").transform;
             theObject.tag = values[2];
             theObject.transform.position = StringToVector3(values[3]);
             theObject.transform.rotation = StringToQuaternion(values[4]);
@@ -457,7 +508,6 @@ public class DataReplayManager : MonoBehaviour
         string targetName = values[1];
         if (targetName.StartsWith(prefabName))
         {
-            //Debug.Log("Label to be Instantiated");
             theLabel = (GameObject)Instantiate(Resources.Load("Prefabs/" + prefabName));
             theLabel.name = targetName;
             theLabel.tag = values[2];
@@ -473,14 +523,22 @@ public class DataReplayManager : MonoBehaviour
         string targetName = values[1];
         if (targetName.StartsWith(prefabName))
         {
-            //Debug.Log("Label to be Instantiated");
-            theLayer = (GameObject)Instantiate(Resources.Load("Prefabs/" + prefabName));
-            theLayer.name = targetName;
-            theLayer.tag = values[2];
-            theLayer.transform.position = StringToVector3(values[3]);
-            theLayer.transform.rotation = StringToQuaternion(values[4]);
-            theLayer.transform.localScale = StringToVector3(values[5]);
-            theLayer.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text = values[6];
+            GameObject layer = GameObject.Find(targetName);
+            for(int i = 0; i < 6; i++)
+                layer.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = true;
+            layer.transform.GetChild(7).gameObject.GetComponent<Renderer>().enabled = true;
+            layer.transform.GetChild(6).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
+            layer.transform.position = StringToVector3(values[3]);
+            layer.transform.rotation = StringToQuaternion(values[4]);
+            layer.transform.localScale = StringToVector3(values[5]);
+            //theLayer = (GameObject)Instantiate(Resources.Load("Prefabs/" + prefabName));
+            //theLayer.name = targetName;
+            //theLayer.transform.parent = GameObject.Find("AllElements").transform;
+            //theLayer.tag = values[2];
+            //theLayer.transform.position = StringToVector3(values[3]);
+            //theLayer.transform.rotation = StringToQuaternion(values[4]);
+            //theLayer.transform.localScale = StringToVector3(values[5]);
+            //theLayer.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text = values[6];
         }
     }
 
