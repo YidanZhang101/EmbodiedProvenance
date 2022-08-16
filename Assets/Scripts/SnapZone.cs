@@ -5,19 +5,25 @@ using UnityEngine;
 public class SnapZone : MonoBehaviour
 {
     public GameObject target;
+    public GameObject target_In_SnapZone;
     //public float[] positionInSnapZone = { 0.649f,0.546f,-1.66f};
     //public float[] scaleInSnapZone = {0.96f,0.96f,0.96f };
 
     public bool InSnapZone = false;
     public bool IsGrabbed = false;
 
+    public float x;
+    public float y;
+    public float z;
+
+    public static Quaternion handleRotation;
+
     Vector3 orginScale;
-    GameObject Spatula_In_SnapZone;
 
     void Start()
     {
         orginScale = target.transform.localScale;
-        Spatula_In_SnapZone = GameObject.Find("Spatula_In_SnapZone");
+        //Spatula_In_SnapZone = GameObject.Find("Spatula_In_SnapZone");
     }
 
     void Update()
@@ -27,13 +33,13 @@ public class SnapZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        InSnapZone = true;   
+        InSnapZone = true;
     }
 
     void OnTriggerStay(Collider collider)
     {       
         InSnapZone = true;
-        target.transform.localScale = Spatula_In_SnapZone.transform.localScale;
+        target.transform.localScale = target_In_SnapZone.transform.localScale;
     }
 
     void OnTriggerExit(Collider collider)
@@ -51,11 +57,16 @@ public class SnapZone : MonoBehaviour
     {
         if(InSnapZone)
         {
-            target.transform.position = Spatula_In_SnapZone.transform.position;
-            target.transform.rotation = Spatula_In_SnapZone.transform.rotation;
-            target.transform.localScale = Spatula_In_SnapZone.transform.localScale;
+            target.transform.position = target_In_SnapZone.transform.position;
+            target.transform.rotation = target_In_SnapZone.transform.rotation;
+            target.transform.localScale = target_In_SnapZone.transform.localScale;
         }
         else
+        {
             target.transform.localScale = orginScale;
+            target.transform.rotation = new Quaternion(x,y,z,0);
+            if (target.name.Equals("Lever"))
+                handleRotation = target.transform.GetChild(1).rotation;
+        }
     }
 }

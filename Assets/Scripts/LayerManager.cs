@@ -72,8 +72,8 @@ public class LayerManager : MonoBehaviour
             AddForClippingBox(timelineTable);
 
             //add to dictionary for copy&paste
-            string[] tableArray = {newTable.name, newTable.transform.position.ToString(), newTable.transform.rotation.ToString(), newTable.transform.localScale.ToString(), timeDescription};
-            string[] layerArray = {gameObject.name, gameObject.transform.position.ToString(), gameObject.transform.rotation.ToString(), gameObject.transform.localScale.ToString(), timeDescription };
+            string[] tableArray = {newTable.name, newTable.transform.position.ToString("F4"), newTable.transform.rotation.ToString(), newTable.transform.localScale.ToString("F4"), timeDescription};
+            string[] layerArray = {gameObject.name, gameObject.transform.position.ToString("F4"), gameObject.transform.rotation.ToString(), gameObject.transform.localScale.ToString("F4"), timeDescription };
             listForCopy.Add(tableArray);
             listForCopy.Add(layerArray);
             key = GameObject.FindGameObjectsWithTag("tabletop").Length - 1;
@@ -126,8 +126,8 @@ public class LayerManager : MonoBehaviour
             GameObject thisBlock = transform.GetChild(i).gameObject;
             thisBlock.GetComponent<Block>().ShowBlocks();
             //add to dictionary for copy&paste
-            string[] blockArray = { thisBlock.name, thisBlock.transform.position.ToString(), thisBlock.transform.rotation.ToString(),
-                thisBlock.transform.localScale.ToString(), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+            string[] blockArray = { thisBlock.name, thisBlock.transform.position.ToString("F4"), thisBlock.transform.rotation.ToString(),
+                thisBlock.transform.localScale.ToString("F4"), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text};
             listForCopy.Add(blockArray);
         }
         ShowTimeLabels();

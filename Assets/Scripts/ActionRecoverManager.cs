@@ -23,7 +23,6 @@ public class ActionRecoverManager : MonoBehaviour
     {
         actionDic = new Dictionary<int, List<string[]>> ();
         actionID = 0;
-
         //timeline_pedestals = GameObject.FindGameObjectsWithTag("timeline_pedestal");
     }
 
@@ -40,12 +39,13 @@ public class ActionRecoverManager : MonoBehaviour
 
     public void Undo_Redo()
     {
-        Debug.Log(rotation);
-        if(actionDic != null)
+        Debug.Log("default rotation: " + rotation);  //0.5000001
+        if (actionDic != null)
         {        
-            if (rotation < 0)
+            if (rotation > 0.45)  
             {
                 Debug.Log("undo");
+                Debug.Log(rotation);
                 List<string[]> theLastList = actionDic[actionDic.Count - 1];
                 foreach (string[] theObjectArray in theLastList)
                 {
@@ -58,9 +58,10 @@ public class ActionRecoverManager : MonoBehaviour
                 actionDic.Remove(actionDic.Count - 1);
                 pedestalOrLineCount++;
             }
-            else if (rotation > 0)
+            else if (rotation < 0.45)
             {
                 Debug.Log("redo");
+                Debug.Log(rotation);
                 if (DicForRedo != null)
                 {
                     Debug.Log("DicForRedo is not empty");
@@ -75,7 +76,8 @@ public class ActionRecoverManager : MonoBehaviour
                 pedestalOrLineCount--;
             }
         }
-        undo_controller.transform.rotation = new Quaternion();
+
+        undo_controller.transform.rotation = SnapZone.handleRotation;
         Debug.Log("Reset value: " + rotation);
     }
 

@@ -71,31 +71,31 @@ public class CopyManager : MonoBehaviour
     {
         Transform allElements = GameObject.Find("AllElements").transform;
         Transform tabletop = allElements.GetChild(0);
-        string[] tabletopInfo = { tabletop.name, tabletop.position.ToString(), tabletop.rotation.ToString(), tabletop.localScale.ToString()};
+        string[] tabletopInfo = { tabletop.name, tabletop.position.ToString("F4"), tabletop.rotation.ToString(), tabletop.localScale.ToString("F4"), tabletop.GetChild(0).GetComponent<TextMeshPro>().text };
         CopiedList.Add(tabletopInfo);
         for (int i = 1; i < 6; i++)
         {
             Transform item = allElements.GetChild(i);
-            string[] itemArray = { item.name, item.position.ToString(), item.rotation.ToString(), item.localScale.ToString(), item.GetChild(2).GetComponent<TextMeshPro>().text};
+            string[] itemArray = { item.name, item.position.ToString("F4"), item.rotation.ToString(), item.localScale.ToString("F4"), item.GetChild(2).GetComponent<TextMeshPro>().text};
             CopiedList.Add(itemArray);
         }
         for (int i = 7; i < 12; i++)
         {
             Transform item = allElements.GetChild(i);
-            string[] itemArray = { item.name, item.position.ToString(), item.rotation.ToString(), item.localScale.ToString(), item.GetChild(2).GetComponent<TextMeshPro>().text };
+            string[] itemArray = { item.name, item.position.ToString("F4"), item.rotation.ToString(), item.localScale.ToString("F4"), item.GetChild(2).GetComponent<TextMeshPro>().text };
             CopiedList.Add(itemArray);
         }
 
-        Transform label = allElements.GetChild(6);
-        string[] labelInfo = { label.name, label.position.ToString(), label.rotation.ToString(), label.localScale.ToString(), label.GetComponent<TextMeshPro>().text};
+        Transform label_2019 = allElements.GetChild(6);
+        string[] labelInfo = { label_2019.name, label_2019.position.ToString("F4"), label_2019.rotation.ToString(), label_2019.localScale.ToString("F4"), label_2019.GetComponent<TextMeshPro>().text};
         CopiedList.Add(labelInfo);
 
-        label = allElements.GetChild(12);
-        string[] SecondLabelInfo = { label.name, label.position.ToString(), label.rotation.ToString(), label.localScale.ToString(), label.GetComponent<TextMeshPro>().text };
+        Transform label_2020 = allElements.GetChild(12);
+        string[] SecondLabelInfo = { label_2020.name, label_2020.position.ToString("F4"), label_2020.rotation.ToString(), label_2020.localScale.ToString("F4"), label_2020.GetComponent<TextMeshPro>().text };
         CopiedList.Add(SecondLabelInfo);
 
         Transform baseLayer = allElements.GetChild(13);
-        string[] baseLayerInfo = { baseLayer.name, baseLayer.position.ToString(), baseLayer.rotation.ToString(), baseLayer.localScale.ToString() };
+        string[] baseLayerInfo = { baseLayer.name, baseLayer.position.ToString("F4"), baseLayer.rotation.ToString(), baseLayer.localScale.ToString("F4") };
         CopiedList.Add(baseLayerInfo);
 
         CopiedObjects.Add("table_0", CopiedList);

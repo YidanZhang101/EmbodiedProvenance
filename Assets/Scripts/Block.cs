@@ -127,8 +127,8 @@ public class Block : MonoBehaviour
             blocksForStretch.Add(addedBlock);
 
             //add to dictionary for copy&paste
-            string[] blockArray = { thisBlock.name, thisBlock.transform.position.ToString(), thisBlock.transform.rotation.ToString(),
-                thisBlock.transform.localScale.ToString(), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+            string[] blockArray = { thisBlock.name, thisBlock.transform.position.ToString("F4"), thisBlock.transform.rotation.ToString(),
+                thisBlock.transform.localScale.ToString("F4"), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text};
             pedestalForCopy.Add(blockArray);
         }
         pedestalsDicForCopy[dicKey - 1] = pedestalForCopy;
@@ -228,9 +228,9 @@ public class Block : MonoBehaviour
             LayerManager.AddForClippingBox(timelinePedestal);
 
             //add pedestal for copy&paste
-            string[] pedestalArray = { clonePedestal.name, clonePedestal.transform.position.ToString(), clonePedestal.transform.rotation.ToString(), clonePedestal.transform.localScale.ToString()};
-            string[] blockArray = { block.name, block.transform.position.ToString(), block.transform.rotation.ToString(),
-                block.transform.localScale.ToString(), block.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+            string[] pedestalArray = { clonePedestal.name, clonePedestal.transform.position.ToString("F4"), clonePedestal.transform.rotation.ToString(), clonePedestal.transform.localScale.ToString("F4") };
+            string[] blockArray = { block.name, block.transform.position.ToString("F4"), block.transform.rotation.ToString(),
+                block.transform.localScale.ToString("F4"), block.transform.GetChild(2).GetComponent<TextMeshPro>().text};
             pedestalForCopy.Add(blockArray);
             pedestalForCopy.Add(pedestalArray);
             dicKey = pedestalCount;

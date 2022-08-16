@@ -40,6 +40,8 @@ TagManager:
   - plateItem
   - timeline_pedestal
   - 06_Christmas
+  - MRTKRig
+  - 01_Wild
   layers:
   - Default
   - TransparentFX
