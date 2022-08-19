@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PasteManager : MonoBehaviour
 {
+
+    public static Vector3 linePosition;
     bool plateHide = false;
     string environmentName = ""; //the current scene's prefab
  
@@ -52,6 +54,13 @@ public class PasteManager : MonoBehaviour
             Renderer[] _renderer = item.transform.GetComponentsInChildren<Renderer>();
             foreach (Renderer childRenderer in _renderer)
                 childRenderer.enabled = false;
+
+            if (item.name.StartsWith("Line"))
+            {
+                linePosition = item.transform.position;
+                //item.transform.position = new Vector3(item.transform.position.x - 20, item.transform.position.y, item.transform.position.z);
+            }
+
         }
 
         //GameObject.Find("TablesOnTimeline").transform.GetChild(0).gameObject.SetActive(false);

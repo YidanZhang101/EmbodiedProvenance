@@ -16,7 +16,7 @@ public class ActionRecoverManager : MonoBehaviour
     float rotation = 0;
     Vector3 linePosition;
     Dictionary<int,List<string[]>> DicForRedo = new Dictionary<int, List<string[]>>();
-    int redoID = 0;
+    //int redoID = 0;
     //GameObject[] timeline_pedestals;
 
     void Start()
@@ -51,10 +51,13 @@ public class ActionRecoverManager : MonoBehaviour
                 {
                     CheckObject(theObjectArray[0], theObjectArray[1],false,true);
                 }
-                redoID++;
+                //redoID++;
+                int redoID = 0;
+                if (DicForRedo != null)
+                    redoID = DicForRedo.Count;
                 DicForRedo.Add(redoID, theLastList);
-                foreach (KeyValuePair<int, List<string[]>> pair in DicForRedo)
-                    Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
+                //foreach (KeyValuePair<int, List<string[]>> pair in DicForRedo)
+                //    Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
                 actionDic.Remove(actionDic.Count - 1);
                 pedestalOrLineCount++;
             }

@@ -420,11 +420,12 @@ public class DataReplayManager : MonoBehaviour
         stopwatch.Reset();
 
         //allElements.gameObject.SetActive(true);
-        foreach (Renderer childRenderer in _renderer) //isue with tabletops
-        {
-            if (childRenderer.gameObject.GetComponent<Interactable>() == null)
-                childRenderer.enabled = true;
-        }
+        //_renderer = allElements.GetComponentsInChildren<Renderer>();
+        //foreach (Renderer childRenderer in _renderer) //isue with tabletops
+        //{
+        //    if (childRenderer.gameObject.GetComponent<Interactable>() == null)
+        //        childRenderer.enabled = true;
+        //}
     }
 
     //public void SetTransparency()

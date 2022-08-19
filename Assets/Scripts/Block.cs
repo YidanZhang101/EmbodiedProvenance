@@ -128,22 +128,30 @@ public class Block : MonoBehaviour
 
             //add to dictionary for copy&paste
             string[] blockArray = { thisBlock.name, thisBlock.transform.position.ToString("F4"), thisBlock.transform.rotation.ToString(),
-                thisBlock.transform.localScale.ToString("F4"), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+                thisBlock.transform.localScale.ToString("F4"), thisBlock.transform.GetChild(2).GetComponent<TextMeshPro>().text, thisBlock.tag};
             pedestalForCopy.Add(blockArray);
         }
         pedestalsDicForCopy[dicKey - 1] = pedestalForCopy;
 
         DestroyBlock();
         //undo/redo
-        if (!gameObject.transform.parent.gameObject.name.Contains("Layer"))
-        {
-            string[] hiddenBlock = { gameObject.name, "false" };
-            blocksForStretch.Add(hiddenBlock);
-            int key = ActionRecoverManager.actionID++;
-            ActionRecoverManager.actionDic.Add(key, blocksForStretch);
-            //foreach (KeyValuePair<int, List<string[]>> pair in ActionRecoverManager.actionDic)
-            //    Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
-        }        
+        //if (!gameObject.transform.parent.gameObject.name.Contains("Layer"))
+        //{
+        //    string[] hiddenBlock = { gameObject.name, "false" };
+        //    blocksForStretch.Add(hiddenBlock);
+        //    int key = ActionRecoverManager.actionID++;
+        //    ActionRecoverManager.actionDic.Add(key, blocksForStretch);
+        //    //foreach (KeyValuePair<int, List<string[]>> pair in ActionRecoverManager.actionDic)
+        //    //    Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
+        //}        
+        string[] hiddenBlock = { gameObject.name, "false" };
+        blocksForStretch.Add(hiddenBlock);
+        //int key = ActionRecoverManager.actionID++;
+
+        int key = 0;
+        if (ActionRecoverManager.actionDic != null)
+            key = ActionRecoverManager.actionDic.Count;
+        ActionRecoverManager.actionDic.Add(key, blocksForStretch);
     }
     public void StretchBlock()
     {
@@ -188,6 +196,10 @@ public class Block : MonoBehaviour
         if (!theBlock.name.Contains("Copy"))
         {
             GameObject objectContainerInNewScene = GameObject.Find("AllElements");
+            if (GameObject.Find("AllElements").transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible != true)
+            {
+                objectContainerInNewScene = GameObject.Find("AllObjects");
+            }              
 
             GameObject clonePedestal = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal"));
             //clonePedestal.GetComponent<RemovePedestalContent>().timeForPedestal = gameObject.transform.GetChild(2).GetComponent<TextMeshPro>().text;
@@ -223,21 +235,23 @@ public class Block : MonoBehaviour
             GameObject timelinePedestal = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal_" + blockName));
             timelinePedestal.name = "Pedestal_" + blockName + "_" + pedestalCount;
             timelinePedestal.transform.parent = yearlyTable.transform.parent;
-            timelinePedestal.transform.position = new Vector3(yearlyTable.transform.position.x + 0.22f + 0.05f * pedestalCount, yearlyTable.transform.position.y - 0.0587f, yearlyTable.transform.position.z - 0.045f);
+            timelinePedestal.transform.position = new Vector3(yearlyTable.transform.position.x + 0.386f + 0.05f * pedestalCount, yearlyTable.transform.position.y - 0.0587f, yearlyTable.transform.position.z - 0.045f);
             timelinePedestal.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = block.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>().text;
             LayerManager.AddForClippingBox(timelinePedestal);
 
             //add pedestal for copy&paste
             string[] pedestalArray = { clonePedestal.name, clonePedestal.transform.position.ToString("F4"), clonePedestal.transform.rotation.ToString(), clonePedestal.transform.localScale.ToString("F4") };
             string[] blockArray = { block.name, block.transform.position.ToString("F4"), block.transform.rotation.ToString(),
-                block.transform.localScale.ToString("F4"), block.transform.GetChild(2).GetComponent<TextMeshPro>().text};
+                block.transform.localScale.ToString("F4"), block.transform.GetChild(2).GetComponent<TextMeshPro>().text,block.tag};
             pedestalForCopy.Add(blockArray);
             pedestalForCopy.Add(pedestalArray);
             dicKey = pedestalCount;
             pedestalsDicForCopy.Add(dicKey, pedestalForCopy);
 
             //Add to dictionary for Undo/Redo
-            int key = ActionRecoverManager.actionID++;
+
+            //int key = ActionRecoverManager.actionID++;
+            //Debug.Log("key for new Block: " + ActionRecoverManager.actionID);
             string[] newblockForAction = { block.name, "true" };
             string[] pedestalForAction = { clonePedestal.name, "true" };
             string[] lineForAction = { line.name, "true" };
@@ -246,6 +260,9 @@ public class Block : MonoBehaviour
             listForAction.Add(newblockForAction);
             listForAction.Add(pedestalForAction);
             listForAction.Add(lineForAction);
+            int key = 0;
+            if (ActionRecoverManager.actionDic != null)
+                key = ActionRecoverManager.actionDic.Count;
             ActionRecoverManager.actionDic.Add(key, listForAction);
         }
     }

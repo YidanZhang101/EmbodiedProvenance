@@ -6,11 +6,18 @@ using UnityEngine;
 
 public class PasteInNewScene : MonoBehaviour
 {
-    //GameObject newItem;
+    public int tableCount;
+    public int layerCount;
 
     void Start()
     {
         GetCopiedObjects();
+        GameObject mrtkRig = GameObject.FindGameObjectWithTag("MRTKRig");
+        mrtkRig.transform.position = new Vector3();
+
+        //GameObject[] lines = GameObject.FindGameObjectsWithTag("line");
+        //foreach(GameObject item in lines)
+        //    item.transform.position = new Vector3(item.transform.position.x - 20, item.transform.position.y, item.transform.position.z);
     }
 
     // Update is called once per frame
@@ -30,8 +37,6 @@ public class PasteInNewScene : MonoBehaviour
                 foreach (string[] itemInfo in values)
                 {
                     CreateItem(itemInfo);
-                    
-
                 }
             }
         }
@@ -42,33 +47,22 @@ public class PasteInNewScene : MonoBehaviour
         //Transform objectContainerInNewScene = GameObject.Find("AllObjects").transform;
 
         string name = itemInfo[0];
-        if (itemInfo.Length == 5)
+        if (itemInfo.Length == 6)
         {
-            if (name.Contains("Tabletop"))
-            {
-                GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
-                newItem.transform.GetChild(0).GetComponent<TextMeshPro>().text = itemInfo[4];
-                SetTransform(newItem, itemInfo);
-            }
-
             if (name.Contains("TimeLabel"))
             {
                 GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/TimeLabel"));
                 newItem.transform.GetComponent<TextMeshPro>().text = itemInfo[4];
                 SetTransform(newItem, itemInfo);
+                newItem.tag = itemInfo[5];
             }
 
-            if (name.Contains("Layer"))
-            {
-                GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Layer"));
-                newItem.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text = itemInfo[4];
-                SetTransform(newItem, itemInfo);
-            }
             if (name.Contains("Block_LTB"))
             {
                 GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Block_LTB"));
                 newItem.transform.GetChild(2).GetComponent<TextMeshPro>().text = itemInfo[4];
                 SetTransform(newItem, itemInfo);
+                newItem.tag = itemInfo[5];
             }
 
             if (name.Contains("Block_Monash_Sport"))
@@ -76,6 +70,7 @@ public class PasteInNewScene : MonoBehaviour
                 GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Block_Monash_Sport"));
                 newItem.transform.GetChild(2).GetComponent<TextMeshPro>().text = itemInfo[4];
                 SetTransform(newItem, itemInfo);
+                newItem.tag = itemInfo[5];
             }
 
             if (name.Contains("Block_Theatre"))
@@ -83,6 +78,7 @@ public class PasteInNewScene : MonoBehaviour
                 GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Block_Theatre"));
                 newItem.transform.GetChild(2).GetComponent<TextMeshPro>().text = itemInfo[4];
                 SetTransform(newItem, itemInfo);
+                newItem.tag = itemInfo[5];
             }
 
             if (name.Contains("Block_Campus_Centre"))
@@ -90,6 +86,7 @@ public class PasteInNewScene : MonoBehaviour
                 GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Block_Campus_Centre"));
                 newItem.transform.GetChild(2).GetComponent<TextMeshPro>().text = itemInfo[4];
                 SetTransform(newItem, itemInfo);
+                newItem.tag = itemInfo[5];
             }
 
             if (name.Contains("Block_New_Horizons"))
@@ -97,14 +94,44 @@ public class PasteInNewScene : MonoBehaviour
                 GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Block_New_Horizons"));
                 newItem.transform.GetChild(2).GetComponent<TextMeshPro>().text = itemInfo[4];
                 SetTransform(newItem, itemInfo);
+                newItem.tag = itemInfo[5];
             }
         }
 
-        if (name.Contains("Pedestal"))
+        if (itemInfo.Length == 5)
         {
-            GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal"));
-            SetTransform(newItem, itemInfo);
+            if (name.Contains("Tabletop"))
+            {
+                GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
+                newItem.transform.GetChild(0).GetComponent<TextMeshPro>().text = itemInfo[4];
+                //SetTransform(newItem, itemInfo);
+                newItem.name = itemInfo[0] + "_newScene";
+                newItem.transform.parent = gameObject.transform;
+                newItem.transform.position = new Vector3(-0.014f + 1.5f * tableCount,0,0.19f);
+                newItem.transform.rotation = StringToQuaternion(itemInfo[2]);
+                newItem.transform.localScale = StringToVector3(itemInfo[3]);
+                tableCount++;
+            }
+
+            if (name.Contains("Layer"))
+            {
+                GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Layer"));
+                newItem.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text = itemInfo[4];
+                //SetTransform(newItem, itemInfo);
+                newItem.name = itemInfo[0] + "_newScene";
+                newItem.transform.parent = gameObject.transform;
+                newItem.transform.position = new Vector3(0.208f + 1.5f * layerCount, 1.08f, 0.714f);
+                newItem.transform.rotation = StringToQuaternion(itemInfo[2]);
+                newItem.transform.localScale = StringToVector3(itemInfo[3]);
+                layerCount++;
+            }
         }
+
+        //if (name.Contains("Pedestal"))
+        //{
+        //    GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal"));
+        //    SetTransform(newItem, itemInfo);
+        //}
        
     }
 
@@ -130,6 +157,10 @@ public class PasteInNewScene : MonoBehaviour
                 newTable.transform.position = item.transform.position;
                 newTable.transform.GetChild(0).GetComponent<TextMeshPro>().text = item.transform.GetChild(0).GetComponent<TextMeshPro>().text;
                 item.Destroy();
+            }
+            else if (item.name.Contains("Line"))
+            {
+                item.transform.position = PasteManager.linePosition;
             }
             else
             {

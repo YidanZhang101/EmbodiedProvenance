@@ -408,6 +408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b9c931ea46cf74f98b68b86713578b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tableCount: 0
+  layerCount: 0
 --- !u!4 &1218108621828799614
 Transform:
   m_ObjectHideFlags: 0
@@ -5598,7 +5600,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7843811725603848444}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 1.687, y: 0.837, z: 0.572}
+  m_LocalPosition: {x: 0.502, y: 0.837, z: 0.572}
   m_LocalScale: {x: 0.007058126, y: 0.007058126, z: 0.007058126}
   m_Children:
   - {fileID: 1218108621828799614}
@@ -5720,7 +5722,7 @@ GameObject:
   - component: {fileID: 7843811725603848445}
   - component: {fileID: 7843811725603848449}
   m_Layer: 0
-  m_Name: 06_Christmas
+  m_Name: Source_Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5816,6 +5818,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b9c931ea46cf74f98b68b86713578b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tableCount: 0
+  layerCount: 0
 --- !u!1 &8632735426075664959
 GameObject:
   m_ObjectHideFlags: 0
