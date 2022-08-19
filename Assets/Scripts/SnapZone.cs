@@ -60,13 +60,16 @@ public class SnapZone : MonoBehaviour
             target.transform.position = target_In_SnapZone.transform.position;
             target.transform.rotation = target_In_SnapZone.transform.rotation;
             target.transform.localScale = target_In_SnapZone.transform.localScale;
-            if (ActionRecoverManager.actionDic == null)
-                ActionRecoverManager.actionID = 0;
-            else
+            if (target.name.Equals("Lever"))
             {
-                ActionRecoverManager.actionID = ActionRecoverManager.actionDic.Count - 1;
-                Debug.Log("action ID: " + ActionRecoverManager.actionID);
-            }       
+                if (ActionRecoverManager.actionDic == null)
+                    ActionRecoverManager.actionID = 0;
+                else
+                {
+                    ActionRecoverManager.actionID = ActionRecoverManager.actionDic.Count - 1;
+                    Debug.Log("action ID: " + ActionRecoverManager.actionID);
+                }
+            }     
         }
         else
         {

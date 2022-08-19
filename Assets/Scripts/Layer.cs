@@ -49,7 +49,9 @@ public class Layer : MonoBehaviour
         layer.transform.parent = timeLabel.transform.parent;
         layer.transform.GetChild(7).gameObject.tag = timeLabel.tag;
         int layerCount = FindObjectsOfType<LayerManager>().Length -1;
-        layer.name = "Layer_" + layerCount.ToString();
+        //string name_extension = timeLabel.GetComponent<TextMeshPro>().text + "_";
+        //TeleportManager.nameForLayer += name_extension;
+        layer.name = "Layer_" + layerCount.ToString(); //+ TeleportManager.nameForLayer + layerCount.ToString();
         //string label = layer.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text;
         layer.transform.GetChild(7).gameObject.GetComponent<TextMeshPro>().text = timeLabel.GetComponent<TextMeshPro>().text;
         for (int i = 0; i < 5; i++)

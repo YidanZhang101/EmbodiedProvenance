@@ -39,13 +39,13 @@ public class ActionRecoverManager : MonoBehaviour
 
     public void Undo_Redo()
     {
-        Debug.Log("default rotation: " + rotation);  //0.5000001
+        //Debug.Log("default rotation: " + rotation);  //0.5000001
         if (actionDic != null)
         {        
             if (rotation > 0.45)  
             {
-                Debug.Log("undo");
-                Debug.Log(rotation);
+                //Debug.Log("undo");
+                //Debug.Log(rotation);
                 List<string[]> theLastList = actionDic[actionDic.Count - 1];
                 foreach (string[] theObjectArray in theLastList)
                 {
@@ -63,11 +63,11 @@ public class ActionRecoverManager : MonoBehaviour
             }
             else if (rotation < 0.45)
             {
-                Debug.Log("redo");
-                Debug.Log(rotation);
+                //Debug.Log("redo");
+                //Debug.Log(rotation);
                 if (DicForRedo != null)
                 {
-                    Debug.Log("DicForRedo is not empty");
+                    //Debug.Log("DicForRedo is not empty");
                     KeyValuePair<int, List<string[]>> lastPair = DicForRedo.Last();
                     foreach (string[] theObjectArray in lastPair.Value)
                     {
@@ -81,7 +81,7 @@ public class ActionRecoverManager : MonoBehaviour
         }
 
         undo_controller.transform.rotation = SnapZone.handleRotation;
-        Debug.Log("Reset value: " + rotation);
+        //Debug.Log("Reset value: " + rotation);
     }
 
     public void CheckObject(string name, string boolValue, bool afterAction, bool beforeAction)

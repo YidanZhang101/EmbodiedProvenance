@@ -230,7 +230,7 @@ public class DataReplayManager : MonoBehaviour
             List<GameObject> visitedObjects = new List<GameObject>();
             if (objectDic.ContainsKey(CurrentTimestamp))
             {
-                Debug.Log(CurrentTimestamp);
+                //Debug.Log(CurrentTimestamp);
                 foreach (string[] values in objectDic[CurrentTimestamp])
                 {                    
                     //ReplayObjects("Tabletop", values);
@@ -284,7 +284,7 @@ public class DataReplayManager : MonoBehaviour
             List<string> visitedBlocks = new List<string>();
             if (blockDic.ContainsKey(CurrentTimestamp))
             {
-                Debug.Log(CurrentTimestamp);
+                //Debug.Log(CurrentTimestamp);
                 foreach (string[] values in blockDic[CurrentTimestamp])
                 {
                     string objectName = values[1];
@@ -493,7 +493,7 @@ public class DataReplayManager : MonoBehaviour
         string targetName = values[1];
         if (targetName.StartsWith(prefabName))
         {
-            Debug.Log("Block to be Instantiated");
+            //Debug.Log("Block to be Instantiated");
             theBlock = (GameObject)Instantiate(Resources.Load("Prefabs/" + prefabName));
             theBlock.name = targetName;
             theBlock.tag = values[2];

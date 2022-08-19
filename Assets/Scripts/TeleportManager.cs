@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TeleportManager : MonoBehaviour
 {
+    public static string nameForLayer;
     // Start is called before the first frame update
     void Start()
     {

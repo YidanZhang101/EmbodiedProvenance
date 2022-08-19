@@ -732,7 +732,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5294161570280963280}
+  constraintsManager: {fileID: 148364401729240258}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -796,8 +796,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.029625267, y: -0.0029005408}
-  m_SizeDelta: {x: 15, y: 5}
+  m_AnchoredPosition: {x: 0.017, y: -0.0029005408}
+  m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3768869267528274194
 MeshRenderer:
@@ -2055,7 +2055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 28de8cd8a6b1f454885cb901c876bb45, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 28de8cd8a6b1f454885cb901c876bb45, type: 3}
       propertyPath: m_LocalScale.y
