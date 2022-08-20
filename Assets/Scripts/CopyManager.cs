@@ -13,6 +13,8 @@ public class CopyManager : MonoBehaviour
     List<string[]> CopiedList = new List<string[]>();
     GameObject[] targets;
 
+    List<Transform> light_list = new List<Transform>();
+
     void Start()
     {
         
@@ -121,5 +123,31 @@ public class CopyManager : MonoBehaviour
         return index;
     }
 
+    public void TableHighlight()
+    {
+        Light[] lights = FindObjectsOfType<Light>(true);
+        foreach (Light light in lights)
+        {
+            if (light.transform.name.Equals("Point Light"))
+            {
+                light.transform.gameObject.SetActive(true);
+                light_list.Add(light.transform);
+            }
+        }
+        if (transform.name.Equals("Yearly_Table"))
+            light_list[0].transform.position = new Vector3(GameObject.Find("Tabletop (1)").transform.position.x, light_list[0].transform.position.y,
+                GameObject.Find("Tabletop (1)").transform.position.z + 0.66f);
+        else
+        {
+            string tableName = "Tabletop_" + transform.name.Split('_')[2];
+            light_list[0].transform.position = new Vector3(GameObject.Find(tableName).transform.position.x, light_list[0].transform.position.y,
+                GameObject.Find(tableName).transform.position.z + 0.66f);
+        }
+    }
 
+    public void HideHighlight()
+    {
+        if (light_list != null)
+            light_list[0].transform.gameObject.SetActive(false);
+    }
 }

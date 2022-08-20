@@ -39,7 +39,7 @@ public class DataLoggingManager : MonoBehaviour
     public static StreamWriter labelWriter;
     public static StreamWriter layerWriter;
 
-    //public static Dictionary<float, List<string[]>> objectsDic = new Dictionary<float, List<string[]>>();
+    public static Dictionary<float, List<string[]>> linesDic = new Dictionary<float, List<string[]>>();
 
     private float logStartTime;
     public static float timer = 0f;
@@ -172,8 +172,18 @@ public class DataLoggingManager : MonoBehaviour
 
         GetDynamicObjects();
 
+        //log lines
+        List<string[]> linesInfo = new List<string[]>();
+        GameObject[] lines = GameObject.FindGameObjectsWithTag("line");
+        foreach(GameObject line in lines)
+        {
+            string[] lineInfo = { line.name, line.transform.position.ToString(format) };
+            linesInfo.Add(lineInfo);
+        }
+        linesDic.Add(timestamp, linesInfo);
+
         //log player
-        
+
         playerStreamWriter.WriteLine(string.Join("\t",
                 timestamp,
                 "player",

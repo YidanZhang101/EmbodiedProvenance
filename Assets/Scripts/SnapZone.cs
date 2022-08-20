@@ -69,7 +69,7 @@ public class SnapZone : MonoBehaviour
                     ActionRecoverManager.actionID = ActionRecoverManager.actionDic.Count - 1;
                     Debug.Log("action ID: " + ActionRecoverManager.actionID);
                 }
-            }     
+            }
         }
         else
         {

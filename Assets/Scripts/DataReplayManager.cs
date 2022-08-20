@@ -114,6 +114,15 @@ public class DataReplayManager : MonoBehaviour
                 childRenderer.enabled = false;
         }
 
+        foreach (KeyValuePair<float, List<string[]>> pair in DataLoggingManager.linesDic)
+        {
+            foreach(string[] lineInfo in pair.Value)
+            {
+                Vector3 linePos = StringToVector3(lineInfo[1]);
+                GameObject.Find(lineInfo[0]).transform.position = new Vector3(linePos.x, linePos.y - 20f, linePos.z);
+            }
+        }
+
         float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
         //float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
         float totalTime = timestamps.Max();
@@ -226,6 +235,13 @@ public class DataReplayManager : MonoBehaviour
 
             //targetObjects = new List<GameObject>();
 
+            //set lines
+            if (DataLoggingManager.linesDic.ContainsKey(CurrentTimestamp))
+            {
+                foreach (string[] values in objectDic[CurrentTimestamp])
+                    GameObject.Find(values[0]).transform.position = StringToVector3(values[1]);
+            }
+            
             // Set objects
             List<GameObject> visitedObjects = new List<GameObject>();
             if (objectDic.ContainsKey(CurrentTimestamp))

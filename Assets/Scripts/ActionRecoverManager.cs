@@ -116,6 +116,18 @@ public class ActionRecoverManager : MonoBehaviour
                     theObject.transform.position = linePosition;
                 }
             }
+            if (name.StartsWith("TableLink"))
+            {
+                if (!afterAction)
+                {
+                    linePosition = theObject.transform.position;
+                    theObject.transform.position = new Vector3(theObject.transform.position.x, theObject.transform.position.y - 20, theObject.transform.position.z);
+                }
+                else
+                {
+                    theObject.transform.position = linePosition;
+                }
+            }
             if (name.StartsWith("Layer"))
             {
                 Renderer[] _renderer = theObject.transform.GetComponentsInChildren<Renderer>();
@@ -198,6 +210,14 @@ public class ActionRecoverManager : MonoBehaviour
                 Transform tableOnTimeline = timeline_tables[int.Parse(tableNo)].transform;
                 Renderer[] timelineTable_renderer = tableOnTimeline.GetComponentsInChildren<Renderer>();
                 foreach (Renderer childRenderer in timelineTable_renderer)
+                {
+                    childRenderer.enabled = afterAction;
+                }
+
+                GameObject hand_menu = GameObject.Find("Hand_Menu");
+                Transform miniTable = hand_menu.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetChild(int.Parse(tableNo));
+                Renderer[] miniTable_renderer = miniTable.GetComponentsInChildren<Renderer>();
+                foreach (Renderer childRenderer in miniTable_renderer)
                 {
                     childRenderer.enabled = afterAction;
                 }

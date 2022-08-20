@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class ControlRoomManager : MonoBehaviour
 {
     private int grabCount = 0;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,21 @@ public class ControlRoomManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (gameObject.activeSelf)// & !miniTableSettled)
+        {
+            foreach (KeyValuePair<string, Vector3> pair in LayerManager.positionForMiniTables)
+            {
+                GameObject theMiniTable = GameObject.Find(pair.Key);
+                theMiniTable.transform.localPosition = new Vector3(pair.Value.x, pair.Value.y, pair.Value.z);
+            }
+
+            foreach (KeyValuePair<string, List<Vector3>> pair in LayerManager.positionForMiniTableLinks)
+            {
+                GameObject theLink = GameObject.Find(pair.Key);
+                theLink.transform.GetChild(0).localPosition = pair.Value[0];
+                theLink.transform.GetChild(1).localPosition = pair.Value[1];
+            }
+        }
     }
 
     public void CreateAnEnvir()

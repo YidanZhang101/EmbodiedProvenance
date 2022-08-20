@@ -42,6 +42,8 @@ TagManager:
   - 06_Christmas
   - MRTKRig
   - 01_Wild
+  - tableLink
+  - mini_table
   layers:
   - Default
   - TransparentFX
