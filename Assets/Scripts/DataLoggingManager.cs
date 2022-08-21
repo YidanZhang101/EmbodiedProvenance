@@ -53,7 +53,7 @@ public class DataLoggingManager : MonoBehaviour
 
     public bool HasRejoiner = false;
 
-    float timestamp = 0;
+    public float timestamp = 0;
     bool isHandTracked = false;
     bool isLeftTracked = false;
     bool isRightTracked = false;

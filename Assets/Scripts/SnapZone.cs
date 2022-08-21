@@ -28,7 +28,7 @@ public class SnapZone : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -37,7 +37,7 @@ public class SnapZone : MonoBehaviour
     }
 
     void OnTriggerStay(Collider collider)
-    {       
+    {
         InSnapZone = true;
         target.transform.localScale = target_In_SnapZone.transform.localScale;
     }
@@ -51,11 +51,17 @@ public class SnapZone : MonoBehaviour
     public void OnManipulation()
     {
         IsGrabbed = true;
+
+        if (target.name.Equals("Microphone") && InSnapZone)
+        {
+            AnnotationRecorder recordAnnotation = target.GetComponent<AnnotationRecorder>();
+            recordAnnotation.InitAnnotation(target.transform.position);
+        }
     }
 
     public void EndManipulation()
     {
-        if(InSnapZone)
+        if (InSnapZone)
         {
             target.transform.position = target_In_SnapZone.transform.position;
             target.transform.rotation = target_In_SnapZone.transform.rotation;
@@ -70,11 +76,16 @@ public class SnapZone : MonoBehaviour
                     Debug.Log("action ID: " + ActionRecoverManager.actionID);
                 }
             }
+            else if (target.name.Equals("Microphone"))
+            {
+                AnnotationRecorder recordAnnotation = target.GetComponent<AnnotationRecorder>();
+                recordAnnotation.LogAnnotation();
+            }
         }
         else
         {
             target.transform.localScale = orginScale;
-            target.transform.rotation = new Quaternion(x,y,z,0);
+            target.transform.rotation = new Quaternion(x, y, z, 0);
             if (target.name.Equals("Lever"))
                 handleRotation = target.transform.GetChild(1).rotation;
         }
