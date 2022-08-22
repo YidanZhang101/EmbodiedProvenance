@@ -67,6 +67,8 @@ public class PasteManager : MonoBehaviour
         //GameObject.Find("TablesOnTimeline").transform.GetChild(2).gameObject.SetActive(false);
 
         SceneManager.LoadScene(newSceneName, LoadSceneMode.Additive);
+
+        BackgroundAudioManager.Instance.SwitchBackgroundSound(newSceneName);
     }
 
     
