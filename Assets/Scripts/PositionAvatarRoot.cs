@@ -12,7 +12,10 @@ public class PositionAvatarRoot : MonoBehaviour
     {
         if (DataReplayManager.Instance.isLiveReplayRunning)
         {
-            transform.eulerAngles = new Vector3(0, 0, 180);
+            Vector3 rotation = headTransform.eulerAngles;
+            rotation.x = 0;
+            rotation.z = 0;
+            transform.eulerAngles = rotation;
 
             Vector3 position = headTransform.position;
             position.y = yOffset;

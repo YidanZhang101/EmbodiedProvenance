@@ -108,11 +108,11 @@ public class LayerManager : MonoBehaviour
             tableLink.name = tableLinkName;
             tableLink.transform.parent = transform.parent;
 
-            GameObject linkForMiniTable = (GameObject)Instantiate(Resources.Load("Prefabs/LinkForMiniTable"));
-            linkForMiniTable.name = "MiniTableLink_" + linkCount.ToString();
+            //GameObject linkForMiniTable = (GameObject)Instantiate(Resources.Load("Prefabs/LinkForMiniTable"));
+            //linkForMiniTable.name = "MiniTableLink_" + linkCount.ToString();
             GameObject hand_menu = GameObject.Find("Hand_Menu");
             Transform yearlyMiniTable = hand_menu.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetChild(0);
-            linkForMiniTable.transform.parent = yearlyMiniTable.parent.parent;
+            //linkForMiniTable.transform.parent = yearlyMiniTable.parent.parent;
             List<Vector3> startEndPoints = new List<Vector3>();
             if (x_move_counter == 1)
             {
@@ -129,13 +129,13 @@ public class LayerManager : MonoBehaviour
                         firstMiniTable.localPosition.y, newMiniTable.transform.localPosition.z - 1.72f * (z_move_counter - 1));
 
                 //link for mini tables
-                linkForMiniTable.transform.localRotation = yearlyMiniTable.localRotation;
-                linkForMiniTable.transform.localScale = yearlyMiniTable.localScale;
-                linkForMiniTable.transform.GetChild(0).localPosition = yearlyMiniTable.GetChild(1).localPosition;
-                linkForMiniTable.transform.GetChild(1).localPosition = newMiniTable.transform.GetChild(2).localPosition;
-                startEndPoints.Add(yearlyMiniTable.GetChild(1).localPosition);
-                startEndPoints.Add(newMiniTable.transform.GetChild(2).localPosition);
-                positionForMiniTableLinks.Add(linkForMiniTable.name, startEndPoints);
+                //linkForMiniTable.transform.localRotation = yearlyMiniTable.localRotation;
+                //linkForMiniTable.transform.localScale = yearlyMiniTable.localScale;
+                //linkForMiniTable.transform.GetChild(0).localPosition = yearlyMiniTable.GetChild(1).localPosition;
+                //linkForMiniTable.transform.GetChild(1).localPosition = newMiniTable.transform.GetChild(2).localPosition;
+                //startEndPoints.Add(yearlyMiniTable.GetChild(1).localPosition);
+                //startEndPoints.Add(newMiniTable.transform.GetChild(2).localPosition);
+                //positionForMiniTableLinks.Add(linkForMiniTable.name, startEndPoints);
             }
             else
             {
@@ -177,7 +177,7 @@ public class LayerManager : MonoBehaviour
                     {
                         sourceMiniMapPos = aMiniTable.transform.localPosition;
                         sourcePosForLink = aMiniTable.transform.GetChild(1).localPosition;
-                        linkForMiniTable.transform.GetChild(0).localPosition = sourcePosForLink;
+                        //linkForMiniTable.transform.GetChild(0).localPosition = sourcePosForLink;
                     }          
                 }
                 if (tableInfo[0].Equals("2020"))
@@ -203,10 +203,10 @@ public class LayerManager : MonoBehaviour
                 //set link end point
                 tableLink.transform.GetChild(1).position = newTable.transform.GetChild(2).position;
 
-                linkForMiniTable.transform.GetChild(1).localPosition = newMiniTable.transform.GetChild(2).localPosition;
+                //linkForMiniTable.transform.GetChild(1).localPosition = newMiniTable.transform.GetChild(2).localPosition;
                 startEndPoints.Add(sourcePosForLink);
                 startEndPoints.Add(newMiniTable.transform.GetChild(2).localPosition);
-                positionForMiniTableLinks.Add(linkForMiniTable.name, startEndPoints);
+                //positionForMiniTableLinks.Add(linkForMiniTable.name, startEndPoints);
             }
 
             //player on mini map

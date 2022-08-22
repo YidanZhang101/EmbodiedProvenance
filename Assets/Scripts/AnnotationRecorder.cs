@@ -36,7 +36,7 @@ public class AnnotationRecorder : MonoBehaviour
     {
         annotationMg = Instantiate(annotationPrefab).GetComponent<AnnotationManager>();
         Vector3 annotationPos = position;
-        annotationPos.z += 0.1f;
+        annotationPos.x += 0.1f;
         annotationMg.transform.position = annotationPos;
 
         annotationCounter += 1;
