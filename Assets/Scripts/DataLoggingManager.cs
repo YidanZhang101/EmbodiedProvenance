@@ -60,6 +60,9 @@ public class DataLoggingManager : MonoBehaviour
 
     List<GameObject> targetObjects = new List<GameObject>();
 
+    private static StreamWriter annotationStreamWriter;
+    public List<AnnotationManager> AnnotationList = new List<AnnotationManager>();
+
     //GameObject[] tables;
     //GameObject[] layers;
     //GameObject[] pedestals;
@@ -83,13 +86,14 @@ public class DataLoggingManager : MonoBehaviour
 
     private void Start()
     {
+        if (!FilePath.EndsWith("/"))
+            FilePath += "/";
 
         Hands = FindObjectsOfType<HandModel>();
         player = GameObject.Find("Real Player");
 
         Invoke("StartLogging", AutomaticLogDelay);
         //SceneManager.sceneLoaded += SceneLoaded;
-
     }
 
     public void StartLogging()
@@ -127,11 +131,15 @@ public class DataLoggingManager : MonoBehaviour
         handsStreamWriter = new StreamWriter(path, false);
         handsStreamWriter.WriteLine("Timestamp\tHandedness\tIsVisible\tj1\tj2\tj3\tj4\tj5\tj6\tj7\tj8\tj9\tj10\tj\tj12\tj13\tj14\tj15\tj16\tj17");
 
+        // Annotations
+        path = string.Format("{0}{1}_Scene{2}_Annotations.txt", FilePath, scene, sceneNo);
+        annotationStreamWriter = new StreamWriter(path, false);
+        annotationStreamWriter.WriteLine("Timestamp\tObjectName\tContent\tPosition\tRotation");
+
         IsLogging = true;
         logStartTime = Time.unscaledTime;
 
         TestMessage = "Logging started for 06_Christmas";
-
     }
 
     public void LateUpdate()
@@ -309,6 +317,21 @@ public class DataLoggingManager : MonoBehaviour
             }
         }
         layerWriter.Flush();
+
+        if (AnnotationList.Count > 0)
+        {
+            foreach (AnnotationManager annotation in AnnotationList)
+            {
+                annotationStreamWriter.WriteLine(string.Join("\t",
+                    timestamp,
+                    annotation.GetTitle(),
+                    annotation.GetContent(),
+                    annotation.transform.position,
+                    annotation.transform.rotation
+                ));
+                annotationStreamWriter.Flush();
+            }
+        }
     }
 
     private void AddObjectsToList(string targetTag)
@@ -332,6 +355,8 @@ public class DataLoggingManager : MonoBehaviour
         blockWriter.Close();
         labelWriter.Close();
         layerWriter.Close();
+
+        annotationStreamWriter.Close();
 
         Debug.Log("Logging stopped for 06_Christmas");
     }

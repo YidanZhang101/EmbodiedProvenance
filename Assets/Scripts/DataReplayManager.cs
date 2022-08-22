@@ -22,6 +22,7 @@ public class DataReplayManager : MonoBehaviour
     public TextAsset BlockData;
     public TextAsset LabelData;
     public TextAsset LayerData;
+    public TextAsset AnnotationData;
 
     [Header("Static Replay Objects")]
     public GameObject Player;
@@ -38,6 +39,8 @@ public class DataReplayManager : MonoBehaviour
     public float CurrentTimestamp = 0;
 
     //private Dictionary<int, int> playerIDToRoleIDDict;
+
+    //public bool StartReplay = false;
 
     public bool isLiveReplayRunning = false;
     private bool isLiveReplayPaused = false;
@@ -57,6 +60,9 @@ public class DataReplayManager : MonoBehaviour
     Dictionary<float, List<string[]>> blockDic = new Dictionary<float, List<string[]>>();
     Dictionary<float, List<string[]>> labelDic = new Dictionary<float, List<string[]>>();
     Dictionary<float, List<string[]>> layerDic = new Dictionary<float, List<string[]>>();
+
+    private Dictionary<float, List<string[]>> annotationData = new Dictionary<float, List<string[]>>();
+    private Dictionary<int, AnnotationManager> Annotations;
 
     public float selectedTime;
     float logStartTime;
@@ -85,6 +91,9 @@ public class DataReplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // For debugging
+        //if (StartReplay && !isLiveReplayRunning)
+        //    StartLiveReplay();
     }
 
     public void StartLiveReplay()
@@ -122,6 +131,8 @@ public class DataReplayManager : MonoBehaviour
                 GameObject.Find(lineInfo[0]).transform.position = new Vector3(linePos.x, linePos.y - 20f, linePos.z);
             }
         }
+
+        Annotations = new Dictionary<int, AnnotationManager>();
 
         float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
         //float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
@@ -430,6 +441,36 @@ public class DataReplayManager : MonoBehaviour
             //    targetLayers.Remove(item);
             //}
 
+            // Set annotations
+            List<AnnotationManager> visitedAnnotations = new List<AnnotationManager>();
+            if (annotationData.ContainsKey(CurrentTimestamp))
+            {
+                foreach (string[] values in annotationData[CurrentTimestamp])
+                {
+                    AnnotationManager annotation;
+                    int id = int.Parse(values[1]);
+                    // If the index of this annotation does not already exist, instantiate a new one
+                    if (!Annotations.TryGetValue(id, out annotation))
+                    {
+                        annotation = ((GameObject)Instantiate(Resources.Load("Prefabs/SpeechBubble"))).GetComponent<AnnotationManager>();
+                        annotation.SetTitle(values[1]);
+                        annotation.SetContent(values[2]);
+
+                        Annotations[id] = annotation;
+                    }
+                    visitedAnnotations.Add(annotation);
+
+                    annotation.transform.position = StringToVector3(values[3]);
+                    annotation.transform.rotation = StringToQuaternion(values[4]);
+                }
+            }
+            // Destroy all unused annotations
+            var annotationsToRemove = Annotations.Where(x => !visitedAnnotations.Contains(x.Value)).ToArray();
+            foreach (var item in annotationsToRemove)
+            {
+                Destroy(item.Value.gameObject);
+                Annotations.Remove(item.Key);
+            }
         }
         isLiveReplayRunning = false;
         isLiveReplayPaused = false;
@@ -637,6 +678,24 @@ public class DataReplayManager : MonoBehaviour
 
         //layer data
         TextToDic(LayerData, layerDic);
+
+        // Annotation data
+        string[] annotationDataLines = AnnotationData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        annotationData = new Dictionary<float, List<string[]>>();
+        for (int i = 1; i < annotationDataLines.Length; i++)
+        {
+            string[] lines = annotationDataLines[i].Split('\t');
+            float timestamp = float.Parse(lines[0]);
+
+            List<string[]> timestampLines;
+            if (!annotationData.TryGetValue(timestamp, out timestampLines))
+            {
+                timestampLines = new List<string[]>();
+                annotationData[timestamp] = timestampLines;
+            }
+
+            timestampLines.Add(lines);
+        }
     }
 
     private void TextToDic(TextAsset theData, Dictionary<float, List<string[]>> theDic)

@@ -6,7 +6,7 @@ public class PositionAvatarRoot : MonoBehaviour
 {
     public Transform headTransform;
 
-    public float yOffset = 0.18f;
+    public float yOffset = 0.05f;
 
     private void Update()
     {
