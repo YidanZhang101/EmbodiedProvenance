@@ -163,6 +163,7 @@ public class LayerManager : MonoBehaviour
                     {
                         sourceTablePos = table.transform.position;
                         sourceTableName = table.name;
+                        Debug.Log("sourceTableName: " + sourceTableName);
                         //set link start point
                         tableLink.transform.GetChild(0).position = table.transform.GetChild(1).position;
                         break;

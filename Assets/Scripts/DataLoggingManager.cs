@@ -38,8 +38,7 @@ public class DataLoggingManager : MonoBehaviour
     public static StreamWriter blockWriter;
     public static StreamWriter labelWriter;
     public static StreamWriter layerWriter;
-
-    public static Dictionary<float, List<string[]>> linesDic = new Dictionary<float, List<string[]>>();
+    public static StreamWriter tableWriter;
 
     private float logStartTime;
     public static float timer = 0f;
@@ -62,16 +61,6 @@ public class DataLoggingManager : MonoBehaviour
 
     private static StreamWriter annotationStreamWriter;
     public List<AnnotationManager> AnnotationList = new List<AnnotationManager>();
-
-    //GameObject[] tables;
-    //GameObject[] layers;
-    //GameObject[] pedestals;
-    //GameObject[] lines;
-    //GameObject[] block_year;
-    //GameObject[] block_month;
-    //GameObject[] block_week;
-    //GameObject[] block_day;
-    //GameObject[] block_hour;
 
     private static DataLoggingManager _instance;
     public static DataLoggingManager Instance { get { return _instance; } }
@@ -102,10 +91,15 @@ public class DataLoggingManager : MonoBehaviour
         TestMessage = "StartLogging";
         scene = "06_Christmas";
         sceneNo = "1";
-        //Tabletops (include everything inside)
-        string path = string.Format("{0}{1}_Scene{2}_Objects.txt", FilePath, scene, sceneNo);
+        //Tabletops
+        string path = string.Format("{0}{1}_Scene{2}_Tables.txt", FilePath, scene, sceneNo);
+        tableWriter = new StreamWriter(path, false);
+        tableWriter.WriteLine("Timestamp\tTableName\tTagName\tPosition\tRotation\tScale\tDescription");
+
+        // Pedestals, lines, table links
+        path = string.Format("{0}{1}_Scene{2}_Objects.txt", FilePath, scene, sceneNo);
         objectsStreamWriter = new StreamWriter(path, false);
-        objectsStreamWriter.WriteLine("Timestamp\tObjectName\tTagName\tPosition\tRotation\tScale");//tParentName\
+        objectsStreamWriter.WriteLine("Timestamp\tObjectName\tTagName\tPosition\tRotation\tScale");
 
         //Block
         path = string.Format("{0}{1}_Scene{2}_Blocks.txt", FilePath, scene, sceneNo);
@@ -134,7 +128,7 @@ public class DataLoggingManager : MonoBehaviour
         // Annotations
         path = string.Format("{0}{1}_Scene{2}_Annotations.txt", FilePath, scene, sceneNo);
         annotationStreamWriter = new StreamWriter(path, false);
-        annotationStreamWriter.WriteLine("Timestamp\tObjectName\tContent\tPosition\tRotation");
+        annotationStreamWriter.WriteLine("Timestamp\tObjectName\tObjectNo\tContent\tPosition\tRotation");
 
         IsLogging = true;
         logStartTime = Time.unscaledTime;
@@ -158,16 +152,10 @@ public class DataLoggingManager : MonoBehaviour
     private void GetDynamicObjects()
     {
         targetObjects.Clear();
-        AddObjectsToList("tabletop"); // add Tabletop
-        //AddObjectsToList("extractedLayer"); // add Layer
+        //AddObjectsToList("tabletop"); // add Tabletop
         AddObjectsToList("pedestal"); // add Pedestal
         AddObjectsToList("line"); // add Line
-        // add Block & TimeLabel
-        //AddObjectsToList("year");
-        //AddObjectsToList("month");
-        //AddObjectsToList("week");
-        //AddObjectsToList("day");
-        //AddObjectsToList("hour");
+        AddObjectsToList("tableLink"); // add Link for tables
         Blocks = FindObjectsOfType<Block>();
         TimeLabels = FindObjectsOfType<Layer>();
 
@@ -179,16 +167,6 @@ public class DataLoggingManager : MonoBehaviour
         timestamp = Time.unscaledTime - logStartTime;
 
         GetDynamicObjects();
-
-        //log lines
-        List<string[]> linesInfo = new List<string[]>();
-        GameObject[] lines = GameObject.FindGameObjectsWithTag("line");
-        foreach(GameObject line in lines)
-        {
-            string[] lineInfo = { line.name, line.transform.position.ToString(format) };
-            linesInfo.Add(lineInfo);
-        }
-        linesDic.Add(timestamp, linesInfo);
 
         //log player
 
@@ -229,6 +207,29 @@ public class DataLoggingManager : MonoBehaviour
         }
         handsStreamWriter.Flush();
 
+        //log tables
+        GameObject[] tables = GameObject.FindGameObjectsWithTag("tabletop");
+        foreach(GameObject table in tables)
+        {
+            try
+            {
+                tableWriter.WriteLine(string.Join("\t",
+                    timestamp,
+                    table.name,
+                    table.tag,
+                    table.transform.position.ToString(format),
+                    table.transform.rotation.ToString(format),
+                    table.transform.localScale.ToString(format),
+                    table.transform.GetChild(0).GetComponent<TextMeshPro>().text
+                    ));
+            }
+            catch (System.NullReferenceException e)
+            {
+                Debug.LogError(e.ToString());
+            }
+        }
+        tableWriter.Flush();
+
         //log objects
         List<string[]> timestampLines = new List<string[]>();
         foreach (GameObject target in targetObjects)
@@ -236,15 +237,13 @@ public class DataLoggingManager : MonoBehaviour
             try
             {
                 objectsStreamWriter.WriteLine(string.Join("\t",
-            timestamp,
-            target.name,
-            target.tag,
-            target.transform.position.ToString(format),
-            target.transform.rotation.ToString(format),
-            target.transform.localScale.ToString(format)
-            ));
-                //string[] objectInfo = { target.name, target.tag, target.transform.position.ToString(format), target.transform.rotation.ToString(format), target.transform.localScale.ToString(format) };
-                //timestampLines.Add(objectInfo);
+                    timestamp,
+                    target.name,
+                    target.tag,
+                    target.transform.position.ToString(format),
+                    target.transform.rotation.ToString(format),
+                    target.transform.localScale.ToString(format)
+                    ));
             }
             catch (System.NullReferenceException e)
             {
@@ -324,6 +323,7 @@ public class DataLoggingManager : MonoBehaviour
             {
                 annotationStreamWriter.WriteLine(string.Join("\t",
                     timestamp,
+                    annotation.name,
                     annotation.GetTitle(),
                     annotation.GetContent(),
                     annotation.transform.position,
@@ -348,6 +348,7 @@ public class DataLoggingManager : MonoBehaviour
         IsLogging = false;
         timer = 0;
 
+        tableWriter.Close();
         objectsStreamWriter.Close();
         handsStreamWriter.Close();
         playerStreamWriter.Close();

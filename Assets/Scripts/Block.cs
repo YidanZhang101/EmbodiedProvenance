@@ -10,6 +10,7 @@ public enum Day { Mon, Tue, Wed, Thu, Fri, Sat, Sun}
 
 public class Block : MonoBehaviour
 {
+    public static GameObject objectContainerInNewScene;
     public GameObject theBlock;
     public float gapBetweenBlocks = 0.04f;
 
@@ -195,8 +196,8 @@ public class Block : MonoBehaviour
     {
         if (!theBlock.name.Contains("Copy"))
         {
-            GameObject objectContainerInNewScene = GameObject.Find("AllElements");
-            if (GameObject.Find("AllElements").transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible != true)
+            objectContainerInNewScene = GameObject.Find("AllElements");
+            if (PasteManager.sceneChanged)
             {
                 objectContainerInNewScene = GameObject.Find("AllObjects");
             }              

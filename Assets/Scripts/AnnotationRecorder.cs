@@ -15,7 +15,9 @@ public class AnnotationRecorder : MonoBehaviour
 
     public void InitAnnotation(Vector3 position)
     {
-        annotationMg = Instantiate(annotationPrefab).GetComponent<AnnotationManager>();
+        Transform parent = Block.objectContainerInNewScene.transform;
+        annotationMg = Instantiate(annotationPrefab, parent).GetComponent<AnnotationManager>();
+        annotationMg.transform.name = "SpeechBubble_" + FindObjectsOfType<AnnotationManager>().Length;
         Vector3 annotationPos = position;
         annotationPos.x += 0.1f;
         annotationMg.transform.position = annotationPos;

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PasteManager : MonoBehaviour
 {
-
+    public static bool sceneChanged = false;
     public static Vector3 linePosition;
     bool plateHide = false;
     string environmentName = ""; //the current scene's prefab
@@ -62,7 +62,7 @@ public class PasteManager : MonoBehaviour
             }
 
         }
-
+        sceneChanged = true;
         //GameObject.Find("TablesOnTimeline").transform.GetChild(0).gameObject.SetActive(false);
         //GameObject.Find("TablesOnTimeline").transform.GetChild(2).gameObject.SetActive(false);
 

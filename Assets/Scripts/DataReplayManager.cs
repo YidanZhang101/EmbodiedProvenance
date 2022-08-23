@@ -23,6 +23,7 @@ public class DataReplayManager : MonoBehaviour
     public TextAsset LabelData;
     public TextAsset LayerData;
     public TextAsset AnnotationData;
+    public TextAsset TableData;
 
     [Header("Static Replay Objects")]
     public GameObject Player;
@@ -56,6 +57,7 @@ public class DataReplayManager : MonoBehaviour
 
     Dictionary<float, List<string[]>> playerDic = new Dictionary<float, List<string[]>>();
     Dictionary<float, List<string[]>> objectDic = new Dictionary<float, List<string[]>>();
+    Dictionary<float, List<string[]>> tableDic = new Dictionary<float, List<string[]>>();
     Dictionary<float, List<string[]>> handData = new Dictionary<float, List<string[]>>();
     Dictionary<float, List<string[]>> blockDic = new Dictionary<float, List<string[]>>();
     Dictionary<float, List<string[]>> labelDic = new Dictionary<float, List<string[]>>();
@@ -123,14 +125,14 @@ public class DataReplayManager : MonoBehaviour
                 childRenderer.enabled = false;
         }
 
-        foreach (KeyValuePair<float, List<string[]>> pair in DataLoggingManager.linesDic)
-        {
-            foreach(string[] lineInfo in pair.Value)
-            {
-                Vector3 linePos = StringToVector3(lineInfo[1]);
-                GameObject.Find(lineInfo[0]).transform.position = new Vector3(linePos.x, linePos.y - 20f, linePos.z);
-            }
-        }
+        GameObject[] lines = GameObject.FindGameObjectsWithTag("line");
+        foreach (GameObject line in lines)
+            line.transform.position = new Vector3(line.transform.position.x, line.transform.position.y - 20f, line.transform.position.z);
+
+        GameObject[] links = GameObject.FindGameObjectsWithTag("tableLink");
+        foreach (GameObject link in links)
+            link.transform.position = new Vector3(link.transform.position.x, link.transform.position.y - 20f, link.transform.position.z);
+
 
         Annotations = new Dictionary<int, AnnotationManager>();
 
@@ -246,13 +248,21 @@ public class DataReplayManager : MonoBehaviour
 
             //targetObjects = new List<GameObject>();
 
-            //set lines
-            if (DataLoggingManager.linesDic.ContainsKey(CurrentTimestamp))
+            // Set tables
+            if (tableDic.ContainsKey(CurrentTimestamp))
             {
-                foreach (string[] values in objectDic[CurrentTimestamp])
-                    GameObject.Find(values[0]).transform.position = StringToVector3(values[1]);
+                //Debug.Log(CurrentTimestamp);
+                foreach (string[] values in tableDic[CurrentTimestamp])
+                {
+                    string objectName = values[1];
+                    if (!targetObjects.Contains(objectName))
+                    {
+                        SetObjectWithTag("Tabletop", values);
+                        targetObjects.Add(theObject.name);
+
+                    }
+                }
             }
-            
             // Set objects
             List<GameObject> visitedObjects = new List<GameObject>();
             if (objectDic.ContainsKey(CurrentTimestamp))
@@ -262,37 +272,20 @@ public class DataReplayManager : MonoBehaviour
                 {                    
                     //ReplayObjects("Tabletop", values);
                     ReplayObjects("Pedestal", values);
-                    //string targetName = values[1];
-                    //if (targetName.StartsWith("Tabletop"))
+                    ReplayObjects("Line", values);
+                    ReplayObjects("TableLink", values);
+
+                    //string objectName = values[1];
+                    //if (!targetObjects.Contains(objectName))
                     //{
-                    //    //Debug.Log("Object to be Instantiated");
-                    //    GameObject tableFound = GameObject.Find(targetName);
-                    //    Transform parent = tableFound.transform.parent;
-                    //    Destroy(tableFound);
-                    //    GameObject newTable = (GameObject)Instantiate(Resources.Load("Prefabs/Tabletop"));
-                    //    newTable.name = targetName;
-                    //    newTable.transform.parent = parent;
-                    //    newTable.tag = values[2];
-                    //    newTable.transform.position = StringToVector3(values[3]);
-                    //    newTable.transform.rotation = StringToQuaternion(values[4]);
-                    //    newTable.transform.localScale = StringToVector3(values[5]);
+                    //    SetObjectWithTag("Tabletop", values);
+                    //    //SetObjectWithTag("Pedestal", values);
+                    //    //SetObjectWithTag("Line", values);
+
+                    //    //Debug.Log("Create " + theObject.name);
+                    //    targetObjects.Add(theObject.name);
+
                     //}
-                    string objectName = values[1];
-                    if (!targetObjects.Contains(objectName))
-                    {
-                        SetObjectWithTag("Tabletop", values);
-                        //SetObjectWithTag("Pedestal", values);
-                        //SetObjectWithTag("Line", values);
-
-                        //Debug.Log("Create " + theObject.name);
-                        targetObjects.Add(theObject.name);
-
-                    }
-                    //visitedObjects.Add(theObject);
-                    ////Debug.Log("visitedObjects: " + theObject.name);
-                    //theObject.transform.position = StringToVector3(values[3]);
-                    //theObject.transform.rotation = StringToQuaternion(values[4]);
-                    //theObject.transform.localScale = StringToVector3(values[5]);
                 }
             }
             //Destroy all unused objects
@@ -376,10 +369,13 @@ public class DataReplayManager : MonoBehaviour
                 {
                     string objectName = values[1];
                     GameObject label = GameObject.Find(objectName);
-                    label.GetComponent<Renderer>().enabled = true;
-                    label.transform.position = StringToVector3(values[3]);
-                    label.transform.rotation = StringToQuaternion(values[4]);
-                    label.transform.localScale = StringToVector3(values[5]);
+                    if (label != null)
+                    {
+                        label.GetComponent<Renderer>().enabled = true;
+                        label.transform.position = StringToVector3(values[3]);
+                        label.transform.rotation = StringToQuaternion(values[4]);
+                        label.transform.localScale = StringToVector3(values[5]);
+                    }
                     //if (!targetLabels.Contains(objectName))
                     //{
                     //    SetLabelWithTag("TimeLabel", values);
@@ -442,35 +438,51 @@ public class DataReplayManager : MonoBehaviour
             //}
 
             // Set annotations
-            List<AnnotationManager> visitedAnnotations = new List<AnnotationManager>();
             if (annotationData.ContainsKey(CurrentTimestamp))
             {
                 foreach (string[] values in annotationData[CurrentTimestamp])
                 {
-                    AnnotationManager annotation;
-                    int id = int.Parse(values[1]);
-                    // If the index of this annotation does not already exist, instantiate a new one
-                    if (!Annotations.TryGetValue(id, out annotation))
-                    {
-                        annotation = ((GameObject)Instantiate(Resources.Load("Prefabs/SpeechBubble"))).GetComponent<AnnotationManager>();
-                        annotation.SetTitle(values[1]);
-                        annotation.SetContent(values[2]);
-
-                        Annotations[id] = annotation;
-                    }
-                    visitedAnnotations.Add(annotation);
-
-                    annotation.transform.position = StringToVector3(values[3]);
-                    annotation.transform.rotation = StringToQuaternion(values[4]);
+                    string annotationName = values[1];
+                    GameObject annotationObject = GameObject.Find(annotationName);
+                    AnnotationManager annotation = annotationObject.GetComponent<AnnotationManager>();
+                    Renderer[] object_renderer = annotationObject.transform.GetComponentsInChildren<Renderer>();
+                    foreach (Renderer childRenderer in object_renderer)
+                        childRenderer.enabled = true;
+                    annotation.SetTitle(values[2]);
+                    annotation.SetContent(values[3]);
+                    annotation.transform.position = StringToVector3(values[4]);
+                    annotation.transform.rotation = StringToQuaternion(values[5]);
                 }
             }
-            // Destroy all unused annotations
-            var annotationsToRemove = Annotations.Where(x => !visitedAnnotations.Contains(x.Value)).ToArray();
-            foreach (var item in annotationsToRemove)
-            {
-                Destroy(item.Value.gameObject);
-                Annotations.Remove(item.Key);
-            }
+            //List<AnnotationManager> visitedAnnotations = new List<AnnotationManager>();
+            //if (annotationData.ContainsKey(CurrentTimestamp))
+            //{
+            //    foreach (string[] values in annotationData[CurrentTimestamp])
+            //    {
+            //        AnnotationManager annotation;
+            //        int id = int.Parse(values[1]);
+            //        // If the index of this annotation does not already exist, instantiate a new one
+            //        if (!Annotations.TryGetValue(id, out annotation))
+            //        {
+            //            annotation = ((GameObject)Instantiate(Resources.Load("Prefabs/SpeechBubble"), Block.objectContainerInNewScene.transform)).GetComponent<AnnotationManager>();
+            //            annotation.SetTitle(values[1]);
+            //            annotation.SetContent(values[2]);
+
+            //            Annotations[id] = annotation;
+            //        }
+            //        visitedAnnotations.Add(annotation);
+
+            //        annotation.transform.position = StringToVector3(values[3]);
+            //        annotation.transform.rotation = StringToQuaternion(values[4]);
+            //    }
+            //}
+            //// Destroy all unused annotations
+            //var annotationsToRemove = Annotations.Where(x => !visitedAnnotations.Contains(x.Value)).ToArray();
+            //foreach (var item in annotationsToRemove)
+            //{
+            //    Destroy(item.Value.gameObject);
+            //    Annotations.Remove(item.Key);
+            //}
         }
         isLiveReplayRunning = false;
         isLiveReplayPaused = false;
@@ -517,14 +529,20 @@ public class DataReplayManager : MonoBehaviour
         string objectName = values[1];
         if (objectName.StartsWith(startName))
         {
-            GameObject table = GameObject.Find(objectName);
-            Renderer[] table_renderer = table.transform.GetComponentsInChildren<Renderer>();
-            foreach (Renderer childRenderer in table_renderer)
-                childRenderer.enabled = true;
+            GameObject objectToReplay = GameObject.Find(objectName);
+            if(objectToReplay != null)
+            {
+                if (startName.Equals("Pedestal"))
+                {
+                    Renderer[] object_renderer = objectToReplay.transform.GetComponentsInChildren<Renderer>();
+                    foreach (Renderer childRenderer in object_renderer)
+                        childRenderer.enabled = true;
+                }
 
-            table.transform.position = StringToVector3(values[3]);
-            table.transform.rotation = StringToQuaternion(values[4]);
-            table.transform.localScale = StringToVector3(values[5]);
+                objectToReplay.transform.position = StringToVector3(values[3]);
+                objectToReplay.transform.rotation = StringToQuaternion(values[4]);
+                objectToReplay.transform.localScale = StringToVector3(values[5]);
+            } 
         }
     }
 
@@ -542,6 +560,7 @@ public class DataReplayManager : MonoBehaviour
             theObject.transform.position = StringToVector3(values[3]);
             theObject.transform.rotation = StringToQuaternion(values[4]);
             theObject.transform.localScale = StringToVector3(values[5]);
+            theObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = values[6];
         }
     }
 
@@ -650,6 +669,23 @@ public class DataReplayManager : MonoBehaviour
             {
                 timestampLines = new List<string[]>();
                 objectDic[timestamp] = timestampLines;
+            }
+
+            timestampLines.Add(lines);
+        }
+
+        // Tables data
+        string[] tableDataLines = TableData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 1; i < tableDataLines.Length; i++)
+        {
+            string[] lines = tableDataLines[i].Split('\t');
+            float timestamp = float.Parse(lines[0]);
+
+            List<string[]> timestampLines;
+            if (!tableDic.TryGetValue(timestamp, out timestampLines))
+            {
+                timestampLines = new List<string[]>();
+                tableDic[timestamp] = timestampLines;
             }
 
             timestampLines.Add(lines);
