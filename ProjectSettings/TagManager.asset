@@ -44,6 +44,8 @@ TagManager:
   - 01_Wild
   - tableLink
   - mini_table
+  - miniTable_link
+  - timelabelCube
   layers:
   - Default
   - TransparentFX

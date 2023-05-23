@@ -39,7 +39,7 @@ public class PasteManager : MonoBehaviour
     public void GetEnvironmentName()
     {
         if (SceneManager.GetSceneByBuildIndex(9).isLoaded)
-            environmentName = SceneManager.GetSceneByBuildIndex(9).name;
+            environmentName = SceneManager.GetSceneByBuildIndex(9).name; // 06_Chirstmas
     }
 
     public void LoadScene()

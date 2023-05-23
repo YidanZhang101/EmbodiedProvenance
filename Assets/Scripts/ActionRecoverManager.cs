@@ -10,14 +10,17 @@ public class ActionRecoverManager : MonoBehaviour
     public static Dictionary<int, List<string[]>> actionDic;
     public static int actionID;
 
-    public GameObject undo_controller;
-    public int pedestalOrLineCount = 1;
+    public static GameObject undo_controller;
+    public static int pedestalOrLineCount = 1;
 
     float rotation = 0;
-    Vector3 linePosition;
-    Dictionary<int,List<string[]>> DicForRedo = new Dictionary<int, List<string[]>>();
+    static Vector3 linePosition;
+    static Dictionary<int,List<string[]>> DicForRedo = new Dictionary<int, List<string[]>>();
     //int redoID = 0;
     //GameObject[] timeline_pedestals;
+
+    private static ActionRecoverManager _instance;
+    public static ActionRecoverManager Instance { get { return _instance; } }
 
     void Start()
     {
@@ -29,39 +32,40 @@ public class ActionRecoverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rotation = undo_controller.transform.rotation.y;
+        //rotation = undo_controller.transform.rotation.y;
     }
 
-    //public void RetRotation()
-    //{
-        
-    //}
-
-    public void Undo_Redo()
+    public static void Undo_Redo()
     {
         //Debug.Log("default rotation: " + rotation);  //0.5000001
         if (actionDic != null)
-        {        
-            if (rotation > 0.45)  
+        {
+            //if (rotation > 0.45)
+            if (SnapZone.actionReq == "undo")
             {
                 //Debug.Log("undo");
                 //Debug.Log(rotation);
-                List<string[]> theLastList = actionDic[actionDic.Count - 1];
-                foreach (string[] theObjectArray in theLastList)
+                if(actionDic.ContainsKey(actionDic.Count - 1))
                 {
-                    CheckObject(theObjectArray[0], theObjectArray[1],false,true);
+                    List<string[]> theLastList = actionDic[actionDic.Count - 1];
+                    foreach (string[] theObjectArray in theLastList)
+                    {
+                        CheckObject(theObjectArray[0], theObjectArray[1], false, true);
+                    }
+                    //redoID++;
+                    int redoID = 0;
+                    if (DicForRedo != null)
+                        redoID = DicForRedo.Count;
+                    DicForRedo.Add(redoID, theLastList);
+                    //foreach (KeyValuePair<int, List<string[]>> pair in DicForRedo)
+                    //    Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
+                    actionDic.Remove(actionDic.Count - 1);
+                    pedestalOrLineCount++;
                 }
-                //redoID++;
-                int redoID = 0;
-                if (DicForRedo != null)
-                    redoID = DicForRedo.Count;
-                DicForRedo.Add(redoID, theLastList);
-                //foreach (KeyValuePair<int, List<string[]>> pair in DicForRedo)
-                //    Debug.Log(pair.Key.ToString() + ": " + pair.Value[0][0]);
-                actionDic.Remove(actionDic.Count - 1);
-                pedestalOrLineCount++;
+                
             }
-            else if (rotation < 0.45)
+            //else if (rotation < 0.45)
+            else if (SnapZone.actionReq == "redo") //(rotation < 0.45)
             {
                 //Debug.Log("redo");
                 //Debug.Log(rotation);
@@ -80,11 +84,11 @@ public class ActionRecoverManager : MonoBehaviour
             }
         }
 
-        undo_controller.transform.rotation = SnapZone.handleRotation;
+        //undo_controller.transform.rotation = SnapZone.handleRotation;
         //Debug.Log("Reset value: " + rotation);
     }
 
-    public void CheckObject(string name, string boolValue, bool afterAction, bool beforeAction)
+    public static void CheckObject(string name, string boolValue, bool afterAction, bool beforeAction)
     {
         GameObject theObject = GameObject.Find(name);
         if (boolValue.Equals("true"))
@@ -133,10 +137,11 @@ public class ActionRecoverManager : MonoBehaviour
                 Renderer[] _renderer = theObject.transform.GetComponentsInChildren<Renderer>();
                 foreach (Renderer childRenderer in _renderer)
                 {
-                    if (childRenderer.gameObject.GetComponent<Interactable>() == null)
+                    if (childRenderer.gameObject.GetComponent<Interactable>() == null | childRenderer.gameObject.tag == "timelabelCube")
                         childRenderer.enabled = afterAction;
                 }
                 theObject.transform.GetChild(7).gameObject.GetComponent<Renderer>().enabled = beforeAction;
+                theObject.transform.GetChild(7).GetChild(0).gameObject.GetComponent<Renderer>().enabled = beforeAction;// for timelabel cube
                 theObject.transform.GetChild(6).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().enabled = beforeAction;
                 if (!afterAction)
                 {
@@ -198,6 +203,7 @@ public class ActionRecoverManager : MonoBehaviour
                     layerOnTable.transform.GetChild(5).gameObject.GetComponent<Renderer>().enabled = afterAction;
                     layerOnTable.transform.GetChild(6).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().enabled = afterAction;
                     layerOnTable.transform.GetChild(7).gameObject.GetComponent<Renderer>().enabled = afterAction;
+                    layerOnTable.transform.GetChild(7).GetChild(0).gameObject.GetComponent<Renderer>().enabled = afterAction;// timelabel cube
 
                     //foreach (Renderer childRenderer in layer_renderer)
                     //{

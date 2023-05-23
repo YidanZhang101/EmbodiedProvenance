@@ -9,7 +9,7 @@ public class LayerManager : MonoBehaviour
 {
     public GameObject timeLabel;
 
-    public static Dictionary<string, Vector3> positionForTimelineTables = new Dictionary<string, Vector3>();
+    //public static Dictionary<string, Vector3> positionForTimelineTables = new Dictionary<string, Vector3>();
     public static Dictionary<string, Vector3> positionForMiniTables = new Dictionary<string, Vector3>();
     public static Dictionary<string, List<Vector3>> positionForMiniTableLinks = new Dictionary<string, List<Vector3>>();
 
@@ -34,7 +34,7 @@ public class LayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void CountGrab()
@@ -100,8 +100,9 @@ public class LayerManager : MonoBehaviour
         Transform allElements = GameObject.Find("AllElements").transform;
         int x_move_counter = TableMoveIn_x_Side(allElements);
         int z_move_counter = TableMoveIn_z_Side();
-        if (allElements.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible == true)
-        {
+        Debug.Log("the unknown name: " + allElements.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible); 
+        //if (allElements.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible == true)
+        //{
             GameObject tableLink = (GameObject)Instantiate(Resources.Load("Prefabs/LinkForTables"));
             int linkCount = GameObject.FindGameObjectsWithTag("tableLink").Length - 1;
             tableLinkName = "TableLink_" + linkCount.ToString();
@@ -114,19 +115,36 @@ public class LayerManager : MonoBehaviour
             Transform yearlyMiniTable = hand_menu.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetChild(0);
             //linkForMiniTable.transform.parent = yearlyMiniTable.parent.parent;
             List<Vector3> startEndPoints = new List<Vector3>();
+            Debug.Log("check point 1");
             if (x_move_counter == 1)
             {
-                newTable.transform.position = new Vector3(newTable.transform.position.x + 2f,
-                        newTable.transform.position.y, newTable.transform.position.z + 2f * (z_move_counter - 1));
-                transform.position = new Vector3(base_layer.transform.position.x + 0.002f + 2f,
-                    base_layer.transform.position.y, base_layer.transform.position.z - 0.016f + 2f * (z_move_counter - 1));
+                Debug.Log("check point 2");
+                if (timeDescription.Equals("2019"))
+                {
+                    newTable.transform.position = new Vector3(newTable.transform.position.x + 2f,
+                        newTable.transform.position.y, newTable.transform.position.z + 2f);// * (z_move_counter - 1));
+                    transform.position = new Vector3(base_layer.transform.position.x + 0.002f + 2f,
+                        base_layer.transform.position.y, base_layer.transform.position.z - 0.016f + 2f);// * (z_move_counter - 1));
+
+                    newMiniTable.transform.localPosition = new Vector3(newMiniTable.transform.localPosition.x - 1.6f,
+                        firstMiniTable.localPosition.y, newMiniTable.transform.localPosition.z - 1.72f);// * (z_move_counter - 1));
+                }
+                else
+                {
+                    newTable.transform.position = new Vector3(newTable.transform.position.x + 2f,
+                        newTable.transform.position.y, newTable.transform.position.z + 4f);// * (z_move_counter - 1));
+                    transform.position = new Vector3(base_layer.transform.position.x + 0.002f + 2f,
+                        base_layer.transform.position.y, base_layer.transform.position.z - 0.016f + 4f);// * (z_move_counter - 1));
+
+                    newMiniTable.transform.localPosition = new Vector3(newMiniTable.transform.localPosition.x - 1.6f,
+                        firstMiniTable.localPosition.y, newMiniTable.transform.localPosition.z - 1.72f * 2);// * (z_move_counter - 1));
+                }
                 
                 //set link start and end point
                 tableLink.transform.GetChild(0).position = GameObject.Find("Tabletop (1)").transform.GetChild(1).position;
                 tableLink.transform.GetChild(1).position = newTable.transform.GetChild(2).position;
 
-                newMiniTable.transform.localPosition = new Vector3(newMiniTable.transform.localPosition.x - 1.6f,
-                        firstMiniTable.localPosition.y, newMiniTable.transform.localPosition.z - 1.72f * (z_move_counter - 1));
+                
 
                 //link for mini tables
                 //linkForMiniTable.transform.localRotation = yearlyMiniTable.localRotation;
@@ -139,6 +157,7 @@ public class LayerManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("check point 3"); // not entered
                 string[] tableInfo = timeDescription.Split();
                 string infoToCheck = "";
 
@@ -159,7 +178,9 @@ public class LayerManager : MonoBehaviour
                 GameObject[] existingTables = GameObject.FindGameObjectsWithTag("tabletop");
                 foreach(GameObject table in existingTables)
                 {
-                    if (table.transform.GetChild(0).GetComponent<TextMeshPro>().text.Contains(infoToCheck))
+                    string t = table.transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                    Debug.Log("t: " + t + "& Info to check: " + infoToCheck);
+                    if (t.Contains(infoToCheck))
                     {
                         sourceTablePos = table.transform.position;
                         sourceTableName = table.name;
@@ -225,21 +246,22 @@ public class LayerManager : MonoBehaviour
             //    newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * (27 - tableCount), newTable.transform.position.y, newTable.transform.position.z - 2.5f);
             //    transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * (27 - tableCount), base_layer.transform.position.y, base_layer.transform.position.z - 2.5f);
             //}
-        }
-        else
-        {
-            if (tableCount <= 13)
-            {
-                newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * counterInNewScene, newTable.transform.position.y, newTable.transform.position.z);
-                transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * counterInNewScene, base_layer.transform.position.y, base_layer.transform.position.z);
-            }
-            else if (tableCount > 13 && tableCount < 28)
-            {
-                newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * (28 - counterInNewScene), newTable.transform.position.y, newTable.transform.position.z - 2.5f);
-                transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * (28 - counterInNewScene), base_layer.transform.position.y, base_layer.transform.position.z - 2.5f);
-            }
-            counterInNewScene++;
-        }
+        //}
+        //else
+        //{
+        //    Debug.Log("check point 4");
+        //    if (tableCount <= 13)
+        //    {
+        //        newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * counterInNewScene, newTable.transform.position.y, newTable.transform.position.z);
+        //        transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * counterInNewScene, base_layer.transform.position.y, base_layer.transform.position.z);
+        //    }
+        //    else if (tableCount > 13 && tableCount < 28)
+        //    {
+        //        newTable.transform.position = new Vector3(newTable.transform.position.x + Layer.getInstance.add_x * (28 - counterInNewScene), newTable.transform.position.y, newTable.transform.position.z - 2.5f);
+        //        transform.position = new Vector3(base_layer.transform.position.x + 0.016f + Layer.getInstance.add_x * (28 - counterInNewScene), base_layer.transform.position.y, base_layer.transform.position.z - 2.5f);
+        //    }
+        //    counterInNewScene++;
+        //}
     }
 
     public void AddTableforLayer()
@@ -286,7 +308,7 @@ public class LayerManager : MonoBehaviour
             timelineTable.transform.rotation = yearlyTable.transform.rotation;
             timelineTable.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = timeDescription;
             AddForClippingBox(timelineTable);
-            positionForTimelineTables.Add(timelineTable.name, timelineTable.transform.localPosition);
+            //positionForTimelineTables.Add(timelineTable.name, timelineTable.transform.localPosition);
 
             //add to dictionary for copy&paste
             string[] tableArray = {newTable.name, newTable.transform.position.ToString("F4"), newTable.transform.rotation.ToString(), newTable.transform.localScale.ToString("F4"), timeDescription};
@@ -339,7 +361,7 @@ public class LayerManager : MonoBehaviour
 
     public void StretchLayer()
     {
-        Invoke(nameof(ShowAllBlocks), 1);
+        Invoke(nameof(ShowAllBlocks), 0.5f);
         //DestroyLayer();
     }
 

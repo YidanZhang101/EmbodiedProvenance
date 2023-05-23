@@ -75,8 +75,9 @@ public class DataLoggingManager : MonoBehaviour
 
     private void Start()
     {
-        if (!FilePath.EndsWith("/"))
-            FilePath += "/";
+        //if (!FilePath.EndsWith("/"))
+        //    FilePath += "/";
+        //Debug.Log("test");
 
         Hands = FindObjectsOfType<HandModel>();
         player = GameObject.Find("Real Player");
@@ -362,9 +363,13 @@ public class DataLoggingManager : MonoBehaviour
         Debug.Log("Logging stopped for 06_Christmas");
     }
 
-    public void OnApplicationQuit()
-    {
-        if (IsLogging)
-            StopLogging();
-    }
+    //public void OnApplicationFocus(bool hasFocus)//OnApplicationQuit()
+    //{
+    //    if (!hasFocus)
+    //    {
+    //        if (IsLogging)
+    //            StopLogging();
+    //    }
+        
+    //}
 }

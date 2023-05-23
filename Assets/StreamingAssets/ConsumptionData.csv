@@ -1,0 +1,406 @@
+TableInfo,BlockText,Building,Consumption
+Yearly,2019,LTB,80
+Yearly,2019,Monash,60
+Yearly,2019,Theatre,40
+Yearly,2019,Campus,80
+Yearly,2019,New,60
+Yearly,2020,LTB,70
+Yearly,2020,Monash,50
+Yearly,2020,Theatre,30
+Yearly,2020,Campus,70
+Yearly,2020,New,70
+2019,Jan,LTB,50
+2019,Feb,LTB,60
+2019,Mar,LTB,85
+2019,Apr,LTB,75
+2019,May,LTB,80
+2019,Jun,LTB,60
+2019,Jul,LTB,70
+2019,Aug,LTB,80
+2019,Sep,LTB,80
+2019,Oct,LTB,70
+2019,Nov,LTB,50
+2019,Dec,LTB,40
+2019,Jan,Monash,35
+2019,Feb,Monash,40
+2019,Mar,Monash,50
+2019,Apr,Monash,50
+2019,May,Monash,40
+2019,Jun,Monash,60
+2019,Jul,Monash,50
+2019,Aug,Monash,50
+2019,Sep,Monash,50
+2019,Oct,Monash,40
+2019,Nov,Monash,55
+2019,Dec,Monash,30
+2019,Jan,Theatre,30
+2019,Feb,Theatre,30
+2019,Mar,Theatre,40
+2019,Apr,Theatre,35
+2019,May,Theatre,35
+2019,Jun,Theatre,40
+2019,Jul,Theatre,30
+2019,Aug,Theatre,35
+2019,Sep,Theatre,30
+2019,Oct,Theatre,30
+2019,Nov,Theatre,45
+2019,Dec,Theatre,10
+2019,Jan,Campus,60
+2019,Feb,Campus,70
+2019,Mar,Campus,80
+2019,Apr,Campus,70
+2019,May,Campus,90
+2019,Jun,Campus,60
+2019,Jul,Campus,70
+2019,Aug,Campus,80
+2019,Sep,Campus,90
+2019,Oct,Campus,80
+2019,Nov,Campus,60
+2019,Dec,Campus,25
+2019,Jan,New,60
+2019,Feb,New,60
+2019,Mar,New,60
+2019,Apr,New,60
+2019,May,New,60
+2019,Jun,New,60
+2019,Jul,New,70
+2019,Aug,New,60
+2019,Sep,New,60
+2019,Oct,New,60
+2019,Nov,New,60
+2019,Dec,New,50
+2020,Jan,LTB,50
+2020,Feb,LTB,60
+2020,Mar,LTB,70
+2020,Apr,LTB,20
+2020,May,LTB,30
+2020,Jun,LTB,35
+2020,Jul,LTB,30
+2020,Aug,LTB,20
+2020,Sep,LTB,15
+2020,Oct,LTB,25
+2020,Nov,LTB,40
+2020,Dec,LTB,20
+2020,Jan,Monash,40
+2020,Feb,Monash,40
+2020,Mar,Monash,50
+2020,Apr,Monash,10
+2020,May,Monash,20
+2020,Jun,Monash,25
+2020,Jul,Monash,25
+2020,Aug,Monash,10
+2020,Sep,Monash,10
+2020,Oct,Monash,15
+2020,Nov,Monash,45
+2020,Dec,Monash,40
+2020,Jan,Theatre,30
+2020,Feb,Theatre,30
+2020,Mar,Theatre,35
+2020,Apr,Theatre,10
+2020,May,Theatre,10
+2020,Jun,Theatre,20
+2020,Jul,Theatre,15
+2020,Aug,Theatre,10
+2020,Sep,Theatre,10
+2020,Oct,Theatre,10
+2020,Nov,Theatre,20
+2020,Dec,Theatre,20
+2020,Jan,Campus,60
+2020,Feb,Campus,60
+2020,Mar,Campus,70
+2020,Apr,Campus,20
+2020,May,Campus,30
+2020,Jun,Campus,40
+2020,Jul,Campus,30
+2020,Aug,Campus,20
+2020,Sep,Campus,10
+2020,Oct,Campus,15
+2020,Nov,Campus,35
+2020,Dec,Campus,30
+2020,Jan,New,60
+2020,Feb,New,60
+2020,Mar,New,60
+2020,Apr,New,30
+2020,May,New,30
+2020,Jun,New,40
+2020,Jul,New,40
+2020,Aug,New,30
+2020,Sep,New,30
+2020,Oct,New,30
+2020,Nov,New,50
+2020,Dec,New,40
+2019 Jul,Week 1,LTB,50
+2019 Jul,Week 2,LTB,50
+2019 Jul,Week 3,LTB,60
+2019 Jul,Week 4,LTB,75
+2019 Jul,Week 1,Monash,40
+2019 Jul,Week 2,Monash,40
+2019 Jul,Week 3,Monash,40
+2019 Jul,Week 4,Monash,55
+2019 Jul,Week 1,Theatre,30
+2019 Jul,Week 2,Theatre,30
+2019 Jul,Week 3,Theatre,35
+2019 Jul,Week 4,Theatre,25
+2019 Jul,Week 1,Campus,50
+2019 Jul,Week 2,Campus,50
+2019 Jul,Week 3,Campus,70
+2019 Jul,Week 4,Campus,80
+2019 Jul,Week 1,New,55
+2019 Jul,Week 2,New,60
+2019 Jul,Week 3,New,60
+2019 Jul,Week 4,New,60
+2019 Jan,Week 1,LTB,44
+2019 Jan,Week 1,Monash,44
+2019 Jan,Week 1,Theatre,34
+2019 Jan,Week 1,Campus,54
+2019 Jan,Week 1,New,59
+2019 Jan,Week 2,LTB,54
+2019 Jan,Week 2,Monash,49
+2019 Jan,Week 2,Theatre,39
+2019 Jan,Week 2,Campus,64
+2019 Jan,Week 2,New,64
+2019 Jan,Week 3,LTB,64
+2019 Jan,Week 3,Monash,54
+2019 Jan,Week 3,Theatre,44
+2019 Jan,Week 3,Campus,74
+2019 Jan,Week 3,New,69
+2019 Jan,Week 4,LTB,74
+2019 Jan,Week 4,Monash,59
+2019 Jan,Week 4,Theatre,49
+2019 Jan,Week 4,Campus,84
+2019 Jan,Week 4,New,74
+2019 Feb,Week 1,LTB,46
+2019 Feb,Week 1,Monash,46
+2019 Feb,Week 1,Theatre,36
+2019 Feb,Week 1,Campus,56
+2019 Feb,Week 1,New,61
+2019 Feb,Week 2,LTB,56
+2019 Feb,Week 2,Monash,51
+2019 Feb,Week 2,Theatre,41
+2019 Feb,Week 2,Campus,66
+2019 Feb,Week 2,New,66
+2019 Feb,Week 3,LTB,66
+2019 Feb,Week 3,Monash,56
+2019 Feb,Week 3,Theatre,46
+2019 Feb,Week 3,Campus,76
+2019 Feb,Week 3,New,71
+2019 Feb,Week 4,LTB,76
+2019 Feb,Week 4,Monash,61
+2019 Feb,Week 4,Theatre,51
+2019 Feb,Week 4,Campus,86
+2019 Feb,Week 4,New,76
+2019 Mar,Week 1,LTB,48
+2019 Mar,Week 1,Monash,48
+2019 Mar,Week 1,Theatre,38
+2019 Mar,Week 1,Campus,58
+2019 Mar,Week 1,New,63
+2019 Mar,Week 2,LTB,58
+2019 Mar,Week 2,Monash,53
+2019 Mar,Week 2,Theatre,43
+2019 Mar,Week 2,Campus,68
+2019 Mar,Week 2,New,68
+2019 Mar,Week 3,LTB,68
+2019 Mar,Week 3,Monash,58
+2019 Mar,Week 3,Theatre,48
+2019 Mar,Week 3,Campus,78
+2019 Mar,Week 3,New,73
+2019 Mar,Week 4,LTB,78
+2019 Mar,Week 4,Monash,63
+2019 Mar,Week 4,Theatre,53
+2019 Mar,Week 4,Campus,88
+2019 Mar,Week 4,New,78
+2019 Apr,Week 1,LTB,48
+2019 Apr,Week 1,Monash,48
+2019 Apr,Week 1,Theatre,38
+2019 Apr,Week 1,Campus,58
+2019 Apr,Week 1,New,63
+2019 Apr,Week 2,LTB,58
+2019 Apr,Week 2,Monash,53
+2019 Apr,Week 2,Theatre,43
+2019 Apr,Week 2,Campus,68
+2019 Apr,Week 2,New,68
+2019 Apr,Week 3,LTB,68
+2019 Apr,Week 3,Monash,58
+2019 Apr,Week 3,Theatre,48
+2019 Apr,Week 3,Campus,78
+2019 Apr,Week 3,New,73
+2019 Apr,Week 4,LTB,78
+2019 Apr,Week 4,Monash,63
+2019 Apr,Week 4,Theatre,53
+2019 Apr,Week 4,Campus,88
+2019 Apr,Week 4,New,78
+2019 May,Week 1,LTB,44
+2019 May,Week 1,Monash,44
+2019 May,Week 1,Theatre,34
+2019 May,Week 1,Campus,54
+2019 May,Week 1,New,59
+2019 May,Week 2,LTB,54
+2019 May,Week 2,Monash,49
+2019 May,Week 2,Theatre,39
+2019 May,Week 2,Campus,64
+2019 May,Week 2,New,64
+2019 May,Week 3,LTB,64
+2019 May,Week 3,Monash,54
+2019 May,Week 3,Theatre,44
+2019 May,Week 3,Campus,74
+2019 May,Week 3,New,69
+2019 May,Week 4,LTB,74
+2019 May,Week 4,Monash,59
+2019 May,Week 4,Theatre,49
+2019 May,Week 4,Campus,84
+2019 May,Week 4,New,74
+2019 Jun,Week 1,LTB,50
+2019 Jun,Week 1,Monash,50
+2019 Jun,Week 1,Theatre,40
+2019 Jun,Week 1,Campus,60
+2019 Jun,Week 1,New,65
+2019 Jun,Week 2,LTB,60
+2019 Jun,Week 2,Monash,55
+2019 Jun,Week 2,Theatre,45
+2019 Jun,Week 2,Campus,70
+2019 Jun,Week 2,New,70
+2019 Jun,Week 3,LTB,70
+2019 Jun,Week 3,Monash,60
+2019 Jun,Week 3,Theatre,50
+2019 Jun,Week 3,Campus,80
+2019 Jun,Week 3,New,75
+2019 Jun,Week 4,LTB,80
+2019 Jun,Week 4,Monash,65
+2019 Jun,Week 4,Theatre,55
+2019 Jun,Week 4,Campus,90
+2019 Jun,Week 4,New,80
+2019 Aug,Week 1,LTB,56
+2019 Aug,Week 1,Monash,56
+2019 Aug,Week 1,Theatre,46
+2019 Aug,Week 1,Campus,66
+2019 Aug,Week 1,New,71
+2019 Aug,Week 2,LTB,66
+2019 Aug,Week 2,Monash,61
+2019 Aug,Week 2,Theatre,51
+2019 Aug,Week 2,Campus,76
+2019 Aug,Week 2,New,76
+2019 Aug,Week 3,LTB,76
+2019 Aug,Week 3,Monash,66
+2019 Aug,Week 3,Theatre,56
+2019 Aug,Week 3,Campus,86
+2019 Aug,Week 3,New,81
+2019 Aug,Week 4,LTB,86
+2019 Aug,Week 4,Monash,71
+2019 Aug,Week 4,Theatre,61
+2019 Aug,Week 4,Campus,96
+2019 Aug,Week 4,New,86
+2019 Sep,Week 1,LTB,52
+2019 Sep,Week 1,Monash,52
+2019 Sep,Week 1,Theatre,42
+2019 Sep,Week 1,Campus,62
+2019 Sep,Week 1,New,67
+2019 Sep,Week 2,LTB,62
+2019 Sep,Week 2,Monash,57
+2019 Sep,Week 2,Theatre,47
+2019 Sep,Week 2,Campus,72
+2019 Sep,Week 2,New,72
+2019 Sep,Week 3,LTB,72
+2019 Sep,Week 3,Monash,62
+2019 Sep,Week 3,Theatre,52
+2019 Sep,Week 3,Campus,82
+2019 Sep,Week 3,New,77
+2019 Sep,Week 4,LTB,82
+2019 Sep,Week 4,Monash,67
+2019 Sep,Week 4,Theatre,57
+2019 Sep,Week 4,Campus,92
+2019 Sep,Week 4,New,82
+2019 Oct,Week 1,LTB,50
+2019 Oct,Week 1,Monash,50
+2019 Oct,Week 1,Theatre,40
+2019 Oct,Week 1,Campus,60
+2019 Oct,Week 1,New,65
+2019 Oct,Week 2,LTB,60
+2019 Oct,Week 2,Monash,55
+2019 Oct,Week 2,Theatre,45
+2019 Oct,Week 2,Campus,70
+2019 Oct,Week 2,New,70
+2019 Oct,Week 3,LTB,70
+2019 Oct,Week 3,Monash,60
+2019 Oct,Week 3,Theatre,50
+2019 Oct,Week 3,Campus,80
+2019 Oct,Week 3,New,75
+2019 Oct,Week 4,LTB,80
+2019 Oct,Week 4,Monash,65
+2019 Oct,Week 4,Theatre,55
+2019 Oct,Week 4,Campus,90
+2019 Oct,Week 4,New,80
+2019 Nov,Week 1,LTB,44
+2019 Nov,Week 1,Monash,44
+2019 Nov,Week 1,Theatre,34
+2019 Nov,Week 1,Campus,54
+2019 Nov,Week 1,New,59
+2019 Nov,Week 2,LTB,54
+2019 Nov,Week 2,Monash,49
+2019 Nov,Week 2,Theatre,39
+2019 Nov,Week 2,Campus,64
+2019 Nov,Week 2,New,64
+2019 Nov,Week 3,LTB,64
+2019 Nov,Week 3,Monash,54
+2019 Nov,Week 3,Theatre,44
+2019 Nov,Week 3,Campus,74
+2019 Nov,Week 3,New,69
+2019 Nov,Week 4,LTB,74
+2019 Nov,Week 4,Monash,59
+2019 Nov,Week 4,Theatre,49
+2019 Nov,Week 4,Campus,84
+2019 Nov,Week 4,New,74
+2019 Dec,Week 1,LTB,42
+2019 Dec,Week 1,Monash,42
+2019 Dec,Week 1,Theatre,32
+2019 Dec,Week 1,Campus,52
+2019 Dec,Week 1,New,57
+2019 Dec,Week 2,LTB,52
+2019 Dec,Week 2,Monash,47
+2019 Dec,Week 2,Theatre,37
+2019 Dec,Week 2,Campus,62
+2019 Dec,Week 2,New,62
+2019 Dec,Week 3,LTB,62
+2019 Dec,Week 3,Monash,52
+2019 Dec,Week 3,Theatre,42
+2019 Dec,Week 3,Campus,72
+2019 Dec,Week 3,New,67
+2019 Dec,Week 4,LTB,72
+2019 Dec,Week 4,Monash,57
+2019 Dec,Week 4,Theatre,47
+2019 Dec,Week 4,Campus,82
+2019 Dec,Week 4,New,72
+2019 Jul Week 4,Mon,LTB,70
+2019 Jul Week 4,Tue,LTB,65
+2019 Jul Week 4,Wed,LTB,60
+2019 Jul Week 4,Thu,LTB,60
+2019 Jul Week 4,Fri,LTB,50
+2019 Jul Week 4,Sat,LTB,20
+2019 Jul Week 4,Sun,LTB,20
+2019 Jul Week 4,Mon,Monash,30
+2019 Jul Week 4,Tue,Monash,40
+2019 Jul Week 4,Wed,Monash,40
+2019 Jul Week 4,Thu,Monash,30
+2019 Jul Week 4,Fri,Monash,20
+2019 Jul Week 4,Sat,Monash,40
+2019 Jul Week 4,Sun,Monash,30
+2019 Jul Week 4,Mon,Theatre,10
+2019 Jul Week 4,Tue,Theatre,15
+2019 Jul Week 4,Wed,Theatre,15
+2019 Jul Week 4,Thu,Theatre,10
+2019 Jul Week 4,Fri,Theatre,15
+2019 Jul Week 4,Sat,Theatre,25
+2019 Jul Week 4,Sun,Theatre,20
+2019 Jul Week 4,Mon,Campus,70
+2019 Jul Week 4,Tue,Campus,70
+2019 Jul Week 4,Wed,Campus,80
+2019 Jul Week 4,Thu,Campus,70
+2019 Jul Week 4,Fri,Campus,65
+2019 Jul Week 4,Sat,Campus,40
+2019 Jul Week 4,Sun,Campus,30
+2019 Jul Week 4,Mon,New,60
+2019 Jul Week 4,Tue,New,65
+2019 Jul Week 4,Wed,New,70
+2019 Jul Week 4,Thu,New,65
+2019 Jul Week 4,Fri,New,60
+2019 Jul Week 4,Sat,New,50
+2019 Jul Week 4,Sun,New,50

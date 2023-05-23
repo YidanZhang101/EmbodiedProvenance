@@ -34,7 +34,7 @@ public class DataReplayManager : MonoBehaviour
     [HideInInspector] public List<string> targetLabels = new List<string>();
     [HideInInspector] public List<string> targetLayers = new List<string>();
 
-    [Range(0, 1)] public float TimeScrubber;
+    [Range(0, 1)] public static float TimeScrubber;
     [Range(0, 10)] public float SpeedMultiplier = 1;
     public float CurrentTime = 0;
     public float CurrentTimestamp = 0;
@@ -45,6 +45,7 @@ public class DataReplayManager : MonoBehaviour
 
     public bool isLiveReplayRunning = false;
     private bool isLiveReplayPaused = false;
+    public static bool isLiveReplayStopped = false;
 
     private float prevTimeScrubber;
     private float prevSpeedMultiplier;
@@ -74,6 +75,10 @@ public class DataReplayManager : MonoBehaviour
     GameObject theLabel;
     GameObject theLayer;
 
+    float pausedTime = 0;
+
+    bool logStopped = false;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -93,24 +98,45 @@ public class DataReplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // For debugging
-        //if (StartReplay && !isLiveReplayRunning)
-        //    StartLiveReplay();
+
+    }
+
+    public void StopDataLog()
+    {
+        if (DataLoggingManager.IsLogging)
+        {
+            DataLoggingManager.StopLogging();
+            logStopped = true;
+            Debug.Log("logStopped");
+        }
     }
 
     public void StartLiveReplay()
     {
-        //DataLoggingManager.StopLogging();
-        AddDataToDic();
-        if (!isLiveReplayRunning)
+        StopDataLog();
+        if (logStopped)
         {
-            isLiveReplayPaused = false;
-            StartCoroutine(Replay());
+            AddDataToDic();
+            if (!isLiveReplayRunning)
+            {
+                isLiveReplayPaused = false;
+                StartCoroutine("Replay");
+            }
+            else if (isLiveReplayPaused)
+            {
+                isLiveReplayPaused = false;
+            }
         }
-        else if (isLiveReplayPaused)
-        {
-            isLiveReplayPaused = false;
-        }
+        //AddDataToDic();
+        //if (!isLiveReplayRunning)
+        //{
+        //    isLiveReplayPaused = false;
+        //    StartCoroutine("Replay");
+        //}
+        //else if (isLiveReplayPaused)
+        //{
+        //    isLiveReplayPaused = false;
+        //}
     }
 
     public IEnumerator Replay()
@@ -121,8 +147,8 @@ public class DataReplayManager : MonoBehaviour
         Renderer[] _renderer = allElements.GetComponentsInChildren<Renderer>();
         foreach (Renderer childRenderer in _renderer)
         {
-            if (childRenderer.gameObject.GetComponent<Interactable>() == null)
-                childRenderer.enabled = false;
+            //if (childRenderer.gameObject.GetComponent<Interactable>() == null)
+            childRenderer.enabled = false;
         }
 
         GameObject[] lines = GameObject.FindGameObjectsWithTag("line");
@@ -132,7 +158,6 @@ public class DataReplayManager : MonoBehaviour
         GameObject[] links = GameObject.FindGameObjectsWithTag("tableLink");
         foreach (GameObject link in links)
             link.transform.position = new Vector3(link.transform.position.x, link.transform.position.y - 20f, link.transform.position.z);
-
 
         Annotations = new Dictionary<int, AnnotationManager>();
 
@@ -173,6 +198,7 @@ public class DataReplayManager : MonoBehaviour
             else if (isLiveReplayPaused)
             {
                 i--;
+                pausedTime = TimeScrubber;
                 stopwatch.Restart();
                 yield return null;
                 continue;
@@ -259,10 +285,10 @@ public class DataReplayManager : MonoBehaviour
                     {
                         SetObjectWithTag("Tabletop", values);
                         targetObjects.Add(theObject.name);
-
                     }
                 }
             }
+
             // Set objects
             List<GameObject> visitedObjects = new List<GameObject>();
             if (objectDic.ContainsKey(CurrentTimestamp))
@@ -274,18 +300,6 @@ public class DataReplayManager : MonoBehaviour
                     ReplayObjects("Pedestal", values);
                     ReplayObjects("Line", values);
                     ReplayObjects("TableLink", values);
-
-                    //string objectName = values[1];
-                    //if (!targetObjects.Contains(objectName))
-                    //{
-                    //    SetObjectWithTag("Tabletop", values);
-                    //    //SetObjectWithTag("Pedestal", values);
-                    //    //SetObjectWithTag("Line", values);
-
-                    //    //Debug.Log("Create " + theObject.name);
-                    //    targetObjects.Add(theObject.name);
-
-                    //}
                 }
             }
             //Destroy all unused objects
@@ -372,6 +386,10 @@ public class DataReplayManager : MonoBehaviour
                     if (label != null)
                     {
                         label.GetComponent<Renderer>().enabled = true;
+                        label.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = true; // enable render for the cube
+                        //Renderer[] label_renderer = label.GetComponentsInChildren<Renderer>();
+                        //foreach (Renderer childRenderer in label_renderer)
+                        //    childRenderer.enabled = true;
                         label.transform.position = StringToVector3(values[3]);
                         label.transform.rotation = StringToQuaternion(values[4]);
                         label.transform.localScale = StringToVector3(values[5]);
@@ -488,6 +506,21 @@ public class DataReplayManager : MonoBehaviour
         isLiveReplayPaused = false;
         stopwatch.Reset();
 
+        Transform playerPos = GameObject.Find("Player").transform;
+        if (!isLiveReplayStopped)
+        {
+            playerPos.position = new Vector3(playerPos.position.x, playerPos.position.y + 1.2f, playerPos.position.z);
+            Transform playerBase = playerPos.GetChild(3);
+            playerBase.localRotation = new Quaternion(0, 0, 0, 0);
+            playerBase.localPosition = new Vector3(0, playerBase.localPosition.y, 0);
+        }
+        else
+        {
+            playerPos.position = new Vector3(playerPos.position.x, playerPos.position.y - 10f, playerPos.position.z);
+            //GameObject.Find("TablesOnTimeline").transform.position = new Vector3(4.345f, 3.56f, -6.33f);
+            //Debug.Log("TableOnTimeline pos x: " + GameObject.Find("TablesOnTimeline").transform.position.x);
+        }
+
         //allElements.gameObject.SetActive(true);
         //_renderer = allElements.GetComponentsInChildren<Renderer>();
         //foreach (Renderer childRenderer in _renderer) //isue with tabletops
@@ -497,31 +530,37 @@ public class DataReplayManager : MonoBehaviour
         //}
     }
 
-    //public void SetTransparency()
-    //{
-    //    float[] timestamps = playerDic.Keys.Distinct().OrderBy(x => x).ToArray();
-    //    float totalTime = timestamps.Max();
-    //    float newTime = TimeScrubber * totalTime;
-    //    float newTimestamp = timestamps.Aggregate((x, y) => Math.Abs(x - newTime) < Math.Abs(y - newTime) ? x : y);
-    //    foreach (float theTime in objectDic.Keys)
-    //    {
-    //        if(theTime >= newTimestamp)
-    //        {
-    //            foreach (string[] values in objectDic[theTime])
-    //            {
-    //                string objectName = values[1];
-    //                if (!objectName.Contains("Tabletop"))
-    //                {
-    //                    GameObject.Find(objectName).GetComponent<Renderer>().enabled = false;
-    //                }                   
-    //            }
-    //        }
-    //    }
-    //}
-
     public void PauseLiveReplay()
     {
-        isLiveReplayPaused = true;
+        GameObject PauseButton = GameObject.Find("PauseReplayButton");
+        Transform ButtonContent = PauseButton.transform.GetChild(0);
+        int pressedCount = PauseButton.GetComponent<Interactable>().ClickCount;
+        if (pressedCount % 2 == 0)
+        {
+            isLiveReplayPaused = true;
+            ButtonContent.GetChild(0).gameObject.SetActive(false);
+            ButtonContent.GetChild(1).gameObject.SetActive(true);
+        }
+        else
+        {
+            isLiveReplayPaused = false;
+            TimeScrubber = pausedTime;
+            ButtonContent.GetChild(0).gameObject.SetActive(true);
+            ButtonContent.GetChild(1).gameObject.SetActive(false);
+        }
+        //if(pressedCount > 0)
+        //{
+
+        //}       
+    }
+
+    public void StopLiveReplay()
+    {
+        isLiveReplayPaused = false;
+        TimeScrubber = 1;
+        isLiveReplayStopped = true;
+        Transform playerPos = GameObject.Find("Player").transform;
+        playerPos.position = new Vector3(playerPos.position.x, playerPos.position.y - 10f, playerPos.position.z);
     }
 
     public void ReplayObjects(string startName, string[] values)
@@ -604,6 +643,7 @@ public class DataReplayManager : MonoBehaviour
             for(int i = 0; i < 6; i++)
                 layer.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = true;
             layer.transform.GetChild(7).gameObject.GetComponent<Renderer>().enabled = true;
+            layer.transform.GetChild(7).GetChild(0).gameObject.GetComponent<Renderer>().enabled = true; // render for timelabel cube
             layer.transform.GetChild(6).GetChild(0).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
             layer.transform.position = StringToVector3(values[3]);
             layer.transform.rotation = StringToQuaternion(values[4]);

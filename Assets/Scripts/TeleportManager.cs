@@ -10,7 +10,7 @@ public class TeleportManager : MonoBehaviour
 
     void Start()
     {
-        mrtkRig = GameObject.FindGameObjectWithTag("MRTKRig");
+        mrtkRig = GameObject.FindGameObjectWithTag("MRTKRig"); //the camera
     }
 
     // Update is called once per frame
@@ -23,12 +23,6 @@ public class TeleportManager : MonoBehaviour
     {
         Vector3 originalPosition = mrtkRig.transform.position;
         mrtkRig.transform.position = new Vector3(4.3f, 2.8f, -6.7f);
-
-        foreach (KeyValuePair<string, Vector3> pair in LayerManager.positionForTimelineTables)
-        {
-            GameObject theTimelineTable = GameObject.Find(pair.Key);
-            theTimelineTable.transform.localPosition = new Vector3(pair.Value.x, pair.Value.y, pair.Value.z);
-        }
     }
 
     public void TeleportAmongTables()

@@ -1,0 +1,449 @@
+BlockName	Layer	Consumption
+Block_LTB	AllElements	80
+Block_Monash_Sport	AllElements	60
+Block_Theatre	AllElements	40
+Block_Campus_Centre	AllElements	80
+Block_New_Horizons	AllElements	70
+Block_LTB	1	80
+Block_Monash_Sport	1	60
+Block_Theatre	1	40
+Block_Campus_Centre	1	80
+Block_New_Horizons	1	70
+Block_LTB (1)	AllElements	70
+Block_Monash_Sport (1)	AllElements	50
+Block_Theatre (1)	AllElements	30
+Block_Campus_Centre (1)	AllElements	70
+Block_New_Horizons (1)	AllElements	70
+Block_LTB	2	70
+Block_Monash_Sport	2	50
+Block_Theatre	2	30
+Block_Campus_Centre	2	70
+Block_New_Horizons	2	70
+Block_LTB	3	40
+Block_Monash_Sport	3	30
+Block_Theatre	3	10
+Block_Campus_Centre	3	25
+Block_New_Horizons	3	50
+Block_LTB	4	75
+Block_Monash_Sport	4	55
+Block_Theatre	4	25
+Block_Campus_Centre	4	80
+Block_New_Horizons	4	60
+Block_LTB	5	60
+Block_Monash_Sport	5	40
+Block_Theatre	5	15
+Block_Campus_Centre	5	80
+Block_New_Horizons	5	70
+Block_LTB	6	20
+Block_Monash_Sport	6	40
+Block_Theatre	6	25
+Block_Campus_Centre	6	40
+Block_New_Horizons	6	50
+Block_LTB	7	50
+Block_Monash_Sport	7	35
+Block_Theatre	7	20
+Block_Campus_Centre	7	40
+Block_New_Horizons	7	50
+Block_LTB	8	30
+Block_Monash_Sport	8	25
+Block_Theatre	8	15
+Block_Campus_Centre	8	30
+Block_New_Horizons	8	40
+Block_LTB	9	20
+Block_Monash_Sport	9	25
+Block_Theatre	9	5
+Block_Campus_Centre	9	15
+Block_New_Horizons	9	30
+Block_LTB	10	40
+Block_Monash_Sport	10	45
+Block_Theatre	10	20
+Block_Campus_Centre	10	35
+Block_New_Horizons	10	50
+Block_LTB	11	30
+Block_Monash_Sport	11	40
+Block_Theatre	11	10
+Block_Campus_Centre	11	20
+Block_New_Horizons	11	35
+Block_LTB	12	30
+Block_Monash_Sport	12	40
+Block_Theatre	12	10
+Block_Campus_Centre	12	20
+Block_New_Horizons	12	35
+Block_LTB	13	15
+Block_Monash_Sport	13	15
+Block_Theatre	13	5
+Block_Campus_Centre	13	10
+Block_New_Horizons	13	20
+Block_LTB	14	35
+Block_Monash_Sport	14	40
+Block_Theatre	14	15
+Block_Campus_Centre	14	30
+Block_New_Horizons	14	40
+Block_LTB Clone_0_month_0	1	50
+Block_LTB Clone_0_month_1	1	60
+Block_LTB Clone_0_month_2	1	85
+Block_LTB Clone_0_month_3	1	75
+Block_LTB Clone_0_month_4	1	80
+Block_LTB Clone_0_month_5	1	60
+Block_LTB Clone_0_month_6	1	70
+Block_LTB Clone_0_month_7	1	80
+Block_LTB Clone_0_month_8	1	80
+Block_LTB Clone_0_month_9	1	70
+Block_LTB Clone_0_month_10	1	50
+Block_LTB Clone_0_month_11	1	40
+Block_Monash_Sport Clone_0_month_0	1	35
+Block_Monash_Sport Clone_0_month_1	1	40
+Block_Monash_Sport Clone_0_month_2	1	50
+Block_Monash_Sport Clone_0_month_3	1	50
+Block_Monash_Sport Clone_0_month_4	1	40
+Block_Monash_Sport Clone_0_month_5	1	60
+Block_Monash_Sport Clone_0_month_6	1	50
+Block_Monash_Sport Clone_0_month_7	1	50
+Block_Monash_Sport Clone_0_month_8	1	50
+Block_Monash_Sport Clone_0_month_9	1	40
+Block_Monash_Sport Clone_0_month_10	1	55
+Block_Monash_Sport Clone_0_month_11	1	30
+Block_Theatre Clone_0_month_0	1	30
+Block_Theatre Clone_0_month_1	1	30
+Block_Theatre Clone_0_month_2	1	40
+Block_Theatre Clone_0_month_3	1	35
+Block_Theatre Clone_0_month_4	1	35
+Block_Theatre Clone_0_month_5	1	40
+Block_Theatre Clone_0_month_6	1	30
+Block_Theatre Clone_0_month_7	1	35
+Block_Theatre Clone_0_month_8	1	30
+Block_Theatre Clone_0_month_9	1	30
+Block_Theatre Clone_0_month_10	1	45
+Block_Theatre Clone_0_month_11	1	10
+Block_Campus_Centre Clone_0_month_0	1	60
+Block_Campus_Centre Clone_0_month_1	1	70
+Block_Campus_Centre Clone_0_month_2	1	80
+Block_Campus_Centre Clone_0_month_3	1	70
+Block_Campus_Centre Clone_0_month_4	1	90
+Block_Campus_Centre Clone_0_month_5	1	60
+Block_Campus_Centre Clone_0_month_6	1	70
+Block_Campus_Centre Clone_0_month_7	1	80
+Block_Campus_Centre Clone_0_month_8	1	90
+Block_Campus_Centre Clone_0_month_9	1	80
+Block_Campus_Centre Clone_0_month_10	1	60
+Block_Campus_Centre Clone_0_month_11	1	25
+Block_New_Horizons Clone_0_month_0	1	60
+Block_New_Horizons Clone_0_month_1	1	60
+Block_New_Horizons Clone_0_month_2	1	60
+Block_New_Horizons Clone_0_month_3	1	60
+Block_New_Horizons Clone_0_month_4	1	60
+Block_New_Horizons Clone_0_month_5	1	60
+Block_New_Horizons Clone_0_month_6	1	70
+Block_New_Horizons Clone_0_month_7	1	60
+Block_New_Horizons Clone_0_month_8	1	60
+Block_New_Horizons Clone_0_month_9	1	60
+Block_New_Horizons Clone_0_month_10	1	60
+Block_New_Horizons Clone_0_month_11	1	50
+Block_LTB Clone_2_week_0	2	50
+Block_LTB Clone_2_week_1	2	50
+Block_LTB Clone_2_week_2	2	60
+Block_LTB Clone_2_week_3	2	75
+Block_Monash_Sport Clone_2_week_0	2	40
+Block_Monash_Sport Clone_2_week_1	2	40
+Block_Monash_Sport Clone_2_week_2	2	40
+Block_Monash_Sport Clone_2_week_3	2	55
+Block_Theatre Clone_2_week_0	2	30
+Block_Theatre Clone_2_week_1	2	30
+Block_Theatre Clone_2_week_2	2	35
+Block_Theatre Clone_2_week_3	2	25
+Block_Campus_Centre Clone_2_week_0	2	50
+Block_Campus_Centre Clone_2_week_1	2	50
+Block_Campus_Centre Clone_2_week_2	2	70
+Block_Campus_Centre Clone_2_week_3	2	80
+Block_New_Horizons Clone_2_week_0	2	55
+Block_New_Horizons Clone_2_week_1	2	60
+Block_New_Horizons Clone_2_week_2	2	60
+Block_New_Horizons Clone_2_week_3	2	60
+Block_LTB Clone_2_day_0	4	70
+Block_LTB Clone_2_day_1	4	65
+Block_LTB Clone_2_day_2	4	60
+Block_LTB Clone_2_day_3	4	60
+Block_LTB Clone_2_day_4	4	50
+Block_LTB Clone_2_day_5	4	20
+Block_LTB Clone_2_day_6	4	20
+Block_Monash_Sport Clone_2_day_0	4	30
+Block_Monash_Sport Clone_2_day_1	4	40
+Block_Monash_Sport Clone_2_day_2	4	40
+Block_Monash_Sport Clone_2_day_3	4	30
+Block_Monash_Sport Clone_2_day_4	4	20
+Block_Monash_Sport Clone_2_day_5	4	40
+Block_Monash_Sport Clone_2_day_6	4	30
+Block_Theatre Clone_2_day_0	4	10
+Block_Theatre Clone_2_day_1	4	15
+Block_Theatre Clone_2_day_2	4	15
+Block_Theatre Clone_2_day_3	4	10
+Block_Theatre Clone_2_day_4	4	15
+Block_Theatre Clone_2_day_5	4	25
+Block_Theatre Clone_2_day_6	4	20
+Block_Campus_Centre Clone_2_day_0	4	70
+Block_Campus_Centre Clone_2_day_1	4	70
+Block_Campus_Centre Clone_2_day_2	4	80
+Block_Campus_Centre Clone_2_day_3	4	70
+Block_Campus_Centre Clone_2_day_4	4	65
+Block_Campus_Centre Clone_2_day_5	4	40
+Block_Campus_Centre Clone_2_day_6	4	30
+Block_New_Horizons Clone_2_day_0	4	60
+Block_New_Horizons Clone_2_day_1	4	65
+Block_New_Horizons Clone_2_day_2	4	70
+Block_New_Horizons Clone_2_day_3	4	65
+Block_New_Horizons Clone_2_day_4	4	60
+Block_New_Horizons Clone_2_day_5	4	50
+Block_New_Horizons Clone_2_day_6	4	50
+Block_LTB Clone_2_month_0	7	50
+Block_LTB Clone_2_month_1	7	60
+Block_LTB Clone_2_month_2	7	70
+Block_LTB Clone_2_month_3	7	20
+Block_LTB Clone_2_month_4	7	30
+Block_LTB Clone_2_month_5	7	35
+Block_LTB Clone_2_month_6	7	30
+Block_LTB Clone_2_month_7	7	20
+Block_LTB Clone_2_month_8	7	15
+Block_LTB Clone_2_month_9	7	25
+Block_LTB Clone_2_month_10	7	40
+Block_LTB Clone_2_month_11	7	20
+Block_Monash_Sport Clone_2_month_0	7	40
+Block_Monash_Sport Clone_2_month_1	7	40
+Block_Monash_Sport Clone_2_month_2	7	50
+Block_Monash_Sport Clone_2_month_3	7	10
+Block_Monash_Sport Clone_2_month_4	7	20
+Block_Monash_Sport Clone_2_month_5	7	25
+Block_Monash_Sport Clone_2_month_6	7	25
+Block_Monash_Sport Clone_2_month_7	7	10
+Block_Monash_Sport Clone_2_month_8	7	10
+Block_Monash_Sport Clone_2_month_9	7	15
+Block_Monash_Sport Clone_2_month_10	7	45
+Block_Monash_Sport Clone_2_month_11	7	40
+Block_Theatre Clone_2_month_0	7	30
+Block_Theatre Clone_2_month_1	7	30
+Block_Theatre Clone_2_month_2	7	35
+Block_Theatre Clone_2_month_3	7	10
+Block_Theatre Clone_2_month_4	7	10
+Block_Theatre Clone_2_month_5	7	20
+Block_Theatre Clone_2_month_6	7	15
+Block_Theatre Clone_2_month_7	7	10
+Block_Theatre Clone_2_month_8	7	10
+Block_Theatre Clone_2_month_9	7	10
+Block_Theatre Clone_2_month_10	7	20
+Block_Theatre Clone_2_month_11	7	20
+Block_Campus_Centre Clone_2_month_0	7	60
+Block_Campus_Centre Clone_2_month_1	7	60
+Block_Campus_Centre Clone_2_month_2	7	70
+Block_Campus_Centre Clone_2_month_3	7	20
+Block_Campus_Centre Clone_2_month_4	7	30
+Block_Campus_Centre Clone_2_month_5	7	40
+Block_Campus_Centre Clone_2_month_6	7	30
+Block_Campus_Centre Clone_2_month_7	7	20
+Block_Campus_Centre Clone_2_month_8	7	10
+Block_Campus_Centre Clone_2_month_9	7	15
+Block_Campus_Centre Clone_2_month_10	7	35
+Block_Campus_Centre Clone_2_month_11	7	30
+Block_New_Horizons Clone_2_month_0	7	60
+Block_New_Horizons Clone_2_month_1	7	60
+Block_New_Horizons Clone_2_month_2	7	60
+Block_New_Horizons Clone_2_month_3	7	30
+Block_New_Horizons Clone_2_month_4	7	30
+Block_New_Horizons Clone_2_month_5	7	40
+Block_New_Horizons Clone_2_month_6	7	40
+Block_New_Horizons Clone_2_month_7	7	30
+Block_New_Horizons Clone_2_month_8	7	30
+Block_New_Horizons Clone_2_month_9	7	30
+Block_New_Horizons Clone_2_month_10	7	50
+Block_New_Horizons Clone_2_month_11	7	40
+Block_LTB Clone_2_week_0	8	15
+Block_LTB Clone_2_week_1	8	15
+Block_LTB Clone_2_week_2	8	15
+Block_LTB Clone_2_week_3	8	20
+Block_Monash_Sport Clone_2_week_0	8	30
+Block_Monash_Sport Clone_2_week_1	8	20
+Block_Monash_Sport Clone_2_week_2	8	20
+Block_Monash_Sport Clone_2_week_3	8	25
+Block_Theatre Clone_2_week_0	8	10
+Block_Theatre Clone_2_week_1	8	5
+Block_Theatre Clone_2_week_2	8	5
+Block_Theatre Clone_2_week_3	8	5
+Block_Campus_Centre Clone_2_week_0	8	30
+Block_Campus_Centre Clone_2_week_1	8	15
+Block_Campus_Centre Clone_2_week_2	8	15
+Block_Campus_Centre Clone_2_week_3	8	15
+Block_New_Horizons Clone_2_week_0	8	35
+Block_New_Horizons Clone_2_week_1	8	30
+Block_New_Horizons Clone_2_week_2	8	30
+Block_New_Horizons Clone_2_week_3	8	30
+Block_LTB Clone_2_day_0	9	10
+Block_LTB Clone_2_day_1	9	15
+Block_LTB Clone_2_day_2	9	15
+Block_LTB Clone_2_day_3	9	15
+Block_LTB Clone_2_day_4	9	10
+Block_LTB Clone_2_day_5	9	10
+Block_LTB Clone_2_day_6	9	10
+Block_Monash_Sport Clone_2_day_0	9	15
+Block_Monash_Sport Clone_2_day_1	9	15
+Block_Monash_Sport Clone_2_day_2	9	15
+Block_Monash_Sport Clone_2_day_3	9	15
+Block_Monash_Sport Clone_2_day_4	9	15
+Block_Monash_Sport Clone_2_day_5	9	20
+Block_Monash_Sport Clone_2_day_6	9	20
+Block_Theatre Clone_2_day_0	9	5
+Block_Theatre Clone_2_day_1	9	5
+Block_Theatre Clone_2_day_2	9	5
+Block_Theatre Clone_2_day_3	9	5
+Block_Theatre Clone_2_day_4	9	8
+Block_Theatre Clone_2_day_5	9	5
+Block_Theatre Clone_2_day_6	9	5
+Block_Campus_Centre Clone_2_day_0	9	10
+Block_Campus_Centre Clone_2_day_1	9	10
+Block_Campus_Centre Clone_2_day_2	9	10
+Block_Campus_Centre Clone_2_day_3	9	10
+Block_Campus_Centre Clone_2_day_4	9	10
+Block_Campus_Centre Clone_2_day_5	9	10
+Block_Campus_Centre Clone_2_day_6	9	10
+Block_New_Horizons Clone_2_day_0	9	20
+Block_New_Horizons Clone_2_day_1	9	20
+Block_New_Horizons Clone_2_day_2	9	20
+Block_New_Horizons Clone_2_day_3	9	20
+Block_New_Horizons Clone_2_day_4	9	20
+Block_New_Horizons Clone_2_day_5	9	20
+Block_New_Horizons Clone_2_day_6	9	20
+Block_LTB Clone_2_week_0	10	20
+Block_LTB Clone_2_week_1	10	30
+Block_LTB Clone_2_week_2	10	35
+Block_LTB Clone_2_week_3	10	30
+Block_Monash_Sport Clone_2_week_0	10	30
+Block_Monash_Sport Clone_2_week_1	10	40
+Block_Monash_Sport Clone_2_week_2	10	40
+Block_Monash_Sport Clone_2_week_3	10	45
+Block_Theatre Clone_2_week_0	10	10
+Block_Theatre Clone_2_week_1	10	10
+Block_Theatre Clone_2_week_2	10	15
+Block_Theatre Clone_2_week_3	10	10
+Block_Campus_Centre Clone_2_week_0	10	20
+Block_Campus_Centre Clone_2_week_1	10	20
+Block_Campus_Centre Clone_2_week_2	10	30
+Block_Campus_Centre Clone_2_week_3	10	30
+Block_New_Horizons Clone_2_week_0	10	40
+Block_New_Horizons Clone_2_week_1	10	35
+Block_New_Horizons Clone_2_week_2	10	40
+Block_New_Horizons Clone_2_week_3	10	40
+Block_LTB Clone_2_day_0	11	30
+Block_LTB Clone_2_day_1	11	40
+Block_LTB Clone_2_day_2	11	40
+Block_LTB Clone_2_day_3	11	30
+Block_LTB Clone_2_day_4	11	30
+Block_LTB Clone_2_day_5	11	20
+Block_LTB Clone_2_day_6	11	20
+Block_Monash_Sport Clone_2_day_0	11	35
+Block_Monash_Sport Clone_2_day_1	11	40
+Block_Monash_Sport Clone_2_day_2	11	45
+Block_Monash_Sport Clone_2_day_3	11	40
+Block_Monash_Sport Clone_2_day_4	11	40
+Block_Monash_Sport Clone_2_day_5	11	35
+Block_Monash_Sport Clone_2_day_6	11	30
+Block_Theatre Clone_2_day_0	11	10
+Block_Theatre Clone_2_day_1	11	10
+Block_Theatre Clone_2_day_2	11	10
+Block_Theatre Clone_2_day_3	11	10
+Block_Theatre Clone_2_day_4	11	15
+Block_Theatre Clone_2_day_5	11	10
+Block_Theatre Clone_2_day_6	11	10
+Block_Campus_Centre Clone_2_day_0	11	25
+Block_Campus_Centre Clone_2_day_1	11	30
+Block_Campus_Centre Clone_2_day_2	11	20
+Block_Campus_Centre Clone_2_day_3	11	20
+Block_Campus_Centre Clone_2_day_4	11	30
+Block_Campus_Centre Clone_2_day_5	11	15
+Block_Campus_Centre Clone_2_day_6	11	15
+Block_New_Horizons Clone_2_day_0	11	30
+Block_New_Horizons Clone_2_day_1	11	30
+Block_New_Horizons Clone_2_day_2	11	35
+Block_New_Horizons Clone_2_day_3	11	35
+Block_New_Horizons Clone_2_day_4	11	30
+Block_New_Horizons Clone_2_day_5	11	30
+Block_New_Horizons Clone_2_day_6	11	30
+Block_LTB Clone_2_day_0	14	30
+Block_LTB Clone_2_day_1	14	30
+Block_LTB Clone_2_day_2	14	40
+Block_LTB Clone_2_day_3	14	30
+Block_LTB Clone_2_day_4	14	40
+Block_LTB Clone_2_day_5	14	25
+Block_LTB Clone_2_day_6	14	25
+Block_Monash_Sport Clone_2_day_0	14	40
+Block_Monash_Sport Clone_2_day_1	14	40
+Block_Monash_Sport Clone_2_day_2	14	45
+Block_Monash_Sport Clone_2_day_3	14	40
+Block_Monash_Sport Clone_2_day_4	14	30
+Block_Monash_Sport Clone_2_day_5	14	35
+Block_Monash_Sport Clone_2_day_6	14	40
+Block_Theatre Clone_2_day_0	14	10
+Block_Theatre Clone_2_day_1	14	10
+Block_Theatre Clone_2_day_2	14	10
+Block_Theatre Clone_2_day_3	14	15
+Block_Theatre Clone_2_day_4	14	10
+Block_Theatre Clone_2_day_5	14	10
+Block_Theatre Clone_2_day_6	14	10
+Block_Campus_Centre Clone_2_day_0	14	30
+Block_Campus_Centre Clone_2_day_1	14	30
+Block_Campus_Centre Clone_2_day_2	14	30
+Block_Campus_Centre Clone_2_day_3	14	25
+Block_Campus_Centre Clone_2_day_4	14	25
+Block_Campus_Centre Clone_2_day_5	14	20
+Block_Campus_Centre Clone_2_day_6	14	20
+Block_New_Horizons Clone_2_day_0	14	30
+Block_New_Horizons Clone_2_day_1	14	30
+Block_New_Horizons Clone_2_day_2	14	35
+Block_New_Horizons Clone_2_day_3	14	35
+Block_New_Horizons Clone_2_day_4	14	35
+Block_New_Horizons Clone_2_day_5	14	30
+Block_New_Horizons Clone_2_day_6	14	30
+Block_LTB Clone_4_hour_0	14	5
+Block_LTB Clone_4_hour_1	14	3
+Block_LTB Clone_4_hour_2	14	3
+Block_LTB Clone_4_hour_3	14	3
+Block_LTB Clone_4_hour_4	14	5
+Block_LTB Clone_4_hour_5	14	5
+Block_LTB Clone_4_hour_6	14	5
+Block_LTB Clone_4_hour_7	14	8
+Block_LTB Clone_4_hour_8	14	8
+Block_LTB Clone_4_hour_9	14	15
+Block_LTB Clone_4_hour_10	14	20
+Block_LTB Clone_4_hour_11	14	25
+Block_LTB Clone_4_hour_12	14	30
+Block_LTB Clone_4_hour_13	14	30
+Block_LTB Clone_4_hour_14	14	35
+Block_LTB Clone_4_hour_15	14	30
+Block_LTB Clone_4_hour_16	14	30
+Block_LTB Clone_4_hour_17	14	25
+Block_LTB Clone_4_hour_18	14	20
+Block_LTB Clone_4_hour_19	14	15
+Block_LTB Clone_4_hour_20	14	10
+Block_LTB Clone_4_hour_21	14	10
+Block_LTB Clone_4_hour_22	14	8
+Block_LTB Clone_4_hour_23	14	5
+Block_Monash_Sport Clone_4_hour_0	14	5
+Block_Monash_Sport Clone_4_hour_1	14	5
+Block_Monash_Sport Clone_4_hour_2	14	5
+Block_Monash_Sport Clone_4_hour_3	14	5
+Block_Monash_Sport Clone_4_hour_4	14	5
+Block_Monash_Sport Clone_4_hour_5	14	8
+Block_Monash_Sport Clone_4_hour_6	14	8
+Block_Monash_Sport Clone_4_hour_7	14	15
+Block_Monash_Sport Clone_4_hour_8	14	20
+Block_Monash_Sport Clone_4_hour_9	14	10
+Block_Monash_Sport Clone_4_hour_10	14	10
+Block_Monash_Sport Clone_4_hour_11	14	10
+Block_Monash_Sport Clone_4_hour_12	14	15
+Block_Monash_Sport Clone_4_hour_13	14	10
+Block_Monash_Sport Clone_4_hour_14	14	10
+Block_Monash_Sport Clone_4_hour_15	14	10
+Block_Monash_Sport Clone_4_hour_16	14	15
+Block_Monash_Sport Clone_4_hour_17	14	20
+Block_Monash_Sport Clone_4_hour_18	14	30
+Block_Monash_Sport Clone_4_hour_19	14	30
+Block_Monash_Sport Clone_4_hour_20	14	25
+Block_Monash_Sport Clone_4_hour_21	14	20
+Block_Monash_Sport Clone_4_hour_22	14	10
+Block_Monash_Sport Clone_4_hour_23	14	5

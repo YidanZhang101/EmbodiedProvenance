@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class Block : MonoBehaviour
     public static GameObject objectContainerInNewScene;
     public GameObject theBlock;
     public float gapBetweenBlocks = 0.04f;
+    //public TextAsset BlockConsumptionData;
+    //public Texture2D colorRamp;
 
     public static int duplicatedBlockCount = 0;
 
@@ -22,8 +25,10 @@ public class Block : MonoBehaviour
 
     int grabCount = 0;
     bool pedestalAdded = false;
-    //Vector3 centerPos;
     GameObject block;
+
+    List<string> blockDataLines = new List<string>();
+    Texture2D colorRamp; 
 
     private static Block instance;
     public static Block getInstance
@@ -40,7 +45,19 @@ public class Block : MonoBehaviour
 
     void Start()
     {
+        GetConsumptionData();
+        ReadColorRamp();
 
+        if (!gameObject.name.Contains("Clone"))
+        {
+            gameObject.GetComponent<Renderer>().material.color = GetColor(gameObject.transform, gameObject.transform.parent);
+        }
+
+        objectContainerInNewScene = GameObject.Find("AllElements");
+        if (PasteManager.sceneChanged)
+        {
+            objectContainerInNewScene = GameObject.Find("AllObjects");
+        }
     }
 
     // Update is called once per frame
@@ -107,6 +124,113 @@ public class Block : MonoBehaviour
         lineTooltip.gameObject.GetComponent<TextMeshPro>().text = label;
     }
 
+    public void GetConsumptionData()
+    {
+        string filepath = Application.streamingAssetsPath + "/ConsumptionData.csv";//Application.streamingAssetsPath + "/latin_square_small_vs_medium.csv"; //latin_square
+        StreamReader strReader = new StreamReader(filepath);
+        //StreamReader strReader = new StreamReader("Assets\\TaskText.csv"); 
+        bool endOfFile = false;
+        while (!endOfFile)
+        {
+            string data_String = strReader.ReadLine();
+            if (data_String == null)
+            {
+                endOfFile = true;
+                break;
+            }
+            blockDataLines.Add(data_String);
+        }
+    }
+
+    public void ReadColorRamp()
+    {
+        colorRamp = new Texture2D(16, 16, TextureFormat.PVRTC_RGBA4, false);
+        string filename = Application.streamingAssetsPath + "/continous colour.png";
+        var rawData = File.ReadAllBytes(filename);
+        //Texture2D colorRamp = new Texture2D(2, 2); // Create an empty Texture; size doesn't matter (she said)
+        colorRamp.LoadImage(rawData);
+
+        //colorRamp.LoadRawTextureData(rawData);
+        //colorRamp.Apply();
+    }
+
+    public Color GetColor(Transform blockName, Transform parent)//(string blockName,Transform parent)
+    {
+        string[] nameChar = blockName.name.Split('_');
+        string keyName = nameChar[1].Split()[0];
+
+        int consumption = 0;
+
+        //string[] blockDataLines = BlockConsumptionData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 1; i < blockDataLines.Count; i++)
+        {
+            //string[] lines = blockDataLines[i].Split('\t');
+            //if (blockName.Equals(lines[0]) & (parent.name.Equals("Layer_" + lines[1]) | parent.name.Equals(lines[1])))
+            //{
+            //    consumption = int.Parse(lines[2]);
+            //    break;
+            //}
+
+            string[] lines = blockDataLines[i].Split(',');
+            if (parent.name.Equals("AllElements") | parent.name.Contains("AllObjects"))
+            {
+                if (blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+                {
+                    consumption = int.Parse(lines[3]);
+                    break;
+                }
+            }
+            else if (blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals("2019") | blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals("2020"))
+            {
+                string TableInfo = GameObject.Find("Tabletop (1)").transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                if (TableInfo.Equals(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+                {
+                    consumption = int.Parse(lines[3]);
+                    break;
+                }
+            }
+            //else if (parent.name.Equals("Layer_1"))
+            //{
+            //    string TableInfo = "";
+            //    if(GameObject.Find("Tabletop_1") == null)
+            //        TableInfo = GameObject.Find("Tabletop (1)").transform.GetChild(0).GetComponent<TextMeshPro>().text;
+            //    else
+            //        TableInfo = GameObject.Find("Tabletop_1").transform.GetChild(0).GetComponent<TextMeshPro>().text;
+            //    if (TableInfo.Equals(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+            //    {
+            //        consumption = int.Parse(lines[3]);
+            //        break;
+            //    }    
+            //}
+            else
+            {
+                string commonNumber = parent.name.Split('_')[1];
+                string TableInfo = "";
+                string table_currentLevel = "Tabletop_" + commonNumber;
+                int preNum = int.Parse(commonNumber) - 1;
+                string table_preLevel = "Tabletop_" + preNum.ToString();
+                if (GameObject.Find(table_currentLevel) == null)
+                    TableInfo = GameObject.Find(table_preLevel).transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                else
+                    TableInfo = GameObject.Find(table_currentLevel).transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                if (TableInfo.Contains(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+                {
+                    consumption = int.Parse(lines[3]);
+                    break;
+                }
+            }
+        }
+        //normalise the value
+        float normalisedValue = consumption / 100f;
+
+        //interpolate pixel width
+        int w = (int)Mathf.Lerp(0, 1000f, normalisedValue);
+
+        //get pixel color
+        Color color = colorRamp.GetPixel(w, 0);
+        return color;
+    }
+
     private void CreateBlocks(int maxTimeCount, string tagName)
     {
         List<string[]> blocksForStretch = new List<string[]>();
@@ -123,6 +247,10 @@ public class Block : MonoBehaviour
             thisBlock.transform.localScale = theBlock.transform.localScale;
             thisBlock.transform.position = new Vector3(theBlock.transform.position.x, theBlock.transform.position.y + gapBetweenBlocks * timeCount, theBlock.transform.position.z);
             timeCount++;
+
+            //set block color
+            thisBlock.GetComponent<Renderer>().material.color = GetColor(thisBlock.transform, thisBlock.transform.parent);
+
             //undo/redo
             string[] addedBlock = { thisBlock.name, "true" };
             blocksForStretch.Add(addedBlock);
@@ -156,7 +284,7 @@ public class Block : MonoBehaviour
     }
     public void StretchBlock()
     {
-        Invoke(nameof(ShowBlocks), 1);
+        Invoke(nameof(ShowBlocks), 0.5f);
         grabCount = 0;
     }
 
@@ -187,20 +315,15 @@ public class Block : MonoBehaviour
         gameObject.transform.GetChild(2).gameObject.GetComponent<Renderer>().enabled = false;
     }
 
-    public void SetColour()
-    {
-
-    }
-
     public void AddPedestal()
     {
         if (!theBlock.name.Contains("Copy"))
         {
-            objectContainerInNewScene = GameObject.Find("AllElements");
-            if (PasteManager.sceneChanged)
-            {
-                objectContainerInNewScene = GameObject.Find("AllObjects");
-            }              
+            //objectContainerInNewScene = GameObject.Find("AllElements");
+            //if (PasteManager.sceneChanged)
+            //{
+            //    objectContainerInNewScene = GameObject.Find("AllObjects");
+            //}              
 
             GameObject clonePedestal = (GameObject)Instantiate(Resources.Load("Prefabs/Pedestal"));
             //clonePedestal.GetComponent<RemovePedestalContent>().timeForPedestal = gameObject.transform.GetChild(2).GetComponent<TextMeshPro>().text;

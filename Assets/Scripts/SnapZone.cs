@@ -9,6 +9,8 @@ public class SnapZone : MonoBehaviour
     //public float[] positionInSnapZone = { 0.649f,0.546f,-1.66f};
     //public float[] scaleInSnapZone = {0.96f,0.96f,0.96f };
 
+    public AudioSource AudioSource;
+
     public bool InSnapZone = false;
     public bool IsGrabbed = false;
 
@@ -18,12 +20,16 @@ public class SnapZone : MonoBehaviour
 
     public static Quaternion handleRotation;
 
+    public static string actionReq = "";
+
     Vector3 orginScale;
+    //Quaternion origRot;
 
     void Start()
     {
         orginScale = target.transform.localScale;
         //Spatula_In_SnapZone = GameObject.Find("Spatula_In_SnapZone");
+        //origRot = target.transform.rotation;
     }
 
     void Update()
@@ -33,19 +39,41 @@ public class SnapZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        InSnapZone = true;
+        if(gameObject.tag == "SnapZone")
+            InSnapZone = true;
+        else if (!InSnapZone)
+        {
+            if (gameObject.name.StartsWith("undo"))
+                actionReq = "undo";
+            if (gameObject.name.StartsWith("redo"))
+                actionReq = "redo";
+            //target.transform.rotation = origRot;
+            ActionRecoverManager.Undo_Redo();
+        }
     }
 
     void OnTriggerStay(Collider collider)
     {
-        InSnapZone = true;
-        target.transform.localScale = target_In_SnapZone.transform.localScale;
+        if (gameObject.tag == "SnapZone")
+        {
+            InSnapZone = true;
+            target.transform.localScale = target_In_SnapZone.transform.localScale;
+        }
+           
     }
 
     void OnTriggerExit(Collider collider)
     {
-        InSnapZone = false;
-        target.transform.localScale = orginScale;
+        if (gameObject.tag == "SnapZone")
+        {
+            InSnapZone = false;
+            target.transform.localScale = orginScale;
+
+            if (!target.name.Equals("Microphone"))
+                AudioSource.Play();
+        }
+        else
+            actionReq = "";
     }
 
     public void OnManipulation()

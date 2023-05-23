@@ -30,7 +30,7 @@ public class CopyManager : MonoBehaviour
     {
         int index = 0;
        
-        if (!tableSelected)
+        if (!tableSelected & collider.name.Equals("Spatula"))
         {
             if (gameObject.name.Contains("Table"))
             {
@@ -42,6 +42,11 @@ public class CopyManager : MonoBehaviour
                 else
                     CopiedObjects.Add("table_" + index, LayerManager.objectsDicForCopy[index]);
                 AddToPlate("big");
+
+                // add highlighter
+                transform.GetChild(8).GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
+                transform.GetChild(8).GetChild(0).gameObject.GetComponent<LEDNode>().enabled = true;
+                //TableHighlight();
             }
             else
             {
@@ -51,7 +56,6 @@ public class CopyManager : MonoBehaviour
             }
 
             tableSelected = true;
-            
         }
 
     }

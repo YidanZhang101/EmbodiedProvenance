@@ -6,6 +6,7 @@ using UnityEngine;
 public class AnnotationRecorder : MonoBehaviour
 {
     public string SpeechContent = "";
+    public AudioSource AudioSource;
     private int prevContentLenth = 0;
 
     public GameObject annotationPrefab;
@@ -25,8 +26,10 @@ public class AnnotationRecorder : MonoBehaviour
         annotationCounter += 1;
         annotationMg.SetTitle(annotationCounter.ToString());
         annotationMg.SetContent(SpeechContent);
-    }
 
+        AudioSource.Play();
+    }
+    
     private void Update()
     {
         if (annotationMg != null && SpeechContent.Length != prevContentLenth)
