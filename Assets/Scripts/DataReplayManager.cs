@@ -23,7 +23,7 @@ public class DataReplayManager : MonoBehaviour
     public TextAsset LabelData;
     public TextAsset LayerData;
     public TextAsset AnnotationData;
-    public TextAsset TableData;
+    //public TextAsset TableData;
 
     [Header("Static Replay Objects")]
     public GameObject Player;
@@ -147,8 +147,8 @@ public class DataReplayManager : MonoBehaviour
         Renderer[] _renderer = allElements.GetComponentsInChildren<Renderer>();
         foreach (Renderer childRenderer in _renderer)
         {
-            //if (childRenderer.gameObject.GetComponent<Interactable>() == null)
-            childRenderer.enabled = false;
+            if (childRenderer.gameObject.GetComponent<Interactable>() == null | childRenderer.gameObject.tag == "timelabelCube")
+                childRenderer.enabled = false;
         }
 
         GameObject[] lines = GameObject.FindGameObjectsWithTag("line");
@@ -715,6 +715,7 @@ public class DataReplayManager : MonoBehaviour
         }
 
         // Tables data
+        TextAsset TableData = Resources.Load("Replay/06_Christmas_Scene1_Tables") as TextAsset;
         string[] tableDataLines = TableData.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
         for (int i = 1; i < tableDataLines.Length; i++)
         {

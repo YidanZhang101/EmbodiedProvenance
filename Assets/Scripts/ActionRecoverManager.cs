@@ -40,7 +40,6 @@ public class ActionRecoverManager : MonoBehaviour
         //Debug.Log("default rotation: " + rotation);  //0.5000001
         if (actionDic != null)
         {
-            //if (rotation > 0.45)
             if (SnapZone.actionReq == "undo")
             {
                 //Debug.Log("undo");
@@ -62,7 +61,6 @@ public class ActionRecoverManager : MonoBehaviour
                     actionDic.Remove(actionDic.Count - 1);
                     pedestalOrLineCount++;
                 }
-                
             }
             //else if (rotation < 0.45)
             else if (SnapZone.actionReq == "redo") //(rotation < 0.45)

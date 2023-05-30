@@ -341,6 +341,7 @@ public class DataLoggingManager : MonoBehaviour
         foreach (GameObject target in targets)
         {
             targetObjects.Add(target);
+          
         }
     }
 

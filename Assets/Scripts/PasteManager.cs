@@ -51,18 +51,21 @@ public class PasteManager : MonoBehaviour
         GameObject[] itemsInCurrentScene = GameObject.FindGameObjectsWithTag(environmentName);
         foreach(GameObject item in itemsInCurrentScene)
         {
+            //item.SetActive(false);
             Renderer[] _renderer = item.transform.GetComponentsInChildren<Renderer>();
             foreach (Renderer childRenderer in _renderer)
                 childRenderer.enabled = false;
-
-            if (item.name.StartsWith("Line"))
-            {
-                linePosition = item.transform.position;
-                //item.transform.position = new Vector3(item.transform.position.x - 20, item.transform.position.y, item.transform.position.z);
-            }
-
         }
+
+        GameObject[] links = GameObject.FindGameObjectsWithTag("tableLink");
+        foreach (GameObject link in links)
+        {
+            linePosition = link.transform.position;
+            link.transform.position = new Vector3(link.transform.position.x, link.transform.position.y - 20, link.transform.position.z);
+        }
+
         sceneChanged = true;
+
         //GameObject.Find("TablesOnTimeline").transform.GetChild(0).gameObject.SetActive(false);
         //GameObject.Find("TablesOnTimeline").transform.GetChild(2).gameObject.SetActive(false);
 

@@ -11,7 +11,8 @@ public class PasteInNewScene : MonoBehaviour
 
     void Start()
     {
-        GetCopiedObjects();
+        if(!gameObject.name.Equals("Source_Scene"))
+            GetCopiedObjects();
         GameObject mrtkRig = GameObject.FindGameObjectWithTag("MRTKRig");
         mrtkRig.transform.position = new Vector3();
 
@@ -47,6 +48,8 @@ public class PasteInNewScene : MonoBehaviour
         //Transform objectContainerInNewScene = GameObject.Find("AllObjects").transform;
 
         string name = itemInfo[0];
+        GameObject sourceItem = GameObject.Find(name);
+
         if (itemInfo.Length == 6)
         {
             if (name.Contains("TimeLabel"))
@@ -56,13 +59,14 @@ public class PasteInNewScene : MonoBehaviour
                 SetTransform(newItem, itemInfo);
                 newItem.tag = itemInfo[5];
             }
-
+           
             if (name.Contains("Block_LTB"))
             {
                 GameObject newItem = (GameObject)Instantiate(Resources.Load("Prefabs/Block_LTB"));
                 newItem.transform.GetChild(2).GetComponent<TextMeshPro>().text = itemInfo[4];
                 SetTransform(newItem, itemInfo);
                 newItem.tag = itemInfo[5];
+                //newItem.GetComponent<Renderer>().material.color = Block.GetColor(sourceItem.transform, sourceItem.transform.parent);
             }
 
             if (name.Contains("Block_Monash_Sport"))
@@ -124,6 +128,9 @@ public class PasteInNewScene : MonoBehaviour
                 newItem.transform.rotation = StringToQuaternion(itemInfo[2]);
                 newItem.transform.localScale = StringToVector3(itemInfo[3]);
                 layerCount++;
+
+                for (int i = 0; i < 5; i++)
+                    newItem.transform.GetChild(i).GetComponent<Renderer>().material.color = Block.GetColor(sourceItem.transform.GetChild(i), sourceItem.transform.GetChild(i).parent);
             }
         }
 

@@ -27,8 +27,8 @@ public class Block : MonoBehaviour
     bool pedestalAdded = false;
     GameObject block;
 
-    List<string> blockDataLines = new List<string>();
-    Texture2D colorRamp; 
+    static List<string> blockDataLines = new List<string>();
+    static Texture2D colorRamp; 
 
     private static Block instance;
     public static Block getInstance
@@ -154,7 +154,7 @@ public class Block : MonoBehaviour
         //colorRamp.Apply();
     }
 
-    public Color GetColor(Transform blockName, Transform parent)//(string blockName,Transform parent)
+    public static Color GetColor(Transform blockName, Transform parent)//(string blockName,Transform parent)
     {
         string[] nameChar = blockName.name.Split('_');
         string keyName = nameChar[1].Split()[0];
