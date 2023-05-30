@@ -19,7 +19,14 @@ public class HandMenuItemControl : MonoBehaviour
     public void ControlItem()
     {
         if (gameObject.activeSelf)
+        {
+            //if (gameObject.name.Equals("Microphone"))
+            //{
+            //    AnnotationRecorder recordAnnotation = gameObject.GetComponent<AnnotationRecorder>();
+            //    recordAnnotation.LogAnnotation();
+            //}
             gameObject.SetActive(false);
+        }
         else
             gameObject.SetActive(true);
         

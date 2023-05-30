@@ -80,7 +80,7 @@ public class SnapZone : MonoBehaviour
     {
         IsGrabbed = true;
 
-        if (target.name.Equals("Microphone") && InSnapZone)
+        if (target.name.Equals("Microphone"))// && InSnapZone)
         {
             AnnotationRecorder recordAnnotation = target.GetComponent<AnnotationRecorder>();
             recordAnnotation.InitAnnotation(target.transform.position);
@@ -89,33 +89,39 @@ public class SnapZone : MonoBehaviour
 
     public void EndManipulation()
     {
-        if (InSnapZone)
+        //if (InSnapZone)
+        //{
+        //    target.transform.position = target_In_SnapZone.transform.position;
+        //    target.transform.rotation = target_In_SnapZone.transform.rotation;
+        //    target.transform.localScale = target_In_SnapZone.transform.localScale;
+        //    if (target.name.Equals("Lever"))
+        //    {
+        //        if (ActionRecoverManager.actionDic == null)
+        //            ActionRecoverManager.actionID = 0;
+        //        else
+        //        {
+        //            ActionRecoverManager.actionID = ActionRecoverManager.actionDic.Count - 1;
+        //            Debug.Log("action ID: " + ActionRecoverManager.actionID);
+        //        }
+        //    }
+        //    else if (target.name.Equals("Microphone"))
+        //    {
+        //        AnnotationRecorder recordAnnotation = target.GetComponent<AnnotationRecorder>();
+        //        recordAnnotation.LogAnnotation();
+        //    }
+        //}
+        //else
+        //{
+        //    target.transform.localScale = orginScale;
+        //    target.transform.rotation = new Quaternion(x, y, z, 0);
+        //    if (target.name.Equals("Lever"))
+        //        handleRotation = target.transform.GetChild(1).rotation;
+        //}
+
+        if (target.name.Equals("Microphone"))
         {
-            target.transform.position = target_In_SnapZone.transform.position;
-            target.transform.rotation = target_In_SnapZone.transform.rotation;
-            target.transform.localScale = target_In_SnapZone.transform.localScale;
-            if (target.name.Equals("Lever"))
-            {
-                if (ActionRecoverManager.actionDic == null)
-                    ActionRecoverManager.actionID = 0;
-                else
-                {
-                    ActionRecoverManager.actionID = ActionRecoverManager.actionDic.Count - 1;
-                    Debug.Log("action ID: " + ActionRecoverManager.actionID);
-                }
-            }
-            else if (target.name.Equals("Microphone"))
-            {
-                AnnotationRecorder recordAnnotation = target.GetComponent<AnnotationRecorder>();
-                recordAnnotation.LogAnnotation();
-            }
-        }
-        else
-        {
-            target.transform.localScale = orginScale;
-            target.transform.rotation = new Quaternion(x, y, z, 0);
-            if (target.name.Equals("Lever"))
-                handleRotation = target.transform.GetChild(1).rotation;
+            AnnotationRecorder recordAnnotation = target.GetComponent<AnnotationRecorder>();
+            recordAnnotation.LogAnnotation();
         }
     }
 }
