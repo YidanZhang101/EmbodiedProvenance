@@ -7,6 +7,7 @@ public class RemovePedestalContent : MonoBehaviour
 {
     public string timeForPedestal;
     int pedestalCount;
+
     // Start is called before the first frame update
     void Start()
     {

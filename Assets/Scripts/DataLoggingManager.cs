@@ -340,8 +340,8 @@ public class DataLoggingManager : MonoBehaviour
         GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
         foreach (GameObject target in targets)
         {
-            targetObjects.Add(target);
-          
+            targetObjects.Add(target);  
+
         }
     }
 
@@ -364,13 +364,10 @@ public class DataLoggingManager : MonoBehaviour
         Debug.Log("Logging stopped for 06_Christmas");
     }
 
-    //public void OnApplicationFocus(bool hasFocus)//OnApplicationQuit()
-    //{
-    //    if (!hasFocus)
-    //    {
-    //        if (IsLogging)
-    //            StopLogging();
-    //    }
-        
-    //}
+    public void onapplicationquit()
+    {
+        if (IsLogging)
+            StopLogging();
+
+    }
 }

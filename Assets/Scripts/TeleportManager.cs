@@ -16,7 +16,7 @@ public class TeleportManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //GameObject.Find("hand_right_renderPart_0").GetComponent<Renderer>().enabled = false;
     }
 
     public void TeleportToTimeline()

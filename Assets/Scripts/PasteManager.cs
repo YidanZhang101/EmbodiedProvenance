@@ -52,19 +52,22 @@ public class PasteManager : MonoBehaviour
         foreach(GameObject item in itemsInCurrentScene)
         {
             //item.SetActive(false);
-            Renderer[] _renderer = item.transform.GetComponentsInChildren<Renderer>();
-            foreach (Renderer childRenderer in _renderer)
-                childRenderer.enabled = false;
+            //Renderer[] _renderer = item.transform.GetComponentsInChildren<Renderer>();
+            //foreach (Renderer childRenderer in _renderer)
+            //    childRenderer.enabled = false;
+            item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y - 10, item.transform.position.z);
         }
 
-        GameObject[] links = GameObject.FindGameObjectsWithTag("tableLink");
-        foreach (GameObject link in links)
-        {
-            linePosition = link.transform.position;
-            link.transform.position = new Vector3(link.transform.position.x, link.transform.position.y - 20, link.transform.position.z);
-        }
+        //GameObject[] links = GameObject.FindGameObjectsWithTag("tableLink");
+        //foreach (GameObject link in links)
+        //{
+        //    linePosition = link.transform.position;
+        //    link.transform.position = new Vector3(link.transform.position.x, link.transform.position.y - 20, link.transform.position.z);
+        //}
 
         sceneChanged = true;
+
+        SetNewTimlineTable();
 
         //GameObject.Find("TablesOnTimeline").transform.GetChild(0).gameObject.SetActive(false);
         //GameObject.Find("TablesOnTimeline").transform.GetChild(2).gameObject.SetActive(false);
@@ -72,7 +75,17 @@ public class PasteManager : MonoBehaviour
         SceneManager.LoadScene(newSceneName, LoadSceneMode.Additive);
 
         BackgroundAudioManager.Instance.SwitchBackgroundSound(newSceneName);
+
     }
 
-    
+    public void SetNewTimlineTable()
+    {
+        GameObject[] selectedLEDs = GameObject.FindGameObjectsWithTag("LED");
+
+        foreach (GameObject led in selectedLEDs)
+        {
+            led.GetComponent<Renderer>().enabled = false;
+            led.GetComponent<LEDNode>().enabled = false;
+        }
+    }
 }

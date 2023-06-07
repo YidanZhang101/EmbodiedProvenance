@@ -100,7 +100,7 @@ public class LayerManager : MonoBehaviour
         Transform allElements = GameObject.Find("AllElements").transform;
         int x_move_counter = TableMoveIn_x_Side(allElements);
         int z_move_counter = TableMoveIn_z_Side();
-        Debug.Log("the unknown name: " + allElements.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible); 
+        //Debug.Log("the unknown name: " + allElements.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible); 
         //if (allElements.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().isVisible == true)
         //{
             GameObject tableLink = (GameObject)Instantiate(Resources.Load("Prefabs/LinkForTables"));
@@ -205,7 +205,7 @@ public class LayerManager : MonoBehaviour
                 if (tableInfo[0].Equals("2020"))
                 {
                     newTable.transform.position = new Vector3(sourceTablePos.x + 2f,
-                        newTable.transform.position.y, sourceTablePos.z + 2f * (z_move_counter - 1));
+                        sourceTablePos.y, sourceTablePos.z + 2f * (z_move_counter - 1));
                     transform.position = new Vector3(sourceTablePos.x + 0.208f + 2f,
                     base_layer.transform.position.y, sourceTablePos.z + 0.514f + 2f * (z_move_counter - 1));
 
@@ -215,7 +215,7 @@ public class LayerManager : MonoBehaviour
                 else
                 {
                     newTable.transform.position = new Vector3(sourceTablePos.x + 2f,
-                        newTable.transform.position.y, sourceTablePos.z - 2f * (z_move_counter - 1));
+                        sourceTablePos.y, sourceTablePos.z - 2f * (z_move_counter - 1));
                     transform.position = new Vector3(sourceTablePos.x + 0.208f + 2f,
                     base_layer.transform.position.y, sourceTablePos.z + 0.514f - 2f * (z_move_counter - 1));
 

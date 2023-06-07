@@ -33,4 +33,10 @@ public class ResetPosition : MonoBehaviour
         //transform.position = originalPos;
         transform.localRotation = originalRot;
     }
+
+    public void BackToIniPos() //back to player start pos
+    {
+        GameObject mrtkRig = GameObject.FindGameObjectWithTag("MRTKRig");
+        mrtkRig.transform.position = new Vector3();
+    }
 }

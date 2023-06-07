@@ -26,6 +26,7 @@ public class Block : MonoBehaviour
     int grabCount = 0;
     bool pedestalAdded = false;
     GameObject block;
+    //public string thePedestalName;
 
     static List<string> blockDataLines = new List<string>();
     static Texture2D colorRamp; 
@@ -63,7 +64,7 @@ public class Block : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void DuplicateBlock()
@@ -107,11 +108,11 @@ public class Block : MonoBehaviour
         }
         if (block.tag == "hour")
         {
-            if (timeCount < 12)
+            if (timeCount < 11)
             {
                 label = timeCount + "am - " + (timeCount + 1) + "am";
             }
-            else if (timeCount == 12)
+            else if (timeCount == 11)
             {
                 label = timeCount + "am - " + (timeCount + 1) + "pm";
             }
@@ -172,7 +173,57 @@ public class Block : MonoBehaviour
             //}
 
             string[] lines = blockDataLines[i].Split(',');
-            if (parent.name.Equals("AllElements") | parent.name.Contains("AllObjects"))
+            if (!blockName.name.Contains("(pedestal)"))
+            {
+                if (parent.name.Equals("AllElements") | parent.name.Contains("AllObjects"))
+                {
+                    if (blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+                    {
+                        consumption = int.Parse(lines[3]);
+                        break;
+                    }
+                }
+                else if (blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals("2019") | blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals("2020"))
+                {
+                    string TableInfo = GameObject.Find("Tabletop (1)").transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                    if (TableInfo.Equals(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+                    {
+                        consumption = int.Parse(lines[3]);
+                        break;
+                    }
+                }
+                //else if (parent.name.Equals("Layer_1"))
+                //{
+                //    string TableInfo = "";
+                //    if(GameObject.Find("Tabletop_1") == null)
+                //        TableInfo = GameObject.Find("Tabletop (1)").transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                //    else
+                //        TableInfo = GameObject.Find("Tabletop_1").transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                //    if (TableInfo.Equals(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+                //    {
+                //        consumption = int.Parse(lines[3]);
+                //        break;
+                //    }    
+                //}
+                else
+                {
+                    string commonNumber = parent.name.Split('_')[1];
+                    string TableInfo = "";
+                    string table_currentLevel = "Tabletop_" + commonNumber;
+                    int preNum = int.Parse(commonNumber) - 1;
+                    string table_preLevel = "Tabletop_" + preNum.ToString();
+                    if (GameObject.Find(table_currentLevel) == null)
+                        TableInfo = GameObject.Find(table_preLevel).transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                    else
+                        TableInfo = GameObject.Find(table_currentLevel).transform.GetChild(0).GetComponent<TextMeshPro>().text;
+                    if (TableInfo.Contains(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
+                    {
+                        consumption = int.Parse(lines[3]);
+                        break;
+                    }
+                }
+            }
+            else
             {
                 if (blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
                 {
@@ -180,45 +231,7 @@ public class Block : MonoBehaviour
                     break;
                 }
             }
-            else if (blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals("2019") | blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals("2020"))
-            {
-                string TableInfo = GameObject.Find("Tabletop (1)").transform.GetChild(0).GetComponent<TextMeshPro>().text;
-                if (TableInfo.Equals(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
-                {
-                    consumption = int.Parse(lines[3]);
-                    break;
-                }
-            }
-            //else if (parent.name.Equals("Layer_1"))
-            //{
-            //    string TableInfo = "";
-            //    if(GameObject.Find("Tabletop_1") == null)
-            //        TableInfo = GameObject.Find("Tabletop (1)").transform.GetChild(0).GetComponent<TextMeshPro>().text;
-            //    else
-            //        TableInfo = GameObject.Find("Tabletop_1").transform.GetChild(0).GetComponent<TextMeshPro>().text;
-            //    if (TableInfo.Equals(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
-            //    {
-            //        consumption = int.Parse(lines[3]);
-            //        break;
-            //    }    
-            //}
-            else
-            {
-                string commonNumber = parent.name.Split('_')[1];
-                string TableInfo = "";
-                string table_currentLevel = "Tabletop_" + commonNumber;
-                int preNum = int.Parse(commonNumber) - 1;
-                string table_preLevel = "Tabletop_" + preNum.ToString();
-                if (GameObject.Find(table_currentLevel) == null)
-                    TableInfo = GameObject.Find(table_preLevel).transform.GetChild(0).GetComponent<TextMeshPro>().text;
-                else
-                    TableInfo = GameObject.Find(table_currentLevel).transform.GetChild(0).GetComponent<TextMeshPro>().text;
-                if (TableInfo.Contains(lines[0]) & blockName.GetChild(2).GetComponent<TextMeshPro>().text.Equals(lines[1]) & keyName.Equals(lines[2]))
-                {
-                    consumption = int.Parse(lines[3]);
-                    break;
-                }
-            }
+            
         }
         //normalise the value
         float normalisedValue = consumption / 100f;
@@ -241,7 +254,10 @@ public class Block : MonoBehaviour
             GameObject thisBlock = Instantiate(theBlock, transform.position, transform.rotation, theBlock.transform.parent);
             //GameObject thisBlock = new GameObject();
             //IntantiateBlock(thisBlock);
-            thisBlock.name = theBlock.name.Split()[0] + " Clone_" + duplicatedBlockCount.ToString() + "_" + tagName + "_" + timeCount.ToString();
+            if(theBlock.name.Split().Length > 1)
+                thisBlock.name = theBlock.name.Split()[0] + " Clone_" + duplicatedBlockCount.ToString() + "_" + tagName + "_" + timeCount.ToString() + "(pedestal)";
+            else
+                thisBlock.name = theBlock.name.Split()[0] + " Clone_" + duplicatedBlockCount.ToString() + "_" + tagName + "_" + timeCount.ToString();
             thisBlock.tag = tagName;
             UpdateText(timeCount, thisBlock);
             thisBlock.transform.localScale = theBlock.transform.localScale;
@@ -284,8 +300,11 @@ public class Block : MonoBehaviour
     }
     public void StretchBlock()
     {
-        Invoke(nameof(ShowBlocks), 0.5f);
-        grabCount = 0;
+        if (theBlock.GetComponent<Renderer>().enabled)
+        {
+            Invoke(nameof(ShowBlocks), 0.5f);
+            grabCount = 0;
+        }        
     }
 
     public void ShowBlocks()
@@ -315,9 +334,35 @@ public class Block : MonoBehaviour
         gameObject.transform.GetChild(2).gameObject.GetComponent<Renderer>().enabled = false;
     }
 
+    //public void FollowBlock()
+    //{
+    //    if (clonePedestal != null)
+    //    {
+    //        GameObject[] pedestals = GameObject.FindGameObjectsWithTag("pedestal");
+    //        Block[] allBlocks = FindObjectsOfType<Block>();
+    //        List<Block> blocksOnPedestal = new List<Block>();
+    //        foreach (Block block in allBlocks)
+    //        {
+    //            if (block.name.Contains("Copy"))
+    //                blocksOnPedestal.Add(block);
+    //        }
+
+    //        for (int i = 0; i < pedestals.Length; i++)
+    //        {
+    //            if (pedestals[i].name == clonePedestal.name) // & blocksOnPedestal[i].gameObject.GetComponent<Renderer>().enabled
+    //            {
+    //                pedestals[i].transform.position = blocksOnPedestal[i].transform.GetChild(0).position;
+    //            }
+
+    //        }
+    //    }
+        
+    //}
+
     public void AddPedestal()
     {
-        if (!theBlock.name.Contains("Copy"))
+        
+        if (!theBlock.name.Contains("Copy") & theBlock.GetComponent<Renderer>().enabled)
         {
             //objectContainerInNewScene = GameObject.Find("AllElements");
             //if (PasteManager.sceneChanged)
@@ -388,6 +433,15 @@ public class Block : MonoBehaviour
             if (ActionRecoverManager.actionDic != null)
                 key = ActionRecoverManager.actionDic.Count;
             ActionRecoverManager.actionDic.Add(key, listForAction);
+
+            if (block.GetComponent<ObjectManipulator>() == null)
+                Debug.Log("block.GetComponent<ObjectManipulator>() == null");
+
+            //block.GetComponent<ObjectManipulator>().enabled = false;
+            //thePedestalName = clonePedestal.name;
         }
+
+        //if(GameObject.Find(thePedestalName) != null)
+        //    GameObject.Find(thePedestalName).transform.position = block.transform.GetChild(0).position;
     }
 }

@@ -113,30 +113,30 @@ public class DataReplayManager : MonoBehaviour
 
     public void StartLiveReplay()
     {
-        StopDataLog();
-        if (logStopped)
+        //StopDataLog();
+        //if (logStopped)
+        //{
+        //    AddDataToDic();
+        //    if (!isLiveReplayRunning)
+        //    {
+        //        isLiveReplayPaused = false;
+        //        StartCoroutine("Replay");
+        //    }
+        //    else if (isLiveReplayPaused)
+        //    {
+        //        isLiveReplayPaused = false;
+        //    }
+        //}
+        AddDataToDic();
+        if (!isLiveReplayRunning)
         {
-            AddDataToDic();
-            if (!isLiveReplayRunning)
-            {
-                isLiveReplayPaused = false;
-                StartCoroutine("Replay");
-            }
-            else if (isLiveReplayPaused)
-            {
-                isLiveReplayPaused = false;
-            }
+            isLiveReplayPaused = false;
+            StartCoroutine("Replay");
         }
-        //AddDataToDic();
-        //if (!isLiveReplayRunning)
-        //{
-        //    isLiveReplayPaused = false;
-        //    StartCoroutine("Replay");
-        //}
-        //else if (isLiveReplayPaused)
-        //{
-        //    isLiveReplayPaused = false;
-        //}
+        else if (isLiveReplayPaused)
+        {
+            isLiveReplayPaused = false;
+        }
     }
 
     public IEnumerator Replay()
@@ -561,6 +561,7 @@ public class DataReplayManager : MonoBehaviour
         isLiveReplayStopped = true;
         Transform playerPos = GameObject.Find("Player").transform;
         playerPos.position = new Vector3(playerPos.position.x, playerPos.position.y - 10f, playerPos.position.z);
+        GameObject.Find("TablesOnTimeline").transform.position = new Vector3(4.345f,3.56f, -6.33f);
     }
 
     public void ReplayObjects(string startName, string[] values)

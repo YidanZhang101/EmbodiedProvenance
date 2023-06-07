@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 8786506197797665841}
   m_Layer: 8
   m_Name: LED_Blue_1
-  m_TagString: Untagged
+  m_TagString: LED
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

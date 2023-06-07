@@ -46,6 +46,7 @@ TagManager:
   - mini_table
   - miniTable_link
   - timelabelCube
+  - LED
   layers:
   - Default
   - TransparentFX
